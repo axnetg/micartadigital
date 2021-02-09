@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block structure %}
+<!-- Barra de navegación -->
+<div class="ui top fixed borderless inverted menu">
+	<!-- Large navbar -->
+	<div class="ui container">
+		<div class="left menu">
+			<a class="header logo item" href="/">
+				<img src="{% static 'icon/spinach.svg' %}" alt="Logo">
+				micartadigital.es
+			</a>
+		</div>
+	</div>
+	<!-- ./ Large navbar -->
+
+	<!-- Mobile and tablet only navbar -->
+	<!--<div class="mobile tablet only row">
+		<div class="ui top fixed borderless inverted menu">
+			<div class="left menu">
+				<a class="item mobilesidebartoggle">
+					<i class="content icon"></i>
+				</a>
+			</div>
+		</div>
+	</div>-->
+	<!-- ./ Mobile and tablet only navbar -->
+
+</div>
+<!-- ./ Barra de navegación -->
+
+<!-- Contenido principal -->
+<div class="ui centered grid container" id="main">
+	<div class="row">
+		<div class="column">
+			{% block content %}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+<!-- ./ Contenido principal -->
+
+<!-- Footer -->
+<div class="ui inverted vertical segment" id="footer">
+	<div class="ui center aligned container">
+		<img class="ui centered mini image" src="{% static 'icon/spinach.svg' %}" alt="Logo" />
+		<div class="ui center aligned container">
+			<h5>micartadigital.es</h5>
+		</div>
+		<div class="ui horizontal inverted small divided link list">
+			<a class="item" href="#">Link #1</a>
+			<a class="item" href="#">Link #2</a>
+			<a class="item" href="#">Link #3</a>
+			<a class="item" href="#">Link #4</a>
+		</div>
+	</div>
+</div>
+<!-- ./ Footer -->
+{% endblock %}

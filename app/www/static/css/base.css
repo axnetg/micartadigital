@@ -1,0 +1,28 @@
+body {
+    background-color: #fafafa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#main {
+    flex: 1;
+    padding-top: 5em;
+}
+
+.ui.fixed.menu .logo.item img {
+    margin-right: 1em;
+}
+
+#footer {
+    margin: 5em 0em 0em 0em;
+    padding: 3em 0em;
+}
+
+.ui.primary.button {
+    background-color: #6C63FF;
+}
+
+.ui.primary.button:hover {
+    background-color: #847cff;
+}

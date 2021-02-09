@@ -1,6 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 
-# Create your views here.
+from .models import Establecimiento
+
 def home(request):
-    return HttpResponse('Hello, World. Page served on Docker.')
+    establecimientos = Establecimiento.objects.all()
+    return render(request, 'home.html', {'establecimientos': establecimientos})
+
+def establecimiento_details(request, slug):
+    establecimiento = get_object_or_404(Establecimiento, slug=slug)
+    return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento})

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
+{% block structure %}
+<!--Top Fixed Menu-->
+<div class="mobile hidden">
+	<div class="ui large top fixed borderless hidden menu">
+		<div class="ui container">
+			<a class="item" data-target="#home">Home</a>
+			<a class="item" data-target="#seg-1">Link #1</a>
+			<a class="item" data-target="#seg-2">Link #2</a>
+			<a class="item" data-target="#seg-3">Link #3</a>
+			<a class="item" data-target="#seg-4">Link #4</a>
+			<div class="right menu">
+				<div class="item"><a class="ui primary button">Área de clientes</a></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Page Contents-->
+<div class="main">
+	<div id="home" class="ui inverted vertical masthead center aligned segment">
+		<div class="ui container">
+			<div class="ui large secondary inverted menu">
+				<a class="toc item"><i class="sidebar icon"></i></a>
+				<a class="item" data-target="#home">Home</a>
+				<a class="item" data-target="#seg-1">Link #1</a>
+				<a class="item" data-target="#seg-2">Link #2</a>
+				<a class="item" data-target="#seg-3">Link #3</a>
+				<a class="item" data-target="#seg-4">Link #4</a>
+				<div class="right item">
+					<a class="ui inverted button">Área de clientes</a>
+				</div>
+			</div>
+		</div>
+		<div class="ui text container">
+			<h1 class="ui inverted header">micartadigital.es</h1>
+			<h2>Aplicación web de gestión de cartas virtuales para hostelería</h2>
+			<div class="ui huge vertical animated primary button">
+				<div class="hidden content">Crear una cuenta</div>
+				<div class="visible content">
+					Quiero mi carta QR <i class="qrcode icon"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="seg-1" class="ui vertical stripe segment">
+		<div class="ui middle aligned stackable grid container">
+			<div class="row">
+				<div class="eight wide column">
+					<h3 class="ui header">We Help Companies and Companions</h3>
+					<p>
+						We can give your company superpowers to do things that they
+						never thought possible. Let us delight your customers and
+						empower your needs...through pure data analytics.
+					</p>
+					<h4 class="ui horizontal header divider">
+						<span>Text</span>
+					</h4>
+					<h3 class="ui header">We Make Bananas That Can Dance</h3>
+					<p>
+						Yes that's right, you thought it was the stuff of dreams, but
+						even bananas can be bioengineered.
+					</p>
+				</div>
+				<div class="six wide right floated column">
+					<img class="ui large image" src="{% static 'img/undraw_street_food_hm5i.svg' %}" alt="Food truck" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="seg-2" class="ui alternate vertical stripe segment">
+		<div class="ui middle aligned stackable grid container">
+			<div class="row">
+				<div class="six wide left floated column">
+					<img class="ui large image" src="{% static 'img/undraw_special_event_4aj8.svg' %}" alt="Dining table" />
+				</div>
+				<div class="eight wide column">
+					<h3 class="ui header">We Help Companies and Companions</h3>
+					<p>
+						We can give your company superpowers to do things that they
+						never thought possible. Let us delight your customers and
+						empower your needs...through pure data analytics.
+					</p>
+					<h3 class="ui header">We Make Bananas That Can Dance</h3>
+					<p>
+						Yes that's right, you thought it was the stuff of dreams, but
+						even bananas can be bioengineered.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="seg-3" class="ui stripe vertical segment">
+		<div class="ui center aligned relaxed stackable equal width grid container">
+			<div class="row">
+				<div class="column">
+					<h3 class="ui header">Eius obcaecati earum quis aperiam facere, culpa amet?</h3>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ipsum asperiores consequuntur
+						reprehenderit neque deleniti corrupti quam alias commodi. Nostrum, dicta. Incidunt atque adipisci libero
+						commodi qui perferendis pariatur quae.
+					</p>
+				</div>
+			</div>
+			<div class="ui hidden divider"></div>
+			<div class="divided row">
+				<div class="column">
+					<h2 class="ui icon header">
+						<i class="ui circular mobile alternate icon"></i>
+						3000+ Theming Variables
+					</h2>
+					<p>The only dogma from this framework: <em>everything arbitrary is mutable</em>.</p>
+				</div>
+				<div class="column">
+					<h2 class="ui icon header">
+						<i class="ui circular info circle icon"></i>
+						50+ UI Components
+					</h2>
+					<p>Build your entire site with one UI stack. Share your UI between multiple projects.</p>
+				</div>
+				<div class="column">
+					<h2 class="ui icon header">
+						<i class="ui circular dollar sign icon"></i>
+						5000+ Commits
+					</h2>
+					<p>
+						Semantic UI is a <b>free open source</b> project already used in multiple large scale production
+						environments.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="seg-4" class="ui stripe inverted vertical center aligned segment">
+		<div class="ui text container">
+			<h1 class="ui inverted header">micartadigital.es</h1>
+			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat quis sed vero suscipit rem excepturi
+				tenetur
+				libero amet inventore. Iste laudantium expedita, eveniet ratione repellat at placeat accusantium fugit
+				tempore?
+			</p>
+			<form class="ui big inverted form">
+				<div class="field">
+					<div class="ui action input">
+						<input type="text" placeholder="Search...">
+						<button class="ui big icon button">
+							<i class="search icon"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="ui inverted vertical footer segment">
+		<div class="ui container">
+			<div class="ui inverted divided equal height stackable grid">
+				<div class="three wide column">
+					<h4 class="ui inverted header">About</h4>
+					<div class="ui inverted link list">
+						<a class="item" href="/">Sitemap</a>
+						<a class="item" href="/">Contact Us</a>
+						<a class="item" href="/">Religious Ceremonies</a>
+						<a class="item" href="/">Gazebo Plans</a>
+					</div>
+				</div>
+				<div class="three wide column">
+					<h4 class="ui inverted header">Services</h4>
+					<div class="ui inverted link list">
+						<a class="item" href="/">Banana Pre-Order</a>
+						<a class="item" href="/">DNA FAQ</a>
+						<a class="item" href="/">How To Access</a>
+						<a class="item" href="/">Favorite X-Men</a>
+					</div>
+				</div>
+				<div class="ten wide column">
+					<h4 class="ui inverted header">Footer Header</h4>
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea sapiente magni recusandae vitae beatae aperiam
+						alias perspiciatis. Inventore quidem deleniti ex placeat accusantium cumque consectetur consequatur sed
+						perferendis enim. Nostrum!</p>
+					<img class="esei logo" src="https://esei.uvigo.es/wp-content/uploads/2019/09/esei.png" alt="ESEI logo" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
