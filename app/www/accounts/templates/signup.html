@@ -1,0 +1,15 @@
+{% extends 'base_accounts.html' %}
+
+{% block content %}
+<div class="ui top attached segment">
+  <div class="ui huge header">Crear cuenta</div>
+  <form class="ui form" novalidate method="POST">
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button class="ui primary fluid button" type="submit">Crear cuenta</button>
+  </form>
+</div>
+<div class="ui bottom attached center aligned segment">
+  <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión</a>.</p>
+</div>
+{% endblock %}

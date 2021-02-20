@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'widget_tweaks',
+
+    'accounts',
     'cartas',
 ]
 
@@ -72,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'cartas.Usuario'
+AUTH_USER_MODEL = 'accounts.Usuario'
 
 WSGI_APPLICATION = 'micartadigital.wsgi.application'
 
@@ -133,3 +136,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+# Authentication
+# https://docs.djangoproject.com/en/3.1/topics/auth/
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'panel'
+LOGOUT_REDIRECT_URL = 'home'
+
+
+# Sending email
+# https://docs.djangoproject.com/en/3.1/topics/email/
+
+# Instead of sending out real emails the console backend just writes the emails
+# that would be sent to the standard output.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

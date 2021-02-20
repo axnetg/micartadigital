@@ -7,7 +7,7 @@
 	<!-- Large navbar -->
 	<div class="ui container">
 		<div class="left menu">
-			<a class="header logo item" href="/">
+			<a class="header logo item" href="{% url 'home' %}">
 				<img src="{% static 'icon/spinach.svg' %}" alt="Logo">
 				micartadigital.es
 			</a>
@@ -31,6 +31,8 @@
 <!-- ./ Barra de navegación -->
 
 <!-- Contenido principal -->
+{% block header_image %}
+{% endblock %}
 <div class="ui centered grid container" id="main">
 	<div class="row">
 		<div class="column">
@@ -49,7 +51,7 @@
 			<h5>micartadigital.es</h5>
 		</div>
 		<div class="ui horizontal inverted small divided link list">
-			<a class="item" href="#">Link #1</a>
+			<a class="item" href="{% url 'home' %}">Home</a>
 			<a class="item" href="#">Link #2</a>
 			<a class="item" href="#">Link #3</a>
 			<a class="item" href="#">Link #4</a>

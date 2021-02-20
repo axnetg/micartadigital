@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}" />
+{% endblock %}
+
+{% block structure %}
+<div class="ui middle aligned centered grid container">
+  <div class="ten wide computer fourteen wide tablet sixteen wide mobile column">
+    {% block content %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

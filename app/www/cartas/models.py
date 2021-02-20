@@ -1,13 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.urls import reverse
-
-class Usuario(AbstractUser):
-    nif = models.CharField(max_length=9, blank=True)
-
-    def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+from django.utils.text import slugify
 
 
 class Establecimiento(models.Model):
@@ -24,7 +18,11 @@ class Establecimiento(models.Model):
 
     def get_absolute_url(self):
         return reverse('establecimiento', kwargs={'slug': self.slug})
-    
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.nombre)
+        super().save(*args, **kwargs)
+
 
 class Carta(models.Model):
     titulo = models.CharField(max_length=100)
@@ -32,4 +30,3 @@ class Carta(models.Model):
 
     def __str__(self):
         return self.titulo
-    

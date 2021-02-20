@@ -1,6 +1,14 @@
 from django.contrib import admin
+
 from .models import *
 
-admin.site.register(Establecimiento)
-admin.site.register(Carta)
-admin.site.register(Usuario)
+
+@admin.register(Establecimiento)
+class EstablecimientoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'slug', 'propietario')
+    prepopulated_fields = {'slug': ('nombre',)}
+
+
+@admin.register(Carta)
+class CartaAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'propietario')

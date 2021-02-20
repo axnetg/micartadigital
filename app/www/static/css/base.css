@@ -7,7 +7,7 @@ body {
 
 #main {
     flex: 1;
-    padding-top: 5em;
+    margin-top: 1em;
 }
 
 .ui.fixed.menu .logo.item img {
@@ -23,6 +23,17 @@ body {
     background-color: #6C63FF;
 }
 
-.ui.primary.button:hover {
-    background-color: #847cff;
+.ui.primary.button:hover, .ui.primary.button:focus {
+    background-color: #534AE6;
+}
+
+.ui.fluid.image {
+    object-fit: cover;
+    height: 260px;
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.fluid.image {
+        height: 180px;
+    }
 }

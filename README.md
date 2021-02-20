@@ -1,4 +1,7 @@
-![alt text](https://files.realpython.com/media/Get-Started-With-Django_Watermarked.15a1e05597bc.jpg "Django")
+![Django](https://files.realpython.com/media/Get-Started-With-Django_Watermarked.15a1e05597bc.jpg)
+![Python 3.9 badge](https://img.shields.io/badge/python-3.9-brightgreen)
+![Django 3.1.6 badge](https://img.shields.io/badge/django-3.1.6-brightgreen)
+
 # Despliegue completo de la aplicación web con Docker-Compose 📦
 
 ## Requisitos

@@ -1,0 +1,47 @@
+{% extends 'base_cartas.html' %}
+
+{% block header_image %}
+{% endblock %}
+
+{% block content %}
+<div class="ui basic segment">
+  <h1 class="ui header">
+    {{ establecimiento }}
+    <div class="sub header">{{ establecimiento.direccion }}</div>
+  </h1>
+</div>
+<div class="ui divider"></div>
+<div class="ui piled segment">
+  <h2 class="ui header">Sección 1</h2>
+
+  <div class="ui items">
+    <div class="item">
+      <div class="content">
+        <div class="header">Plato 1</div>
+        <div class="description">
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, ducimus autem quasi ullam beatae,
+            praesentium numquam dignissimos sint minus natus esse dolores earum enim ipsam harum aspernatur alias
+            quisquam quam.</p>
+        </div>
+        <div class="extra">
+          Alérgenos
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="content">
+        <div class="header">Plato 2</div>
+        <div class="description">
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nemo rerum illum provident praesentium
+            harum totam, fuga, deserunt accusamus earum fugit culpa sit quasi vero iusto laborum rem in ut.</p>
+        </div>
+        <div class="extra">
+          Alérgenos
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

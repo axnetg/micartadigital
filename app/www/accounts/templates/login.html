@@ -1,0 +1,18 @@
+{% extends 'base_accounts.html' %}
+
+{% block content %}
+<div class="ui top attached segment">
+  <div class="ui huge header">Iniciar sesión</div>
+  <form class="ui form" novalidate method="POST">
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button class="ui primary fluid button" type="submit">Iniciar sesión</button>
+  </form>
+</div>
+<div class="ui attached center aligned segment">
+  <p>¿No tienes una cuenta? <a href="{% url 'signup' %}">Crear ahora</a>.</p>
+</div>
+<div class="ui bottom attached center aligned segment">
+  <a href="{% url 'password_reset' %}">¿Olvidaste la contraseña?</a>
+</div>
+{% endblock %}
