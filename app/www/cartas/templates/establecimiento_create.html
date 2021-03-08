@@ -1,0 +1,40 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Crear establecimiento - micartadigital.es{% endblock %}
+
+{% block content %}
+<h1>Nuevo establecimiento</h1>
+
+<form class="ui form" method="POST" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="field">
+        <label>Imagen de portada:</label>
+        <div id="header-pic" class="ui segment">
+            <div class="ui dimmer">
+                <div class="content">
+                    <h2 class="ui inverted header">Imagen de portada</h2>
+                    <div id="imagen-change-btn" class="ui button">Cambiar</div>
+                    <div id="imagen-clear-btn" class="ui button">Eliminar</div>
+                </div>
+            </div>
+            {% if form.instance and form.instance.imagen %}
+            <img class="ui fluid image" src="{{ form.instance.imagen.url }}" />
+            {% else %}
+            <img class="ui fluid image" src="https://i.stack.imgur.com/y9DpT.jpg" />
+            {% endif %}
+        </div>
+        {% for error in form.imagen.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </div>
+
+    {% include 'includes/form.html' %}
+    <button type="submit" class="ui primary button">Crear</button>
+</form>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/establecimiento-form.js' %}"></script>
+{% endblock %}

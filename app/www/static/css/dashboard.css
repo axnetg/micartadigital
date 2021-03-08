@@ -1,0 +1,30 @@
+.dropdown .avatar{
+    background-color: white;
+}
+
+.dropdown .menu {
+    min-width: 210px !important;
+}
+
+.dataTables_wrapper {
+    margin-top: 2em;
+}
+
+#header-pic {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.ui.segment.dimmable {
+    z-index: 90;
+}
+
+.ui.form .field .ui.input input {
+    width: 0;
+}
+
+.ui.form .error.field .basic.label {
+    background: #fff6f6;
+    border-color: #e0b4b4;
+    color: #9f3a38;
+}

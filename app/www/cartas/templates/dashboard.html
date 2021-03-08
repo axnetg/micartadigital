@@ -1,8 +1,68 @@
-{% extends 'base_cartas.html' %}
+{% extends 'base_dashboard.html' %}
+{% load static %}
 
+{% block title %}Panel - micartadigital.es{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
+<h1>Panel</h1>
 <p>Bienvenido, {{ user }}</p>
-<a href="{% url 'logout' %}" class="ui primary button">Logout</a>
+<div class="ui section divider"></div>
+
+<h2>Mis establecimientos</h2>
+<a href="{% url 'new-establecimiento' %}" class="ui primary button">Añadir</a>
+{% if user.establecimientos.all %}
+<table class="ui padded table">
+    <thead>
+        <tr>
+            <th>Establecimiento</th>
+            <th>Teléfono</th>
+            <th>Provincia</th>
+            <th>Carta</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for establecimiento in user.establecimientos.all|dictsort:"nombre" %}
+        <tr>
+            <td>
+                <div class="ui header">{{ establecimiento.nombre }}<br />
+                    <div class="sub header">{{ establecimiento.display_direccion }}</div>
+                </div>
+            </td>
+            <td>{{ establecimiento.telefono }}</td>
+            <td>{{ establecimiento.provincia }}</td>
+            <td>
+                <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
+                    {{ establecimiento.slug }}</a>
+            </td>
+            <td class="right aligned">
+                <div class="ui floating dropdown item">
+                    <i class="ellipsis vertical icon"></i>
+                    <div class="left menu">
+                        <a href="{% url 'edit-establecimiento' establecimiento.slug %}" class="item">
+                            <i class="pencil icon"></i>Editar
+                        </a>
+                        <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="item">
+                            <i class="qrcode icon"></i>Descargar QR
+                        </a>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="ui warning message">
+    Todavía no has registrado establecimientos :(
+</div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.semanticui.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.22/filtering/type-based/accent-neutralise.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

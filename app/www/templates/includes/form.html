@@ -2,18 +2,15 @@
 
 {% if form.non_field_errors %}
 <div class="ui negative message">
-  <!--<div class="header">
-    Existen errores en el formulario
-  </div>-->
-  {% for error in form.non_field_errors %}
-  <p><strong>{{ error }}</strong></p>
-  {% endfor %}
+    {% for error in form.non_field_errors %}
+    <p><strong>{{ error }}</strong></p>
+    {% endfor %}
 </div>
 {% endif %}
 
 {% for field in form %}
 
-  <div class="field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
+<div class="field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
 
     {{ field.label_tag }}
 
@@ -27,5 +24,5 @@
     <p>{{ field.help_text }}</p>
     {% endif %}
 
-  </div>
-  {% endfor %}
+</div>
+{% endfor %}

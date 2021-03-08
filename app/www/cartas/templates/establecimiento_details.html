@@ -1,6 +1,11 @@
-{% extends 'base_cartas.html' %}
+{% extends 'base.html' %}
+
+{% block title %}{{ establecimiento }} - micartadigital.es{% endblock %}
 
 {% block header_image %}
+{% if establecimiento.imagen %}
+<img class="ui fluid image" src="{{ establecimiento.imagen.url }}"/>
+{% endif %}
 {% endblock %}
 
 {% block content %}
