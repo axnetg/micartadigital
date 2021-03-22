@@ -24,6 +24,11 @@ def establecimiento_details(request, slug):
     return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento})
 
 
+def establecimiento_redirect(request, id):
+    establecimiento = get_object_or_404(Establecimiento, id=id)
+    return redirect('establecimiento', establecimiento.slug)
+
+
 @login_required
 def establecimiento_create(request):
     if request.method == 'POST':
@@ -56,7 +61,8 @@ def establecimiento_edit(request, slug):
 
 def serve_qr_code(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
-    uri = request.build_absolute_uri(reverse('establecimiento', args=[slug]))
+    permalink = reverse('redirect-establecimiento', args=[establecimiento.id])
+    uri = request.build_absolute_uri(permalink)
     
     response = HttpResponse(content_type="image/png")
     img = qrcode.make(uri)
