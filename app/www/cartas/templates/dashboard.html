@@ -11,7 +11,7 @@
 <h2>Mis establecimientos</h2>
 <a href="{% url 'new-establecimiento' %}" class="ui primary button">Añadir</a>
 {% if user.establecimientos.all %}
-<table class="ui padded table">
+<table id="table-establecimientos" class="ui padded table">
     <thead>
         <tr>
             <th>Establecimiento</th>
@@ -47,7 +47,6 @@
                         </a>
                     </div>
                 </div>
-
             </td>
         </tr>
         {% endfor %}
@@ -58,6 +57,50 @@
     Todavía no has registrado establecimientos :(
 </div>
 {% endif %}
+
+<div class="ui section divider"></div>
+
+<h2>Mis cartas</h2>
+<a href="{% url 'new-carta' %}" class="ui primary button">Añadir</a>
+{% if user.cartas.all %}
+<table id="table-cartas" class="ui padded table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Usada en</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for carta in user.cartas.all|dictsort:"titulo" %}
+        <tr>
+            <td><div class="ui header">{{ carta.titulo }}</div></td>
+            <td>
+                {% for establecimiento in carta.establecimientos.all|dictsort:"slug" %}
+                <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
+                    {{ establecimiento.slug }}</a>
+                {% endfor %}
+            </td>
+            <td class="right aligned">
+                <div class="ui floating dropdown item">
+                    <i class="ellipsis vertical icon"></i>
+                    <div class="left menu">
+                        <a href="{% url 'edit-carta' carta.id %}" class="item">
+                            <i class="pencil icon"></i>Editar
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="ui warning message">
+    Todavía no has registrado cartas :(
+</div>
+{% endif %}
+
 {% endblock %}
 
 {% block script %}

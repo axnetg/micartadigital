@@ -2,14 +2,14 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 
-from .models import Establecimiento, Carta
+from .models import *
 from .widgets import LabeledInput
 
 import re
 import requests
 
 
-class NewEstablecimientoForm(forms.ModelForm):
+class EstablecimientoForm(forms.ModelForm):
     class Meta:
         model = Establecimiento
         fields = ['nombre', 'slug', 'calle', 'codigo_postal', 'provincia', 'localidad', 'telefono', 'imagen']

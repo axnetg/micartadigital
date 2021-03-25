@@ -1,0 +1,116 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Editar carta - micartadigital.es{% endblock %}
+
+{% block content %}
+<h1>Editar carta</h1>
+
+<form class="ui form" method="POST">
+    {% csrf_token %}
+    {{ form.management_form }}
+    {{ form.non_form_errors }}
+
+    <!--id="{{ form.empty_form.prefix }}"-->
+    <div class="ui segment seccion empty-form">
+        {{ form.empty_form.nested.management_form }}
+
+        {{ form.empty_form }}
+
+        <table class="ui table">
+            <thead>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Orden</th>
+                <th>Borrar</th>
+            </thead>
+            <tbody>
+                <tr class="empty-form">
+                    <td>{{ form.empty_form.nested.empty_form.titulo }}</td>
+                    <td>{{ form.empty_form.nested.empty_form.descripcion }}</td>
+                    <td>{{ form.empty_form.nested.empty_form.precio }}</td>
+                    <td>{{ form.empty_form.nested.empty_form.orden }}</td>
+                    <td>
+                        {{ form.empty_form.nested.empty_form.DELETE }}
+                        {{ form.empty_form.nested.empty_form.seccion }}
+                        {{ form.empty_form.nested.empty_form.id }}
+                    </td>
+                </tr>
+                {% for plato_empty_form in form.empty_form.nested %}
+                    <tr>
+                        <td>{{ plato_empty_form.titulo }}</td>
+                        <td>{{ plato_empty_form.descripcion }}</td>
+                        <td>{{ plato_empty_form.precio }}</td>
+                        <td>{{ plato_empty_form.orden }}</td>
+                        <td>
+                            {{ plato_empty_form.DELETE }}
+                            {{ plato_empty_form.seccion }}
+                            {{ plato_empty_form.id }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="button" class="ui primary button" data-action="add-plato-form">Nuevo plato</button>
+    </div>
+
+    {% for seccion in form %}
+        <div class="ui segment seccion">
+            {{ seccion.nested.management_form }}
+            {{ seccion.nested.non_form_errors }}
+
+            {{ seccion }}
+
+            <table class="ui table">
+                <thead>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Orden</th>
+                    <th>Borrar</th>
+                </thead>
+                <tbody>
+                    <tr class="empty-form">
+                        <td>{{ seccion.nested.empty_form.titulo }}</td>
+                        <td>{{ seccion.nested.empty_form.descripcion }}</td>
+                        <td>{{ seccion.nested.empty_form.precio }}</td>
+                        <td>{{ seccion.nested.empty_form.orden }}</td>
+                        <td>
+                            {{ seccion.nested.empty_form.DELETE }}
+                            {{ seccion.nested.empty_form.seccion }}
+                            {{ seccion.nested.empty_form.id }}
+                        </td>
+                    </tr>
+                    
+                    {% for plato in seccion.nested %}
+                        <tr>
+                            <td>{{ plato.titulo }}</td>
+                            <td>{{ plato.descripcion }}</td>
+                            <td>{{ plato.precio }}</td>
+                            <td>{{ plato.orden }}</td>
+                            <td>
+                                {{ plato.DELETE }}
+                                {{ plato.seccion }}
+                                {{ plato.id }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="button" class="ui primary button" data-action="add-plato-form">Nuevo plato</button>
+        </div>
+    {% endfor %}
+
+    <button type="button" class="ui primary button" data-action="add-seccion-form">Nueva sección</button>
+    <hr>
+    <button type="submit" class="ui primary button">Guardar</button>
+</form>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/django-formset.js' %}"></script>
+<script src="{% static 'js/carta-form.js' %}"></script>
+{% endblock %}

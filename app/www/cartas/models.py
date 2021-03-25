@@ -48,3 +48,26 @@ class Carta(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    def display_establecimientos_en_uso(self):
+        return ', '.join([est.nombre for est in self.establecimientos.all()])
+    
+    
+class Seccion(models.Model):
+    carta = models.ForeignKey(Carta, on_delete=models.CASCADE, related_name='secciones')
+    titulo = models.CharField(max_length=100)
+    orden = models.PositiveSmallIntegerField()
+    
+    def __str__(self):
+        return self.titulo
+    
+
+class Plato(models.Model):
+    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='platos')
+    titulo = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=400, blank=True)
+    precio = models.FloatField()
+    orden = models.PositiveSmallIntegerField()
+    
+    def __str__(self):
+        return f'{self.titulo} [{self.precio}€]'

@@ -1,1 +1,1 @@
-$('.ui.dropdown').dropdown( {action: 'hide'} );
+$('.ui.dropdown').dropdown();
