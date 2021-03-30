@@ -8,8 +8,11 @@
 </div>
 {% endif %}
 
-{% for field in form %}
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
 
+{% for field in form.visible_fields %}
 <div class="field{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
 
     {{ field.label_tag }}

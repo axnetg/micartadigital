@@ -25,7 +25,7 @@ class EstablecimientoForm(forms.ModelForm):
         
         self.fields['slug'].widget = LabeledInput(attrs={'label': 'http://localhost:8000/carta/'})
         self.fields['provincia'].widget.attrs.update({'readonly': 'readonly'})
-        self.fields['localidad'].widget = forms.Select(attrs={'class': 'ui dropdown'}, choices=localidad_choices)
+        self.fields['localidad'].widget = forms.Select(attrs={'class': 'ui search dropdown'}, choices=localidad_choices)
         self.fields['telefono'].widget = forms.TextInput(attrs={'type': 'tel'})
     
     
