@@ -1,0 +1,49 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Mi cuenta - micartadigital.es{% endblock %}
+
+{% block content %}
+
+<div class="ui basic segment">
+    <div class="ui header">{{ user.email }}</div>
+    <p>Miembro desde: {{ user.date_joined }}</p>
+</div>
+
+<div class="ui hidden divider"></div>
+
+<div class="ui stackable grid">
+    <div class="four wide column">
+        <div class="ui tabular secondary vertical pointing menu">
+            <a class="item active" data-tab="tab-user-settings-update">Información personal</a>
+            <a class="item" data-tab="tab-user-password-update">Cambiar contraseña</a>
+            <a class="item" data-tab="tab-user-confirm-delete">Eliminar cuenta</a>
+        </div>
+    </div>
+
+    <div class="twelve wide stretched column">
+        <div class="ui tab segment active" data-tab="tab-user-settings-update">
+            <div class="ui huge header">Información personal</div>
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                {% include 'includes/form.html' with form=user_settings_form %}
+                <input class="ui primary button" name="user_settings" type="submit" value="Guardar" />
+            </form>
+        </div>
+
+        <div class="ui tab segment" data-tab="tab-user-password-update">
+            <div class="ui huge header">Cambiar contraseña</div>
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                {% include 'includes/form.html' with form=user_password_form %}
+                <input class="ui primary button" name="user_password" type="submit" value="Guardar" />
+            </form>
+        </div>
+
+        <div class="ui tab segment" data-tab="tab-user-confirm-delete">
+            <p>Come back soon</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
