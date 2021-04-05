@@ -59,6 +59,15 @@
 <div class="ui centered grid container" id="main">
 	<div class="row">
 		<div class="column">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="ui {{ message.tags }} message">
+                        <i class="close icon"></i>
+                        <div class="header">{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
 			{% block content %}
 			{% endblock %}
 		</div>

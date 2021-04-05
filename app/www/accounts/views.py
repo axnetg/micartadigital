@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login as auth_login
+from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import render, redirect
 
@@ -44,6 +45,7 @@ class UserSettingsUpdate(LoginRequiredMixin, View):
             print(request.user.id)
             if user_settings_form.is_valid():
                 user_settings_form.save()
+                messages.success(request, 'Los datos se han actualizado correctamente.')
                 return redirect('user-settings')
             else:
                 context['user_settings_form'] = user_settings_form
@@ -54,6 +56,7 @@ class UserSettingsUpdate(LoginRequiredMixin, View):
             if user_password_form.is_valid():
                 user = user_password_form.save()
                 auth_login(request, user)
+                messages.success(request, 'La contraseña se ha modificado correctamente.')
                 return redirect('user-settings')
             else:
                 context['user_password_form'] = user_password_form

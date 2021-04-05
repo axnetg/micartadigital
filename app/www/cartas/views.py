@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.forms.models import inlineformset_factory
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -52,7 +53,8 @@ def establecimiento_create(request):
 def establecimiento_edit(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
     if request.user != establecimiento.propietario:
-        raise Http404('El establecimiento que intentas editar no te pertenece.')
+        messages.error(request, 'El establecimiento que intentas editar no te pertenece.')
+        return redirect('panel')
     
     if request.method == 'POST':
         form = EstablecimientoForm(request.POST, request.FILES, instance=establecimiento, current_user=request.user)
@@ -86,7 +88,8 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if request.user != self.object.propietario:
-            raise Http404('La carta que intentas editar no te pertenece.')
+            messages.error(request, 'La carta que intentas editar no te pertenece.')
+            return redirect('panel')
         return super().get(request, *args, **kwargs)
         
     def get_form_class(self):
