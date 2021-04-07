@@ -3,7 +3,11 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from multiselectfield import MultiSelectField
+
 import uuid
+
+from .utils import *
 
 
 def get_file_path(instance, filename):
@@ -67,7 +71,13 @@ class Plato(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=400, blank=True)
     precio = models.FloatField()
+    alergenos = MultiSelectField(choices=TIPOS_ALERGENOS, blank=True)
     orden = models.PositiveSmallIntegerField()
+    
+    def display_alergenos(self):
+        print(self.alergenos)
+            
+        return ", ".join(self.alergenos)
     
     def __str__(self):
         return f'{self.titulo} [{self.precio}€]'

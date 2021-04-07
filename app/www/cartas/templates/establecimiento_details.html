@@ -1,52 +1,115 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ establecimiento }} - micartadigital.es{% endblock %}
 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/cartas.css' %}" />
+{% endblock %}
+
 {% block header_image %}
 {% if establecimiento.imagen %}
-<img class="ui fluid image" src="{{ establecimiento.imagen.url }}"/>
+<img class="ui fluid image" src="{{ establecimiento.imagen.url }}" />
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="ui basic segment">
+<button class="ui huge circular icon button" id="go-to-top-btn" title="Go to top"><i class="angle up icon"></i></button>
+
+<div id="establecimiento-detalles" class="ui basic segment">
   <h1 class="ui header">
     {{ establecimiento }}
-    <div class="sub header">{{ establecimiento.direccion }}</div>
+    <div class="sub header">{{ establecimiento.display_direccion }}</div>
   </h1>
 </div>
-<div class="ui divider"></div>
-<div class="ui piled segment">
-  <h2 class="ui header">Sección 1</h2>
 
-  <div class="ui items">
-    <div class="item">
-      <div class="content">
-        <div class="header">Plato 1</div>
-        <div class="description">
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, ducimus autem quasi ullam beatae,
-            praesentium numquam dignissimos sint minus natus esse dolores earum enim ipsam harum aspernatur alias
-            quisquam quam.</p>
-        </div>
-        <div class="extra">
-          Alérgenos
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="content">
-        <div class="header">Plato 2</div>
-        <div class="description">
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nemo rerum illum provident praesentium
-            harum totam, fuga, deserunt accusamus earum fugit culpa sit quasi vero iusto laborum rem in ut.</p>
-        </div>
-        <div class="extra">
-          Alérgenos
-        </div>
-      </div>
-    </div>
-  </div>
-
+<div class="ui secondary pointing menu">
+    {% for seccion in establecimiento.carta.secciones.all|dictsort:"orden" %}
+        <a class="item" data-target="#seccion-{{seccion.id}}">{{ seccion.titulo }}</a>
+    {% endfor %}
 </div>
 
+{% for seccion in establecimiento.carta.secciones.all|dictsort:"orden" %}
+  <div id="seccion-{{seccion.id}}" class="ui basic segments">
+    <div class="ui clearing segment">
+        <div class="ui left floated huge header">{{ seccion.titulo }}</div>
+    </div>
+
+    {% for plato in seccion.platos.all|dictsort:"orden" %}
+        <div class="ui segment">
+            <div class="ui grid">
+                <div class="fourteen wide computer fourteen wide tablet sixteen wide mobile column">
+                    <span class="plato-titulo">{{ plato.titulo }}</span>
+                    <span class="plato-propiedades"></span>
+                </div>
+                <div class="two wide mobile hidden right aligned column">
+                    <span class="plato-precio">{{ plato.precio }} €</span>
+                </div>
+                <div class="sixteen wide mobile only column">
+                    <span class="plato-precio">{{ plato.precio }} €</span>
+                </div>
+                <div class="twelve wide computer sixteen wide mobile column">
+                    <span class="plato-descripcion">{{ plato.descripcion }}</span>
+                </div>
+                <div class="twelve wide computer sixteen wide mobile column">
+                    <span class="plato-alergenos">
+                    {% if plato.alergenos %}
+                    {% for alergeno in plato.alergenos %}
+                        {% with alergeno|stringformat:"s" as id %}
+                            {% with 'icon/alergenos/ico_'|add:id|add:'.png' as static_icon %}
+                                <img src="{% static static_icon %}" class="ui avatar image" alt="{{alergeno}}">
+                            {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                    {% else %}No hay alérgenos seleccionados{% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+<p>
+  En cumplimiento del Reglamento Europeo 1169/2011 sobre la información
+  facilitada al consumidor, se pone a su disposición la información relativa a
+  la presencia de alérgenos. Por las caracterísiticas de instalación,
+  manipulación y elaboración del establecimiento, todos los productos son
+  susceptibles de contener, de manera directa o a través de contaminación
+  cruzada, algún tipo de alérgeno.
+</p>
+
+<p>
+  Para cualquier consulta, póngase en contacto con el personal del
+  establecimiento.
+  <a class="alergenos open">Información adicional</a>.
+</p>
+
+<div class="ui alergenos modal">
+    <i class="close icon"></i>
+    <div class="header">Información alimentaria</div>
+    <div class="scrolling content">
+        <div class="ui two column stackable divided grid">
+            {% for alergeno, descripcion in alergenos %}
+                <div class="column">
+                    <h2 class="ui header">
+                    {% with alergeno.0|stringformat:"s" as id %}
+                        {% with 'icon/alergenos/ico_'|add:id|add:'.png' as static_icon %}
+                            <img src="{% static static_icon %}" class="ui circular image">
+                        {% endwith %}
+                    {% endwith %}
+                    {{ alergeno.1 }}
+                    </h2>
+
+                    <p>{{ descripcion }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'js/establecimiento-details.js' %}"></script>
 {% endblock %}

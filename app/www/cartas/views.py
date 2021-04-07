@@ -9,6 +9,7 @@ from django.urls import reverse
 
 from .forms import *
 from .models import *
+from .utils import *
 
 from nested_formset import nestedformset_factory
 
@@ -27,7 +28,8 @@ def dashboard(request):
 
 def establecimiento_details(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
-    return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento})
+    alergenos = zip(TIPOS_ALERGENOS, DESC_ALERGENOS)
+    return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento, 'alergenos': alergenos})
 
 
 def establecimiento_redirect(request, id):
@@ -83,7 +85,6 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
     model = Carta
     fields = '__all__'
     template_name = 'carta_edit.html'
-    ordering = ['secciones.orden']
     
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

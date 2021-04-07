@@ -69,6 +69,7 @@
                     <th>Descripción</th>
                     <th>Precio</th>
                     <th>Orden</th>
+                    <th>Alérgenos</th>
                     <th>Borrar</th>
                 </thead>
                 <tbody>
@@ -77,6 +78,7 @@
                         <td>{{ seccion.nested.empty_form.descripcion }}</td>
                         <td>{{ seccion.nested.empty_form.precio }}</td>
                         <td>{{ seccion.nested.empty_form.orden }}</td>
+                        <td>{{ seccion.nested.empty_form.alergenos }}</td>
                         <td>
                             {{ seccion.nested.empty_form.DELETE }}
                             {{ seccion.nested.empty_form.seccion }}
@@ -90,6 +92,7 @@
                             <td>{{ plato.descripcion }}</td>
                             <td>{{ plato.precio }}</td>
                             <td>{{ plato.orden }}</td>
+                            <td>{{ plato.alergenos }}</td>
                             <td>
                                 {{ plato.DELETE }}
                                 {{ plato.seccion }}
