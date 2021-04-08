@@ -16,14 +16,14 @@ class EstablecimientoForm(forms.ModelForm):
     
         
     def __init__(self, *args, **kwargs):
-        current_user = kwargs.pop('current_user')
+        self.request = kwargs.pop('request')
         super().__init__(*args, **kwargs)
-        #self.fields['carta'].queryset = Carta.objects.filter(propietario=current_user)
         
+        slug_url = f"{self.request.build_absolute_uri(reverse('home'))}carta/"
         codigo_postal = self['codigo_postal'].value() if self.is_bound else self.instance.codigo_postal
         localidad_choices = self.get_places_by_postal_code(codigo_postal)
         
-        self.fields['slug'].widget = LabeledInput(attrs={'label': 'http://localhost:8000/carta/'})
+        self.fields['slug'].widget = LabeledInput(attrs={'label': slug_url})
         self.fields['provincia'].widget.attrs.update({'readonly': 'readonly'})
         self.fields['localidad'].widget = forms.Select(attrs={'class': 'ui search dropdown'}, choices=localidad_choices)
         self.fields['telefono'].widget = forms.TextInput(attrs={'type': 'tel'})

@@ -1,10 +1,12 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
 
-{% block title %}Crear establecimiento - micartadigital.es{% endblock %}
+{% block title %}
+    {% if form.instance.id %}Modificar{% else %}Nuevo{% endif %} establecimiento - micartadigital.es
+{% endblock %}
 
 {% block content %}
-<h1>Nuevo establecimiento</h1>
+<h1>{% if form.instance.id %}Modificar{% else %}Nuevo{% endif %} establecimiento</h1>
 
 <form class="ui form" method="POST" novalidate enctype="multipart/form-data">
     {% csrf_token %}
@@ -31,7 +33,9 @@
     </div>
 
     {% include 'includes/form.html' %}
-    <button type="submit" class="ui primary button">Crear</button>
+    <button type="submit" class="ui primary button">
+        {% if form.instance.id %}Modificar{% else %}Crear{% endif %}
+    </button>
 </form>
 {% endblock %}
 

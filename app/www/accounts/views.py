@@ -8,6 +8,9 @@ from .forms import *
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('panel')
+    
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():

@@ -40,15 +40,15 @@ def establecimiento_redirect(request, id):
 @login_required
 def establecimiento_create(request):
     if request.method == 'POST':
-        form = EstablecimientoForm(request.POST, request.FILES, current_user=request.user)
+        form = EstablecimientoForm(request.POST, request.FILES, request=request)
         if form.is_valid():
             establecimiento = form.save(commit=False)
             establecimiento.propietario = request.user
             establecimiento.save()
             return redirect('panel')
     else:
-        form = EstablecimientoForm(current_user=request.user)
-    return render(request, 'establecimiento_create.html', {'form': form})
+        form = EstablecimientoForm(request=request)
+    return render(request, 'establecimiento_edit.html', {'form': form})
 
 
 @login_required
@@ -59,13 +59,13 @@ def establecimiento_edit(request, slug):
         return redirect('panel')
     
     if request.method == 'POST':
-        form = EstablecimientoForm(request.POST, request.FILES, instance=establecimiento, current_user=request.user)
+        form = EstablecimientoForm(request.POST, request.FILES, instance=establecimiento, request=request)
         if form.is_valid():
             establecimiento = form.save()
             return redirect('panel')
     else:
-        form = EstablecimientoForm(instance=establecimiento, current_user=request.user)
-    return render(request, 'establecimiento_create.html', {'form': form})
+        form = EstablecimientoForm(instance=establecimiento, request=request)
+    return render(request, 'establecimiento_edit.html', {'form': form})
 
 
 class CartaCreateView(LoginRequiredMixin, CreateView):
