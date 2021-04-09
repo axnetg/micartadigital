@@ -6,100 +6,116 @@
 {% block content %}
 <h1>Panel</h1>
 <p>Bienvenido, {{ user }}</p>
+
 <div class="ui section divider"></div>
 
-<h2>Mis establecimientos</h2>
-<a href="{% url 'new-establecimiento' %}" class="ui primary button">Añadir</a>
-{% if user.establecimientos.all %}
-<table id="table-establecimientos" class="ui padded table">
+<div class="ui tabular top attached menu">
+  <a class="item active" data-tab="tab-establecimientos">Establecimientos</a>
+  <a class="item" data-tab="tab-cartas">Cartas</a>
+</div>
+
+<div class="ui tab bottom attached segment active" data-tab="tab-establecimientos">
+  <h2>Mis establecimientos</h2>
+  <a href="{% url 'new-establecimiento' %}" class="ui primary button"><i class="plus icon"></i> Añadir</a>
+  {% if user.establecimientos.all %}
+  <table id="table-establecimientos" class="ui padded table">
     <thead>
-        <tr>
-            <th>Establecimiento</th>
-            <th>Teléfono</th>
-            <th>Provincia</th>
-            <th>Carta</th>
-            <th></th>
-        </tr>
+      <tr>
+        <th>Establecimiento</th>
+        <th>Teléfono</th>
+        <th>Provincia</th>
+        <th>Carta</th>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
-        {% for establecimiento in user.establecimientos.all|dictsort:"nombre" %}
-        <tr>
-            <td>
-                <div class="ui header">{{ establecimiento.nombre }}<br />
-                    <div class="sub header">{{ establecimiento.display_direccion }}</div>
-                </div>
-            </td>
-            <td>{{ establecimiento.telefono }}</td>
-            <td>{{ establecimiento.provincia }}</td>
-            <td>
-                <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
-                    {{ establecimiento.slug }}</a>
-            </td>
-            <td class="right aligned">
-                <div class="ui floating dropdown item">
-                    <i class="ellipsis vertical icon"></i>
-                    <div class="left menu">
-                        <a href="{% url 'edit-establecimiento' establecimiento.slug %}" class="item">
-                            <i class="pencil icon"></i>Editar
-                        </a>
-                        <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="item">
-                            <i class="qrcode icon"></i>Descargar QR
-                        </a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
+      {% for establecimiento in user.establecimientos.all|dictsort:"nombre" %}
+      <tr>
+        <td>
+          <div class="ui header">{{ establecimiento.nombre }}<br />
+            <div class="sub header">{{ establecimiento.display_direccion }}</div>
+          </div>
+        </td>
+        <td>{{ establecimiento.telefono }}</td>
+        <td>{{ establecimiento.provincia }}</td>
+        <td>
+          {% if establecimiento.carta %}
+          <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
+            {{ establecimiento.slug }}</a>
+          {% endif %}
+        </td>
+        <td class="right aligned">
+          <div class="ui floating dropdown item">
+            <i class="ellipsis vertical icon"></i>
+            <div class="left menu">
+              <a href="{% url 'edit-establecimiento' establecimiento.slug %}" class="item">
+                <i class="pencil icon"></i>Editar
+              </a>
+              <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="item">
+                <i class="qrcode icon"></i>Descargar QR
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
-{% else %}
-<div class="ui warning message">
+  </table>
+  {% else %}
+  <div class="ui warning message">
     Todavía no has registrado establecimientos :(
+  </div>
+  {% endif %}
 </div>
-{% endif %}
 
-<div class="ui section divider"></div>
-
-<h2>Mis cartas</h2>
-<a href="{% url 'new-carta' %}" class="ui primary button">Añadir</a>
-{% if user.cartas.all %}
-<table id="table-cartas" class="ui padded table">
+<div class="ui tab bottom attached segment" data-tab="tab-cartas">
+  <h2>Mis cartas</h2>
+  <a href="{% url 'new-carta' %}" class="ui primary button"><i class="plus icon"></i> Añadir</a>
+  {% if user.cartas.all %}
+  <table id="table-cartas" class="ui padded table">
     <thead>
-        <tr>
-            <th>Título</th>
-            <th>Usada en</th>
-            <th></th>
-        </tr>
+      <tr>
+        <th>Título</th>
+        <th>Usada en</th>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
-        {% for carta in user.cartas.all|dictsort:"titulo" %}
-        <tr>
-            <td><div class="ui header">{{ carta.titulo }}</div></td>
-            <td>
-                {% for establecimiento in carta.establecimientos.all|dictsort:"slug" %}
-                <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
-                    {{ establecimiento.slug }}</a>
-                {% endfor %}
-            </td>
-            <td class="right aligned">
-                <div class="ui floating dropdown item">
-                    <i class="ellipsis vertical icon"></i>
-                    <div class="left menu">
-                        <a href="{% url 'edit-carta' carta.id %}" class="item">
-                            <i class="pencil icon"></i>Editar
-                        </a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
+      {% for carta in user.cartas.all|dictsort:"titulo" %}
+      <tr>
+        <td>
+          {% with count_platos=carta.count_platos count_secciones=carta.secciones.count %}
+          <div class="ui header">{{ carta.titulo }}<br />
+            <div class="sub header">{{ count_platos }} plato{{ count_platos|pluralize:"s" }} en {{ count_secciones }} secci{{ count_secciones|pluralize:"ón,ones" }}</div>
+          </div>
+          {% endwith %}
+        </td>
+        <td>
+          {% for establecimiento in carta.establecimientos.all|dictsort:"slug" %}
+          <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
+            {{ establecimiento.slug }}</a>
+          {% endfor %}
+        </td>
+        <td class="right aligned">
+          <div class="ui floating dropdown item">
+            <i class="ellipsis vertical icon"></i>
+            <div class="left menu">
+              <a href="{% url 'edit-carta' carta.id %}" class="item">
+                <i class="pencil icon"></i>Editar
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
-{% else %}
-<div class="ui warning message">
+  </table>
+  {% else %}
+  <div class="ui warning message">
     Todavía no has registrado cartas :(
+  </div>
+  {% endif %}
 </div>
-{% endif %}
 
 {% endblock %}
 

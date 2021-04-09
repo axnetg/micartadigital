@@ -7,8 +7,10 @@ function initDataTables() {
         pageLength: 3,
         lengthChange: false,
         info: false,
+        autoWidth: false,
         columnDefs: [
             { type: "html", targets: [0, 3] },
+            { width: "50%", targets: 0 },
             { orderable: false, targets: -1 },
             { searchable: false, targets: -1 }
         ]
@@ -22,8 +24,10 @@ function initDataTables() {
         pageLength: 3,
         lengthChange: false,
         info: false,
+        autoWidth: false,
         columnDefs: [
-            { type: "html", targets: [1] },
+            { type: "html", targets: [0, 1] },
+            { width: "25%", targets: 0 },
             { orderable: false, targets: [1, -1] },
             { searchable: false, targets: -1 }
         ]

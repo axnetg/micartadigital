@@ -56,6 +56,12 @@ class Carta(models.Model):
     def display_establecimientos_en_uso(self):
         return ', '.join([est.nombre for est in self.establecimientos.all()])
     
+    def count_platos(self):
+        platos = 0
+        for seccion in self.secciones.all():
+            platos += seccion.platos.count()
+        return platos
+    
     
 class Seccion(models.Model):
     carta = models.ForeignKey(Carta, on_delete=models.CASCADE, related_name='secciones')
