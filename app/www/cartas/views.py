@@ -7,11 +7,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 
-from .forms import *
+from .forms import EstablecimientoForm
+from .formsets import SeccionesFormset
 from .models import *
 from .utils import *
-
-from nested_formset import nestedformset_factory
 
 import qrcode
 
@@ -79,31 +78,30 @@ class CartaCreateView(LoginRequiredMixin, CreateView):
         
     def get_success_url(self):
         return reverse('edit-carta', args=[self.object.id])
+
+
+@login_required
+def carta_edit(request, pk):
+    carta = get_object_or_404(Carta, pk=pk)
+    if request.user != carta.propietario:
+        messages.error(request, 'La carta que intentas editar no te pertenece.')
+        return redirect('panel')
     
-    
-class CartaUpdateView(LoginRequiredMixin, UpdateView):
-    model = Carta
-    fields = '__all__'
-    template_name = 'carta_edit.html'
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if request.user != self.object.propietario:
-            messages.error(request, 'La carta que intentas editar no te pertenece.')
-            return redirect('panel')
-        return super().get(request, *args, **kwargs)
+    if request.method == 'POST':
+        formset = SeccionesFormset(request.POST, instance=carta)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, 'Los cambios realizados se han guardado correctamente')
+            if 'save-and-exit' in request.POST:
+                return redirect('panel')
+            else:
+                return redirect('edit-carta', carta.pk)
+            
+        messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
+    else:
+        formset = SeccionesFormset(instance=carta)
         
-    def get_form_class(self):
-        return nestedformset_factory(
-            Carta, Seccion,
-            nested_formset=inlineformset_factory(
-                Seccion, Plato, fields='__all__', min_num=1, max_num=50, validate_min=False, extra=0
-            ),
-            min_num=1, max_num=20, validate_min=False, extra=0
-        )
-    
-    def get_success_url(self):
-        return reverse('panel')
+    return render(request, 'carta_edit.html', {'carta': carta, 'form': formset})
     
     
 def serve_qr_code(request, slug):

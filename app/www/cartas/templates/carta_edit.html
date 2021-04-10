@@ -15,7 +15,7 @@
     <div class="ui segment seccion empty-form">
         {{ form.empty_form.nested.management_form }}
 
-        {{ form.empty_form }}
+        {% include 'includes/forms/seccion.html' with seccion=form.empty_form %}
 
         <table class="ui table">
             <thead>
@@ -23,32 +23,14 @@
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Orden</th>
+                <th>Alérgenos</th>
                 <th>Borrar</th>
             </thead>
             <tbody>
-                <tr class="empty-form">
-                    <td>{{ form.empty_form.nested.empty_form.titulo }}</td>
-                    <td>{{ form.empty_form.nested.empty_form.descripcion }}</td>
-                    <td>{{ form.empty_form.nested.empty_form.precio }}</td>
-                    <td>{{ form.empty_form.nested.empty_form.orden }}</td>
-                    <td>
-                        {{ form.empty_form.nested.empty_form.DELETE }}
-                        {{ form.empty_form.nested.empty_form.seccion }}
-                        {{ form.empty_form.nested.empty_form.id }}
-                    </td>
-                </tr>
+                {% include 'includes/forms/plato.html' with plato=form.empty_form.nested.empty_form empty_form='True' %}
+                
                 {% for plato_empty_form in form.empty_form.nested %}
-                    <tr>
-                        <td>{{ plato_empty_form.titulo }}</td>
-                        <td>{{ plato_empty_form.descripcion }}</td>
-                        <td>{{ plato_empty_form.precio }}</td>
-                        <td>{{ plato_empty_form.orden }}</td>
-                        <td>
-                            {{ plato_empty_form.DELETE }}
-                            {{ plato_empty_form.seccion }}
-                            {{ plato_empty_form.id }}
-                        </td>
-                    </tr>
+                    {% include 'includes/forms/plato.html' with plato=plato_empty_form %}
                 {% endfor %}
             </tbody>
         </table>
@@ -61,7 +43,7 @@
             {{ seccion.nested.management_form }}
             {{ seccion.nested.non_form_errors }}
 
-            {{ seccion }}
+            {% include 'includes/forms/seccion.html' with seccion=seccion %}
 
             <table class="ui table">
                 <thead>
@@ -73,32 +55,10 @@
                     <th>Borrar</th>
                 </thead>
                 <tbody>
-                    <tr class="empty-form">
-                        <td>{{ seccion.nested.empty_form.titulo }}</td>
-                        <td>{{ seccion.nested.empty_form.descripcion }}</td>
-                        <td>{{ seccion.nested.empty_form.precio }}</td>
-                        <td>{{ seccion.nested.empty_form.orden }}</td>
-                        <td>{{ seccion.nested.empty_form.alergenos }}</td>
-                        <td>
-                            {{ seccion.nested.empty_form.DELETE }}
-                            {{ seccion.nested.empty_form.seccion }}
-                            {{ seccion.nested.empty_form.id }}
-                        </td>
-                    </tr>
+                    {% include 'includes/forms/plato.html' with plato=seccion.nested.empty_form empty_form='True' %}
                     
                     {% for plato in seccion.nested %}
-                        <tr>
-                            <td>{{ plato.titulo }}</td>
-                            <td>{{ plato.descripcion }}</td>
-                            <td>{{ plato.precio }}</td>
-                            <td>{{ plato.orden }}</td>
-                            <td>{{ plato.alergenos }}</td>
-                            <td>
-                                {{ plato.DELETE }}
-                                {{ plato.seccion }}
-                                {{ plato.id }}
-                            </td>
-                        </tr>
+                        {% include 'includes/forms/plato.html' with plato=plato %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -109,7 +69,8 @@
 
     <button type="button" class="ui primary button" data-action="add-seccion-form">Nueva sección</button>
     <hr>
-    <button type="submit" class="ui primary button">Guardar</button>
+    <button type="submit" name="save-and-exit" class="ui primary button">Guardar</button>
+    <button type="submit" name="save-and-continue" class="ui primary button">Guardar y continuar editando</button>
 </form>
 {% endblock %}
 

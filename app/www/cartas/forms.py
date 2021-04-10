@@ -81,3 +81,21 @@ class EstablecimientoForm(forms.ModelForm):
             raise ValidationError('La localidad introducida no se corresponde con el código postal.')
         
         return localidad
+
+    
+class SeccionForm(forms.ModelForm):
+    class Meta:
+        model = Seccion
+        fields = '__all__'
+        
+    def has_changed(self):
+        return super().has_changed() or self.nested.has_changed()
+
+ 
+class PlatoForm(forms.ModelForm):
+    class Meta:
+        model = Plato
+        fields = '__all__'
+        widgets = {
+            'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown'}),
+        }

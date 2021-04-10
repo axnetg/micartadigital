@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -76,13 +77,11 @@ class Plato(models.Model):
     seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='platos')
     titulo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=400, blank=True)
-    precio = models.FloatField()
+    precio = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0.01)])
     alergenos = MultiSelectField(choices=TIPOS_ALERGENOS, blank=True)
     orden = models.PositiveSmallIntegerField()
     
     def display_alergenos(self):
-        print(self.alergenos)
-            
         return ", ".join(self.alergenos)
     
     def __str__(self):

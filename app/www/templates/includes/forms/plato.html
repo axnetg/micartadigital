@@ -1,0 +1,14 @@
+{% load widget_tweaks %}
+
+<tr{% if empty_form %} class="empty-form"{% endif %}>
+    <td>{% include 'includes/fields/plato_field.html' with field=plato.titulo %}</td>
+    <td>{% include 'includes/fields/plato_field.html' with field=plato.descripcion %}</td>
+    <td>{% include 'includes/fields/plato_field.html' with field=plato.precio %}</td>
+    <td>{% include 'includes/fields/plato_field.html' with field=plato.orden %}</td>
+    <td>{{ plato.alergenos }}</td>
+    <td>
+        {{ plato.DELETE }}
+        {{ plato.seccion }}
+        {{ plato.id }}
+    </td>
+</tr>

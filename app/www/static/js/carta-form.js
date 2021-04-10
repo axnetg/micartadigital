@@ -13,6 +13,7 @@ function initDjangoFormsets() {
 
                 $addNewPlatoButton.on('click', function (event) {
                     $platoFormset.addForm();
+                    $('.ui.dropdown').dropdown();
                 });
             }
         }
@@ -20,6 +21,7 @@ function initDjangoFormsets() {
     /* Add new outer form on add button click */
     $('form').on('click', '[data-action=add-seccion-form]', function (event) {
         $seccionFormset.addForm();
+        $('.ui.dropdown').dropdown();
     });
 }
 

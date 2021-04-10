@@ -1,0 +1,9 @@
+{% load widget_tweaks %}
+
+<!--{% for error in field.errors %}
+<li>{{ error }}</li>
+{% endfor %}-->
+
+<div class="field{% if field.errors %} error{% endif %}">
+{% render_field field %}
+</div>
