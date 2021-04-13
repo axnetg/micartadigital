@@ -1,7 +1,9 @@
-$('.ui.dropdown').dropdown();
+(function($) {
+    $('.ui.dropdown:not(.selection)').dropdown();
 
-$('.tabular.menu .item').tab();
+    $('.tabular.menu .item').tab();
 
-$('.message .close').on('click', function () {
-    $(this).closest('.message').transition('fade');
-});
+    $('.message .close').on('click', function () {
+        $(this).closest('.message').transition('fade');
+    });
+})(jQuery);

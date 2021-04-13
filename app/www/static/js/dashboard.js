@@ -1,7 +1,13 @@
-function initDataTables() {
-    $('#table-establecimientos').DataTable({
+(function($) {
+    var $tablaEstablecimientos = $('#table-establecimientos');
+    var $tablaCartas = $('#table-cartas');
+
+    var spanishDatatablesStrings = "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json";
+
+    
+    $tablaEstablecimientos.DataTable({
         language: {
-            url: "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json"
+            url: spanishDatatablesStrings
         },
         paging: false,
         pageLength: 3,
@@ -16,9 +22,9 @@ function initDataTables() {
         ]
     });
 
-    $('#table-cartas').DataTable({
+    $tablaCartas.DataTable({
         language: {
-            url: "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json"
+            url: spanishDatatablesStrings
         },
         paging: false,
         pageLength: 3,
@@ -32,6 +38,4 @@ function initDataTables() {
             { searchable: false, targets: -1 }
         ]
     });
-}
-
-initDataTables();
+})(jQuery);

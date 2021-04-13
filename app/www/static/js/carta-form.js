@@ -1,8 +1,8 @@
-$.fn.djangoFormset.Form.prototype.getDeleteButton = function () {
-    return $('<button type="button" class="ui icon button"><i class="trash icon"></i></button>');
-};
+(function($) {
+    $.fn.djangoFormset.Form.prototype.getDeleteButton = function () {
+        return $('<button type="button" class="ui icon button"><i class="trash icon"></i></button>');
+    };
 
-function initDjangoFormsets() {
     var $seccionFormset = $("div.seccion").djangoFormset({
         on: {
             formInitialized: function (event, form) {
@@ -13,7 +13,7 @@ function initDjangoFormsets() {
 
                 $addNewPlatoButton.on('click', function (event) {
                     $platoFormset.addForm();
-                    $('.ui.dropdown').dropdown();
+                    $('.ui.dropdown.selection').dropdown({useLabels: false});
                 });
             }
         }
@@ -21,9 +21,9 @@ function initDjangoFormsets() {
     /* Add new outer form on add button click */
     $('form').on('click', '[data-action=add-seccion-form]', function (event) {
         $seccionFormset.addForm();
-        $('.ui.dropdown').dropdown();
+        $('.ui.dropdown.selection').dropdown({useLabels: false});
     });
-}
+})(jQuery);
 
 function sortSeccionesByOrder() {
     var $secciones = $('form > .ui.segment');
@@ -59,5 +59,3 @@ function sortPlatosByOrder() {
         });
     });
 }
-
-initDjangoFormsets();

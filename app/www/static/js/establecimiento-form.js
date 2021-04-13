@@ -1,13 +1,13 @@
-function initImagenField() {
+(function($) {
     // ----------------- imagen field -----------------
-    $imageSegmentField = $('#header-pic');
-    $imageChangeButton = $imageSegmentField.find('#imagen-change-btn');
-    $imageClearButton = $imageSegmentField.find('#imagen-clear-btn');
-    $imageField = $('input[name=imagen]');
-    $imageClearField = $('input[name=imagen-clear]');
-    $image = $imageSegmentField.find('img');
+    var $imageSegmentField = $('#header-pic');
+    var $imageChangeButton = $imageSegmentField.find('#imagen-change-btn');
+    var $imageClearButton = $imageSegmentField.find('#imagen-clear-btn');
+    var $imageField = $('input[name=imagen]');
+    var $imageClearField = $('input[name=imagen-clear]');
+    var $image = $imageSegmentField.find('img');
 
-    originalImgSrc = $image.attr('src');
+    var originalImgSrc = $image.attr('src');
 
     // efecto dimmer cuando se pasa el ratón por encima del segmento imagen
     $imageSegmentField.dimmer({ on: 'hover', opacity: 0.5 });
@@ -46,15 +46,15 @@ function initImagenField() {
 
     // ocultar de la vista el campo del input real de la imagen
     $imageField.parents('.field').attr('hidden', 'hidden');   //.hide();
-}
 
-function initDireccionField() {
+
+
     // ----------------- dirección field -----------------
-    $codigoPostalField = $('input[name=codigo_postal]');
-    $provinciaField = $('input[name=provincia]');
-    $localidadField = $('select[name=localidad]');
+    var $codigoPostalField = $('input[name=codigo_postal]');
+    var $provinciaField = $('input[name=provincia]');
+    var $localidadField = $('select[name=localidad]');
     
-    $localidadDiv = $localidadField.parents('.ui.dropdown');
+    var $localidadDiv = $localidadField.parents('.ui.dropdown');
     $localidadDiv.dropdown({fullTextSearch: true});
 
     $codigoPostalField.on('input', function() {
@@ -81,12 +81,4 @@ function initDireccionField() {
             );
         }
     });
-}
-
-function initEstablecimientoForm() {
-    initImagenField();
-    initDireccionField();
-}
-
-
-initEstablecimientoForm();
+})(jQuery);
