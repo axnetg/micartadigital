@@ -23,19 +23,19 @@
   </h1>
 </div>
 
-<div class="ui secondary pointing menu">
-    {% for seccion in establecimiento.carta.secciones.all|dictsort:"orden" %}
-        <a class="item" data-target="#seccion-{{seccion.id}}">{{ seccion.titulo }}</a>
+<div id="nav-secciones" class="ui secondary pointing menu">
+    {% for seccion in establecimiento.carta.secciones.all %}
+        <a class="item" data-target="#seccion-{{forloop.counter0}}">{{ seccion.titulo }}</a>
     {% endfor %}
 </div>
 
-{% for seccion in establecimiento.carta.secciones.all|dictsort:"orden" %}
-  <div id="seccion-{{seccion.id}}" class="ui basic segments">
+{% for seccion in establecimiento.carta.secciones.all %}
+  <div id="seccion-{{forloop.counter0}}" class="ui basic segments">
     <div class="ui clearing segment">
         <div class="ui left floated huge header">{{ seccion.titulo }}</div>
     </div>
 
-    {% for plato in seccion.platos.all|dictsort:"orden" %}
+    {% for plato in seccion.platos.all %}
         <div class="ui segment">
             <div class="ui grid">
                 <div class="fourteen wide computer fourteen wide tablet sixteen wide mobile column">

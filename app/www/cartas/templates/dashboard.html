@@ -29,7 +29,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for establecimiento in user.establecimientos.all|dictsort:"nombre" %}
+      {% for establecimiento in user.establecimientos.all %}
       <tr>
         <td>
           <div class="ui header">{{ establecimiento.nombre }}<br />
@@ -81,7 +81,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for carta in user.cartas.all|dictsort:"titulo" %}
+      {% for carta in user.cartas.all %}
       <tr>
         <td>
           {% with count_platos=carta.count_platos count_secciones=carta.secciones.count %}

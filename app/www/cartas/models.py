@@ -28,6 +28,9 @@ class Establecimiento(models.Model):
     propietario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='establecimientos')
     carta = models.ForeignKey('Carta', on_delete=models.SET_NULL, null=True, blank=True, related_name='establecimientos')
 
+    class Meta:
+        ordering = ['nombre']
+        
     def __str__(self):
         return self.nombre
 
@@ -35,7 +38,7 @@ class Establecimiento(models.Model):
         return reverse('establecimiento', kwargs={'slug': self.slug})
     
     def display_direccion(self):
-        return f'{self.calle}, {self.localidad}, {self.codigo_postal}'
+        return f'{self.calle}, {self.codigo_postal}, {self.localidad}'
 
     def save(self, *args, **kwargs):        
         try:
@@ -51,6 +54,9 @@ class Carta(models.Model):
     titulo = models.CharField(max_length=100)
     propietario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='cartas')
 
+    class Meta:
+        ordering = ['titulo']
+        
     def __str__(self):
         return self.titulo
     
@@ -69,6 +75,9 @@ class Seccion(models.Model):
     titulo = models.CharField(max_length=100)
     orden = models.PositiveSmallIntegerField()
     
+    class Meta:
+        ordering = ['orden']
+    
     def __str__(self):
         return self.titulo
     
@@ -80,6 +89,9 @@ class Plato(models.Model):
     precio = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0.01)])
     alergenos = MultiSelectField(choices=TIPOS_ALERGENOS, blank=True)
     orden = models.PositiveSmallIntegerField()
+    
+    class Meta:
+        ordering = ['orden']
     
     def display_alergenos(self):
         return ", ".join(self.alergenos)
