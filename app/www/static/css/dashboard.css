@@ -1,34 +1,69 @@
-.dropdown .avatar{
-    background-color: white;
+.dropdown .avatar {
+  background-color: white;
 }
 
 .dropdown .menu {
-    min-width: 210px !important;
+  min-width: 210px !important;
 }
 
 .dataTables_wrapper {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 #header-pic {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .ui.segment.dimmable {
-    z-index: 90;
+  z-index: 90;
 }
 
 .ui.form .field .ui.input input {
-    width: 0;
+  width: 0;
 }
 
 .ui.form .error.field .basic.label {
-    background: #fff6f6;
-    border-color: #e0b4b4;
-    color: #9f3a38;
+  background: #fff6f6;
+  border-color: #e0b4b4;
+  color: #9f3a38;
+}
+
+.field.error small.helper {
+  color: #9f3a38;
+}
+
+#secciones-switcher {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+#secciones-switcher .item.error {
+  background-color: #e0b4b4;
+  border-radius: 0.28571429rem;
+}
+
+.plato-delete-btn,
+.seccion-delete-btn {
+  cursor: pointer;
+}
+
+button.hidden {
+  display: none;
+}
+
+.sortable-handler {
+  cursor: grab;
+}
+
+.ghost {
+  opacity: 0.4;
 }
 
 .empty-form {
-    display: none;
+  display: none;
+}
+
+.wrapper-seccion-platos {
+  margin-bottom: 1em;
 }

@@ -1,0 +1,22 @@
+{% load static %}
+
+<div class="ui segment plato{% if empty_form %} empty-form{% endif %}">
+    <img class="sortable-handler" src="{% static 'icon/sort-handler.svg' %}" alt="Sort handler" />
+    <div class="fields">
+        {% include 'includes/fields/carta_edit_field.html' with field=plato.titulo size='six' %}
+        <div class="four wide field"></div>
+        {% include 'includes/fields/carta_edit_field.html' with field=plato.precio size='four'%}
+    </div>
+    <div class="fields">
+        {% include 'includes/fields/carta_edit_field.html' with field=plato.descripcion size='ten'%}
+        {% include 'includes/fields/carta_edit_field.html' with field=plato.alergenos size='five'%}
+        <div class="one wide field">
+            <!--<i class="big times icon seccion-delete-btn plato-delete-btn"></i>-->
+            <button type="button" class="ui basic red icon button plato-delete-btn"><i class="times icon"></i></button>
+            {{ plato.DELETE }}
+        </div>
+    </div>
+    {{ plato.orden }}
+    {{ plato.seccion }}
+    {{ plato.id }}
+</div>

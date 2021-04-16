@@ -1,0 +1,31 @@
+<ul class="error list">
+    {% for seccion in form %}
+        {% if not seccion.DELETE.value %}
+
+            {% if seccion.errors %}
+                {% if seccion.titulo.value %}
+                    <li>La información de la sección <strong>{{ seccion.titulo.value }}</strong> tiene errores.</li>
+                {% else %}
+                    <li>Existe una sección sin nombre.</li>
+                {% endif %}
+            {% endif %}
+
+            {% for plato in seccion.nested %}
+                {% if not plato.DELETE.value %}
+                    {% if plato.errors %}
+                        {% if plato.titulo.value %}
+                            <li>Hay datos incorrectos en el plato <strong>{{ plato.titulo.value }}</strong> en la sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong>.</li>
+                        {% else %}
+                            <li>Existe un plato sin nombre en la sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong>.</li>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if seccion.nested.non_form_errors %}
+                <li>La sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong> no tiene platos válidos.</li>
+            {% endif %}
+            
+        {% endif %}
+    {% endfor %}
+</ul>

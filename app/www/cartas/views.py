@@ -54,7 +54,7 @@ def establecimiento_create(request):
 def establecimiento_edit(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
     if request.user != establecimiento.propietario:
-        messages.error(request, 'El establecimiento que intentas editar no te pertenece.')
+        messages.error(request, 'El establecimiento que intenta editar no le pertenece.')
         return redirect('panel')
     
     if request.method == 'POST':
@@ -84,7 +84,7 @@ class CartaCreateView(LoginRequiredMixin, CreateView):
 def carta_edit(request, pk):
     carta = get_object_or_404(Carta, pk=pk)
     if request.user != carta.propietario:
-        messages.error(request, 'La carta que intentas editar no te pertenece.')
+        messages.error(request, 'La carta que intenta editar no le pertenece.')
         return redirect('panel')
     
     if request.method == 'POST':
@@ -97,7 +97,7 @@ def carta_edit(request, pk):
             else:
                 return redirect('edit-carta', carta.pk)
             
-        messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
+        messages.error(request, 'Los cambios no se han guardado. Revise el formulario.')
     else:
         formset = SeccionesFormset(instance=carta)
         

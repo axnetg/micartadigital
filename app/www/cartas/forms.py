@@ -12,7 +12,7 @@ import requests
 class EstablecimientoForm(forms.ModelForm):
     class Meta:
         model = Establecimiento
-        fields = ['nombre', 'slug', 'calle', 'codigo_postal', 'provincia', 'localidad', 'telefono', 'imagen']
+        fields = ['nombre', 'slug', 'calle', 'codigo_postal', 'provincia', 'localidad', 'telefono', 'carta', 'imagen']
     
         
     def __init__(self, *args, **kwargs):
@@ -27,6 +27,8 @@ class EstablecimientoForm(forms.ModelForm):
         self.fields['provincia'].widget.attrs.update({'readonly': 'readonly'})
         self.fields['localidad'].widget = forms.Select(attrs={'class': 'ui search dropdown'}, choices=localidad_choices)
         self.fields['telefono'].widget = forms.TextInput(attrs={'type': 'tel'})
+        self.fields['carta'].widget = forms.Select(attrs={'class': 'ui search dropdown'})
+        self.fields['carta'].queryset = Carta.objects.filter(propietario=self.request.user)
     
     
     def get_places_by_postal_code(self, codigo_postal):
@@ -87,6 +89,10 @@ class SeccionForm(forms.ModelForm):
     class Meta:
         model = Seccion
         fields = '__all__'
+        widgets = {
+            'titulo': forms.TextInput(attrs={'placeholder': 'Título de la sección'}),
+            'orden': forms.HiddenInput(),
+        }
         
     def has_changed(self):
         return super().has_changed() or self.nested.has_changed()
@@ -97,5 +103,9 @@ class PlatoForm(forms.ModelForm):
         model = Plato
         fields = '__all__'
         widgets = {
-            'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown'}),
+            'titulo': forms.TextInput(attrs={'placeholder': 'Nombre del plato'}),
+            'descripcion': forms.TextInput(attrs={'placeholder': 'Descripción del plato (opcional)'}),
+            'precio': forms.NumberInput(attrs={'placeholder': 'Precio del plato'}),
+            'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown', 'placeholder': 'Click para seleccionar'}),
+            'orden': forms.HiddenInput(),
         }

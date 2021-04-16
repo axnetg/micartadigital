@@ -3,78 +3,45 @@
 
 {% block title %}Editar carta - micartadigital.es{% endblock %}
 
+{% block message_content %}{% include 'includes/errors/carta_edit_errors.html' %}{% endblock %}
+
 {% block content %}
 <h1>Editar carta</h1>
+
+<div id="secciones-switcher" class="ui tabular secondary pointing menu">
+  {% for seccion in form %}
+    {% if not seccion.DELETE.value %}
+        <a class="item" data-tab="{{ seccion.prefix }}">
+            {% if seccion.titulo.value %}
+                {{ seccion.titulo.value }}
+            {% else %}sin_título{% endif %}
+        </a>
+    {% endif %}
+  {% endfor %}
+</div>
 
 <form class="ui form" method="POST">
     {% csrf_token %}
     {{ form.management_form }}
     {{ form.non_form_errors }}
 
-    <!--id="{{ form.empty_form.prefix }}"-->
-    <div class="ui segment seccion empty-form">
-        {{ form.empty_form.nested.management_form }}
-
-        {% include 'includes/forms/seccion.html' with seccion=form.empty_form %}
-
-        <table class="ui table">
-            <thead>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Orden</th>
-                <th>Alérgenos</th>
-                <th>Borrar</th>
-            </thead>
-            <tbody>
-                {% include 'includes/forms/plato.html' with plato=form.empty_form.nested.empty_form empty_form='True' %}
-                
-                {% for plato_empty_form in form.empty_form.nested %}
-                    {% include 'includes/forms/plato.html' with plato=plato_empty_form %}
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <button type="button" class="ui primary button" data-action="add-plato-form">Nuevo plato</button>
-    </div>
-
-    {% for seccion in form %}
-        <div class="ui segment seccion">
-            {{ seccion.nested.management_form }}
-            {{ seccion.nested.non_form_errors }}
-
-            {% include 'includes/forms/seccion.html' with seccion=seccion %}
-
-            <table class="ui table">
-                <thead>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Orden</th>
-                    <th>Alérgenos</th>
-                    <th>Borrar</th>
-                </thead>
-                <tbody>
-                    {% include 'includes/forms/plato.html' with plato=seccion.nested.empty_form empty_form='True' %}
-                    
-                    {% for plato in seccion.nested %}
-                        {% include 'includes/forms/plato.html' with plato=plato %}
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <button type="button" class="ui primary button" data-action="add-plato-form">Nuevo plato</button>
-        </div>
-    {% endfor %}
-
     <button type="button" class="ui primary button" data-action="add-seccion-form">Nueva sección</button>
-    <hr>
-    <button type="submit" name="save-and-exit" class="ui primary button">Guardar</button>
-    <button type="submit" name="save-and-continue" class="ui primary button">Guardar y continuar editando</button>
+    
+    {% include 'includes/formsets/seccion_formset.html' with seccion=form.empty_form empty_form=True %}
+    
+    {% for seccion in form %}
+        {% include 'includes/formsets/seccion_formset.html' with seccion=seccion empty_form=False %}
+    {% endfor %}
+    
+    <div class="ui divider"></div>
+    <input id="submit-redirect" type="hidden"/>
+    <button type="submit" name="save-and-exit" class="ui right floated basic green button">Guardar y salir</button>
+    <button type="submit" name="save-and-continue" class="ui right floated basic teal button">Guardar y seguir editando</button>
 </form>
 {% endblock %}
 
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="{% static 'js/django-formset.js' %}"></script>
 <script src="{% static 'js/carta-form.js' %}"></script>
 {% endblock %}

@@ -168,7 +168,8 @@ var __hasProp = {}.hasOwnProperty,
     }
 
     Form.prototype.getDeleteButton = function() {
-      return $("<button type='button' class='btn btn-danger'> " + this.formset.opts.deleteButtonText + " </button>");
+      return $('<button type="button" class="hidden seccion-delete-btn"></button>');
+      //return $("<button type='button' class='btn btn-danger'> " + this.formset.opts.deleteButtonText + " </button>");
     };
 
     Form.prototype.insertDeleteButton = function() {

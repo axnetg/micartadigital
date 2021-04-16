@@ -1,4 +1,7 @@
 (function($) {
+    /* Establecer texto de no resultados del dropdown de localidad y carta */
+    $.fn.dropdown.settings.message.noResults = 'No se han encontrado resultados.';
+
     // ----------------- imagen field -----------------
     var $imageSegmentField = $('#header-pic');
     var $imageChangeButton = $imageSegmentField.find('#imagen-change-btn');

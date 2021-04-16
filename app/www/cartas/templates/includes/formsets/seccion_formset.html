@@ -1,0 +1,18 @@
+<div class="ui tab segment seccion{% if empty_form %} empty-form{% endif %}" data-tab="{{ seccion.prefix }}">
+    <div class="wrapper-seccion">
+        {% if not empty_form %}{{ seccion.nested.non_form_errors }}{% endif %}
+
+        {% include 'includes/forms/seccion.html' with seccion=seccion %}
+    </div>
+
+    <div class="wrapper-seccion-platos">
+        {{ seccion.nested.management_form }}
+        {% include 'includes/forms/plato.html' with plato=seccion.nested.empty_form empty_form=True %}
+                
+        {% for plato in seccion.nested %}
+            {% include 'includes/forms/plato.html' with plato=plato empty_form=False %}
+        {% endfor %}
+    </div>
+
+    <button type="button" class="ui primary button" data-action="add-plato-form">Nuevo plato</button>
+</div>
