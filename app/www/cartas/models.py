@@ -52,6 +52,7 @@ class Establecimiento(models.Model):
 
 class Carta(models.Model):
     titulo = models.CharField(max_length=100)
+    ultima_modificacion = models.DateTimeField(auto_now=True)
     propietario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='cartas')
 
     class Meta:

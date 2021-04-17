@@ -1,5 +1,6 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}Panel - micartadigital.es{% endblock %}
 
@@ -77,6 +78,7 @@
       <tr>
         <th>Título</th>
         <th>Usada en</th>
+        <th>Última modificación</th>
         <th></th>
       </tr>
     </thead>
@@ -96,6 +98,7 @@
             {{ establecimiento.slug }}</a>
           {% endfor %}
         </td>
+        <td>{{ carta.ultima_modificacion|naturaltime }}</td>
         <td class="right aligned">
           <div class="ui floating dropdown item">
             <i class="ellipsis vertical icon"></i>

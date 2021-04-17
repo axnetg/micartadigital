@@ -108,7 +108,7 @@
         var dataTabString = $newSeccion.attr('data-tab').replace('__prefix__', parseInt(index) + 1);
         $newSeccion.attr('data-tab', dataTabString);
 
-        var $newItem = $('<a class="item">sin_título</a>');
+        var $newItem = $('<a class="item">sin título</a>');
         $newItem.attr('data-tab', dataTabString);
         $seccionesMenu.append($newItem);
 
@@ -123,7 +123,7 @@
     $form.on('input', 'div.seccion .wrapper-seccion input[name$=titulo]', function () {
         var $input = $(this);
         var seccionTitulo = $input.val().trim();
-        seccionTitulo = seccionTitulo || "sin_título";
+        seccionTitulo = seccionTitulo || "sin título";
 
         var dataTabString = $input.closest('div.seccion').attr('data-tab');
         var $tab = $(`#secciones-switcher .item[data-tab=${dataTabString}]`);

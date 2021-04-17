@@ -1,4 +1,5 @@
-<div class="ui labeled input">
-    <div class="ui basic label">{{ widget.label }}</div>
+<div class="ui {% if widget.right %}right {% endif %}labeled input">
+    {% if not widget.right %}<div class="ui basic label">{{ widget.label }}</div>{% endif %}
     <input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+    {% if widget.right %}<div class="ui basic label">{{ widget.label }}</div>{% endif %}
 </div>

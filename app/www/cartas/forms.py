@@ -84,6 +84,12 @@ class EstablecimientoForm(forms.ModelForm):
         
         return localidad
 
+
+class CartaForm(forms.ModelForm):
+    class Meta:
+        model = Carta
+        fields = ['titulo']
+        
     
 class SeccionForm(forms.ModelForm):
     class Meta:
@@ -105,7 +111,7 @@ class PlatoForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'placeholder': 'Nombre del plato'}),
             'descripcion': forms.TextInput(attrs={'placeholder': 'Descripción del plato (opcional)'}),
-            'precio': forms.NumberInput(attrs={'placeholder': 'Precio del plato'}),
+            'precio': LabeledInput(attrs={'placeholder': 'Precio del plato', 'label': '€', 'right': True}),
             'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown', 'placeholder': 'Click para seleccionar'}),
             'orden': forms.HiddenInput(),
         }

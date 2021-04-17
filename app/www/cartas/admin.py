@@ -20,8 +20,9 @@ class PlatoInline(admin.TabularInline):
     
 @admin.register(Carta)
 class CartaAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'propietario')
+    list_display = ('titulo', 'propietario', 'ultima_modificacion')
     inlines = [SeccionInline]
+    ordering = ['ultima_modificacion']
     
     
 @admin.register(Seccion)

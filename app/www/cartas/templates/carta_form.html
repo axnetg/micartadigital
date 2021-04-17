@@ -1,26 +1,30 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
 
-{% block title %}Editar carta - micartadigital.es{% endblock %}
+{% block title %}
+    {% if form.instance.id %}Modificar{% else %}Nueva{% endif %} carta - micartadigital.es
+{% endblock %}
 
-{% block message_content %}{% include 'includes/errors/carta_edit_errors.html' %}{% endblock %}
+{% block message_content %}{% include 'includes/errors/carta_form_errors.html' %}{% endblock %}
 
 {% block content %}
-<h1>Editar carta</h1>
-
-<div id="secciones-switcher" class="ui tabular secondary pointing menu">
-  {% for seccion in form %}
-    {% if not seccion.DELETE.value %}
-        <a class="item" data-tab="{{ seccion.prefix }}">
-            {% if seccion.titulo.value %}
-                {{ seccion.titulo.value }}
-            {% else %}sin_título{% endif %}
-        </a>
-    {% endif %}
-  {% endfor %}
-</div>
+<h1>{% if form.instance.id %}Modificar{% else %}Nueva{% endif %} carta</h1>
 
 <form class="ui form" method="POST">
+    <div class="fields">
+        {% include 'includes/fields/carta_form_field.html' with field=carta.titulo size='eight' label=True %}
+    </div>
+
+    <div id="secciones-switcher" class="ui tabular secondary pointing menu">
+    {% for seccion in form %}
+        {% if not seccion.DELETE.value %}
+            <a class="item" data-tab="{{ seccion.prefix }}">
+                {{ seccion.titulo.value|default:"sin título" }}
+            </a>
+        {% endif %}
+    {% endfor %}
+    </div>
+
     {% csrf_token %}
     {{ form.management_form }}
     {{ form.non_form_errors }}

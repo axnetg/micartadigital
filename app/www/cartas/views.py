@@ -1,13 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.forms.models import inlineformset_factory
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 
-from .forms import EstablecimientoForm
+from .forms import EstablecimientoForm, CartaForm
 from .formsets import SeccionesFormset
 from .models import *
 from .utils import *
@@ -27,6 +24,9 @@ def dashboard(request):
 
 def establecimiento_details(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
+    if not establecimiento.carta:
+        raise Http404('El establecimiento no dispone de una carta asociada.')
+    
     alergenos = zip(TIPOS_ALERGENOS, DESC_ALERGENOS)
     return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento, 'alergenos': alergenos})
 
@@ -67,17 +67,32 @@ def establecimiento_edit(request, slug):
     return render(request, 'establecimiento_edit.html', {'form': form})
 
 
-class CartaCreateView(LoginRequiredMixin, CreateView):
-    model = Carta
-    fields = ['titulo']
-    template_name = 'carta_create.html'
-    
-    def form_valid(self, form):
-        form.instance.propietario = self.request.user
-        return super().form_valid(form)
+@login_required
+def carta_create(request):
+    if request.method == 'POST':
+        form_carta = CartaForm(request.POST)
+        formset = SeccionesFormset(request.POST)
         
-    def get_success_url(self):
-        return reverse('edit-carta', args=[self.object.id])
+        if form_carta.is_valid() and formset.is_valid():
+            carta = form_carta.save(commit=False)
+            carta.propietario = request.user
+            carta.save()
+            
+            formset.instance = carta
+            formset.save()
+            
+            messages.success(request, 'Los cambios realizados se han guardado correctamente')
+            if 'save-and-exit' in request.POST:
+                return redirect('panel')
+            else:
+                return redirect('edit-carta', carta.pk)
+            
+        messages.error(request, 'Los cambios no se han guardado. Revise el formulario.')
+    else:
+        form_carta = CartaForm()
+        formset = SeccionesFormset()
+        
+    return render(request, 'carta_form.html', {'carta': form_carta, 'form': formset})
 
 
 @login_required
@@ -88,9 +103,13 @@ def carta_edit(request, pk):
         return redirect('panel')
     
     if request.method == 'POST':
+        form_carta = CartaForm(request.POST, instance=carta)
         formset = SeccionesFormset(request.POST, instance=carta)
-        if formset.is_valid():
+        
+        if form_carta.is_valid() and formset.is_valid():
+            form_carta.save()
             formset.save()
+            
             messages.success(request, 'Los cambios realizados se han guardado correctamente')
             if 'save-and-exit' in request.POST:
                 return redirect('panel')
@@ -99,9 +118,10 @@ def carta_edit(request, pk):
             
         messages.error(request, 'Los cambios no se han guardado. Revise el formulario.')
     else:
+        form_carta = CartaForm(instance=carta)
         formset = SeccionesFormset(instance=carta)
         
-    return render(request, 'carta_edit.html', {'carta': carta, 'form': formset})
+    return render(request, 'carta_form.html', {'carta': form_carta, 'form': formset})
     
     
 def serve_qr_code(request, slug):
