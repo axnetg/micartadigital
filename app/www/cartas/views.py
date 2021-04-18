@@ -78,6 +78,23 @@ def establecimiento_edit(request, slug):
 
 
 @login_required
+def establecimiento_delete(request, pk):
+    if request.method == 'POST':
+        establecimiento = get_object_or_404(Establecimiento, pk=pk)
+        if request.user != establecimiento.propietario:
+            messages.error(request, 'El establecimiento que intenta eliminar no le pertenece.')
+            return redirect('panel')
+        else:
+            if 'confirm_delete' in request.POST:
+                establecimiento.delete()
+                messages.success(request, f'El establecimiento \'{establecimiento.nombre}\' ha sido eliminado con éxito.')
+            else:
+                messages.error(request, 'Ha ocurrido un problema al intentar eliminar el establecimiento.')
+            return redirect('panel')
+    raise Http404()
+
+
+@login_required
 def carta_create(request):
     if request.method == 'POST':
         form_carta = CartaForm(request.POST)
@@ -132,7 +149,24 @@ def carta_edit(request, pk):
         formset = SeccionesFormset(instance=carta)
         
     return render(request, 'carta_form.html', {'carta': form_carta, 'form': formset})
-    
+
+
+@login_required
+def carta_delete(request, pk):
+    if request.method == 'POST':
+        carta = get_object_or_404(Carta, pk=pk)
+        if request.user != carta.propietario:
+            messages.error(request, 'La carta que intenta eliminar no le pertenece.')
+            return redirect('panel')
+        else:
+            if 'confirm_delete' in request.POST and not carta.establecimientos.all():
+                carta.delete()
+                messages.success(request, f'La carta \'{carta.titulo}\' ha sido eliminada con éxito.')
+            else:
+                messages.error(request, 'Ha ocurrido un problema al intentar eliminar la carta.')
+            return redirect('panel')
+    raise Http404()
+
     
 def serve_qr_code(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)

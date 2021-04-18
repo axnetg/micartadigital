@@ -52,6 +52,9 @@
               <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="{% if not establecimiento.carta %}disabled {% endif %}item">
                 <i class="qrcode icon"></i>Descargar QR
               </a>
+              <a class="item delete-establecimiento-btn" data-url="{% url 'delete-establecimiento' establecimiento.id %}" data-nombre="{{ establecimiento.nombre }}">
+                <i class="trash alternate icon"></i>Eliminar
+              </a>
             </div>
           </div>
         </td>
@@ -103,6 +106,9 @@
               <a href="{% url 'edit-carta' carta.id %}" class="item">
                 <i class="pencil icon"></i>Editar
               </a>
+              <a class="{% if carta.establecimientos.all %}disabled {% endif %}item delete-carta-btn" data-url="{% url 'delete-carta' carta.id %}" data-nombre="{{ carta.titulo }}">
+                <i class="trash alternate icon"></i>Eliminar
+              </a>
             </div>
           </div>
         </td>
@@ -115,6 +121,31 @@
     Todavía no has registrado cartas :(
   </div>
   {% endif %}
+</div>
+
+<div class="ui small modal">
+    <i class="close icon"></i>
+    <div class="header">Confirmar eliminación</div>
+    <div class="content">
+        <p id="is-establecimiento">
+            Estás a punto de eliminar el establecimiento <strong class="delete-confirm-title"></strong>.
+            Esta acción no se puede deshacer.
+        </p>
+        <p id="is-carta">
+            Estás a punto de eliminar la carta <strong class="delete-confirm-title"></strong>.
+            Esta acción no se puede deshacer.
+        </p>
+        <form class="ui form" method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" name="confirm_delete">
+                    <label>Confirmar eliminación.</label>
+                </div>
+            </div>
+            <input class="ui disabled inverted red button" type="submit" value="Eliminar" />
+        </form>
+    </div>
 </div>
 
 {% endblock %}
