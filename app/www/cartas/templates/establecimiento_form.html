@@ -11,7 +11,7 @@
 <form class="ui form" method="POST" novalidate enctype="multipart/form-data">
     {% csrf_token %}
     
-    <div class="field">
+    <div class="{% if form.imagen.errors %}error {% endif %}field">
         <label>Imagen de portada:</label>
         <div id="header-pic" class="ui segment">
             <div class="ui dimmer">
@@ -21,14 +21,14 @@
                     <div id="imagen-clear-btn" class="ui button">Eliminar</div>
                 </div>
             </div>
-            {% if form.instance and form.instance.imagen %}
+            {% if form.instance.pk and form.instance.imagen %}
             <img class="ui fluid image" src="{{ form.instance.imagen.url }}" />
             {% else %}
             <img class="ui fluid image" src="https://i.stack.imgur.com/y9DpT.jpg" />
             {% endif %}
         </div>
         {% for error in form.imagen.errors %}
-        <li>{{ error }}</li>
+            <small class="helper">{{ error }}</small>
         {% endfor %}
     </div>
 

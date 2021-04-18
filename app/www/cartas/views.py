@@ -47,7 +47,7 @@ def establecimiento_create(request):
             return redirect('panel')
     else:
         form = EstablecimientoForm(request=request)
-    return render(request, 'establecimiento_edit.html', {'form': form})
+    return render(request, 'establecimiento_form.html', {'form': form})
 
 
 @login_required
@@ -58,13 +58,23 @@ def establecimiento_edit(request, slug):
         return redirect('panel')
     
     if request.method == 'POST':
-        form = EstablecimientoForm(request.POST, request.FILES, instance=establecimiento, request=request)
+        if 'imagen-clear' in request.POST:
+            establecimiento.imagen.delete()
+        if 'imagen' in request.FILES:
+            if 'image' in request.FILES['imagen'].content_type:
+                establecimiento.imagen = request.FILES['imagen']
+                establecimiento.save()
+        
+        form = EstablecimientoForm(request.POST, instance=establecimiento, request=request)
         if form.is_valid():
             establecimiento = form.save()
-            return redirect('panel')
+            if 'imagen' in request.FILES and not 'image' in request.FILES['imagen'].content_type:
+                form.add_error('imagen', 'Envíe una imagen válida. El fichero que ha enviado no era una imagen o se trataba de una imagen corrupta.')
+            else:
+                return redirect('panel')
     else:
         form = EstablecimientoForm(instance=establecimiento, request=request)
-    return render(request, 'establecimiento_edit.html', {'form': form})
+    return render(request, 'establecimiento_form.html', {'form': form})
 
 
 @login_required
@@ -126,6 +136,9 @@ def carta_edit(request, pk):
     
 def serve_qr_code(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
+    if not establecimiento.carta:
+        raise Http404('El establecimiento no dispone de una carta asociada.')
+    
     permalink = reverse('redirect-establecimiento', args=[establecimiento.id])
     uri = request.build_absolute_uri(permalink)
     

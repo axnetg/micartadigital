@@ -36,6 +36,7 @@
             };
             image.onerror = () => {
                 $imageField.val('');
+                $imageClearField.prop('checked', false);
                 $image.attr('src', originalImgSrc);
                 alert('Envíe una imagen válida. El fichero que ha enviado no era una imagen o se trataba de una imagen corrupta.');
             }
@@ -43,6 +44,7 @@
         }
         else {
             $imageField.val('');
+            $imageClearField.prop('checked', false);
             $image.attr('src', originalImgSrc);
         }
     });
@@ -58,9 +60,10 @@
     var $localidadField = $('select[name=localidad]');
     
     var $localidadDiv = $localidadField.parents('.ui.dropdown');
-    $localidadDiv.dropdown({fullTextSearch: true});
+    $localidadDiv.dropdown({ fullTextSearch: true });
 
-    $codigoPostalField.on('input', function() {
+    // escribir el código postal desencadena la búsqueda de localidades posibles y autocompleta el nombre de provincia
+    $codigoPostalField.on('input', function () {
         $provinciaField.val('');
         $localidadField.empty();
         $localidadField.siblings('.text').empty();
@@ -84,4 +87,50 @@
             );
         }
     });
+
+
+
+    // ----------------- slug field -----------------
+    var $nombreField = $('input[name=nombre]');
+    var $slugField = $('input[name=slug]');
+    var slugLocked = $slugField.val().trim() ? true : false;
+
+    var slugify = (text) => {
+        return text.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/&/g, '-and-')
+                    .replace(/ /g,'-')
+                    .replace(/[-]+/g, '-')
+                    .replace(/[^\w-]+/g,'');
+    };
+
+    // escribir en el campo nombre autocompletará el slug siempre que no esté en estado locked
+    $nombreField.on('input', function () {
+        if (slugLocked) return;
+
+        var text = $(this).val().trim();
+        text = slugify(text);
+        $slugField.val(text);
+    });
+
+    // escribir en el campo slug lo marcará como locked, excepto si se ha borrado por completo
+    $slugField.on('input', function () {
+        slugLocked = $(this).val().trim() ? true : false;
+    });
+
+    // quitarle el focus al campo slug convertirá cualquier texto escrito a formato slug
+    $slugField.on('blur', function () {
+        var $input = $(this);
+        var text = $input.val().trim();
+        text = slugify(text);
+        $input.val(text);
+    });
+
+
+
+    // ----------------- carta field -----------------
+    var $cartaDiv = $('select[name=carta]').parents('.ui.dropdown');
+    $cartaDiv.dropdown({ fullTextSearch: true, clearable: true });
+
 })(jQuery);

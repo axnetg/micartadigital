@@ -20,7 +20,7 @@
     {% render_field field %}
 
     {% for error in field.errors %}
-    <li>{{ error }}</li>
+        <small class="helper">{{ error }}</small>
     {% endfor %}
 
     {% if field.help_text %}

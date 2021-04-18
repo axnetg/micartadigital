@@ -42,11 +42,10 @@ class Establecimiento(models.Model):
 
     def save(self, *args, **kwargs):        
         try:
-            this = Establecimiento.objects.get(id=self.id)
-            if this.imagen != self.imagen:
-                this.imagen.delete()
-        except:
-            pass
+            current = Establecimiento.objects.get(id=self.id)
+            if current.imagen != self.imagen:
+                current.imagen.delete()
+        except: pass
         super().save(*args, **kwargs)
 
 

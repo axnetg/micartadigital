@@ -57,6 +57,10 @@ class EstablecimientoForm(forms.ModelForm):
         return re.fullmatch('^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$', codigo_postal)
     
     
+    def clean_slug(self):
+        return self.cleaned_data['slug'].lower()
+    
+    
     def clean_codigo_postal(self):
         codigo_postal = self.cleaned_data['codigo_postal']
         if not self.valid_postal_code(codigo_postal):
@@ -83,6 +87,10 @@ class EstablecimientoForm(forms.ModelForm):
             raise ValidationError('La localidad introducida no se corresponde con el código postal.')
         
         return localidad
+    
+    
+    def clean_telefono(self):
+        return self.cleaned_data['telefono'].replace(' ', '')
 
 
 class CartaForm(forms.ModelForm):

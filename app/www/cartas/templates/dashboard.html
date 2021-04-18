@@ -5,10 +5,7 @@
 {% block title %}Panel - micartadigital.es{% endblock %}
 
 {% block content %}
-<h1>Panel</h1>
-<p>Bienvenido, {{ user }}</p>
-
-<div class="ui section divider"></div>
+<div class="ui hidden divider"></div>
 
 <div class="ui tabular top attached menu">
   <a class="item active" data-tab="tab-establecimientos">Establecimientos</a>
@@ -52,7 +49,7 @@
               <a href="{% url 'edit-establecimiento' establecimiento.slug %}" class="item">
                 <i class="pencil icon"></i>Editar
               </a>
-              <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="item">
+              <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="{% if not establecimiento.carta %}disabled {% endif %}item">
                 <i class="qrcode icon"></i>Descargar QR
               </a>
             </div>
@@ -98,7 +95,7 @@
             {{ establecimiento.slug }}</a>
           {% endfor %}
         </td>
-        <td>{{ carta.ultima_modificacion|naturaltime }}</td>
+        <td data-order="{{ carta.ultima_modificacion|date:"U" }}">{{ carta.ultima_modificacion|naturaltime }}</td>
         <td class="right aligned">
           <div class="ui floating dropdown item">
             <i class="ellipsis vertical icon"></i>
