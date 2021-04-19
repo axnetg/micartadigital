@@ -1,4 +1,8 @@
 <ul class="error list">
+    {% for error in form.non_form_errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+
     {% for seccion in form %}
         {% if not seccion.DELETE.value %}
 
@@ -23,7 +27,7 @@
             {% endfor %}
 
             {% if seccion.nested.non_form_errors %}
-                <li>La sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong> no tiene platos válidos.</li>
+                <li>La sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong> no tiene platos.</li>
             {% endif %}
             
         {% endif %}

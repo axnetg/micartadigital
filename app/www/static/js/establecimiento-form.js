@@ -38,7 +38,7 @@
                 $imageField.val('');
                 $imageClearField.prop('checked', false);
                 $image.attr('src', originalImgSrc);
-                alert('Envíe una imagen válida. El fichero que ha enviado no era una imagen o se trataba de una imagen corrupta.');
+                alert('Envía una imagen válida. El fichero que has enviado no era una imagen o se trataba de una imagen corrupta.');
             }
             image.src = URL.createObjectURL(file);
         }

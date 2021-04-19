@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.utils.crypto import get_random_string
 
 
 class Usuario(AbstractUser):
@@ -9,6 +8,10 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    
+    class Meta:
+        verbose_name = 'usuario'
+        verbose_name_plural = 'usuarios'
 
     def __str__(self):
         return self.get_full_name()

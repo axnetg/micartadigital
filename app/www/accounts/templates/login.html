@@ -1,20 +1,20 @@
 {% extends 'base_accounts.html' %}
 
-{% block title %}Login - micartadigital.es{% endblock %}
+{% block title %}Iniciar sesión - micartadigital.es{% endblock %}
 
 {% block content %}
 <div class="ui top attached segment">
   <div class="ui huge header">Iniciar sesión</div>
-  <form class="ui form" novalidate method="POST">
+  <form class="ui form" method="POST">
     {% csrf_token %}
     {% include 'includes/form.html' %}
     <button class="ui primary fluid button" type="submit">Iniciar sesión</button>
   </form>
 </div>
 <div class="ui attached center aligned segment">
-  <p>¿No tienes una cuenta? <a href="{% url 'signup' %}">Crear ahora</a>.</p>
+  <p>¿No tienes cuenta? <a href="{% url 'signup' %}">Créala ahora</a>.</p>
 </div>
 <div class="ui bottom attached center aligned segment">
-  <a href="{% url 'password_reset' %}">¿Olvidaste la contraseña?</a>
+  <a href="{% url 'password_reset' %}">¿Has olvidado la contraseña?</a>
 </div>
 {% endblock %}

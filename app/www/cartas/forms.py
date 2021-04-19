@@ -97,6 +97,9 @@ class CartaForm(forms.ModelForm):
     class Meta:
         model = Carta
         fields = ['titulo']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'placeholder': 'Nombre de la carta'}),
+        }
         
     
 class SeccionForm(forms.ModelForm):
@@ -116,10 +119,18 @@ class PlatoForm(forms.ModelForm):
     class Meta:
         model = Plato
         fields = '__all__'
+        localized_fields = ['precio']
         widgets = {
             'titulo': forms.TextInput(attrs={'placeholder': 'Nombre del plato'}),
             'descripcion': forms.TextInput(attrs={'placeholder': 'Descripción del plato (opcional)'}),
             'precio': LabeledInput(attrs={'placeholder': 'Precio del plato', 'label': '€', 'right': True}),
             'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown', 'placeholder': 'Click para seleccionar'}),
             'orden': forms.HiddenInput(),
+        }
+        error_messages = {
+            'precio': {
+                'max_whole_digits': 'El precio no puede superar los 9999,99€.',
+                'max_digits': 'El precio no puede contener más de 6 dígitos.',
+                'max_decimal_places': 'El precio contiene demasiados decimales.',
+            },
         }

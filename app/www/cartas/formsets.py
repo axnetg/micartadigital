@@ -35,6 +35,15 @@ class BaseSeccionesFormset(BaseInlineFormSet):
                 
         return result
     
+    def full_clean(self):
+        super().full_clean()
+
+        for error in self._non_form_errors.as_data():
+            if error.code == 'too_many_forms':
+                error.message = f'Por favor, envía menos de {self.max_num} secciones.'
+            if error.code == 'too_few_forms':
+                error.message = f'No se puede guardar una carta vacía.'
+    
     
 SeccionesFormset = inlineformset_factory(Carta, Seccion, form=SeccionForm, formset=BaseSeccionesFormset, extra=0, min_num=1, max_num=20, validate_min=True)
 

@@ -1,6 +1,6 @@
 <div class="ui tab segment seccion{% if empty_form %} empty-form{% endif %}" data-tab="{{ seccion.prefix }}">
     <div class="wrapper-seccion">
-        {% if not empty_form %}{{ seccion.nested.non_form_errors }}{% endif %}
+        {% if not empty_form %}<!--{{ seccion.nested.non_form_errors }}-->{% endif %}
 
         {% include 'includes/forms/seccion.html' with seccion=seccion %}
     </div>

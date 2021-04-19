@@ -54,7 +54,7 @@ def establecimiento_create(request):
 def establecimiento_edit(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
     if request.user != establecimiento.propietario:
-        messages.error(request, 'El establecimiento que intenta editar no le pertenece.')
+        messages.error(request, 'El establecimiento que intentas editar no te pertenece.')
         return redirect('panel')
     
     if request.method == 'POST':
@@ -69,7 +69,7 @@ def establecimiento_edit(request, slug):
         if form.is_valid():
             establecimiento = form.save()
             if 'imagen' in request.FILES and not 'image' in request.FILES['imagen'].content_type:
-                form.add_error('imagen', 'Envíe una imagen válida. El fichero que ha enviado no era una imagen o se trataba de una imagen corrupta.')
+                form.add_error('imagen', 'Envía una imagen válida. El fichero que has enviado no era una imagen o se trataba de una imagen corrupta.')
             else:
                 return redirect('panel')
     else:
@@ -82,14 +82,14 @@ def establecimiento_delete(request, pk):
     if request.method == 'POST':
         establecimiento = get_object_or_404(Establecimiento, pk=pk)
         if request.user != establecimiento.propietario:
-            messages.error(request, 'El establecimiento que intenta eliminar no le pertenece.')
+            messages.error(request, 'El establecimiento que intentas eliminar no te pertenece.')
             return redirect('panel')
         else:
             if 'confirm_delete' in request.POST:
                 establecimiento.delete()
                 messages.success(request, f'El establecimiento \'{establecimiento.nombre}\' ha sido eliminado con éxito.')
             else:
-                messages.error(request, 'Ha ocurrido un problema al intentar eliminar el establecimiento.')
+                messages.error(request, f'Ha ocurrido un problema al intentar eliminar el establecimiento \'{establecimiento.nombre}\'.')
             return redirect('panel')
     raise Http404()
 
@@ -114,7 +114,7 @@ def carta_create(request):
             else:
                 return redirect('edit-carta', carta.pk)
             
-        messages.error(request, 'Los cambios no se han guardado. Revise el formulario.')
+        messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:
         form_carta = CartaForm()
         formset = SeccionesFormset()
@@ -126,7 +126,7 @@ def carta_create(request):
 def carta_edit(request, pk):
     carta = get_object_or_404(Carta, pk=pk)
     if request.user != carta.propietario:
-        messages.error(request, 'La carta que intenta editar no le pertenece.')
+        messages.error(request, 'La carta que intentas editar no te pertenece.')
         return redirect('panel')
     
     if request.method == 'POST':
@@ -143,7 +143,7 @@ def carta_edit(request, pk):
             else:
                 return redirect('edit-carta', carta.pk)
             
-        messages.error(request, 'Los cambios no se han guardado. Revise el formulario.')
+        messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:
         form_carta = CartaForm(instance=carta)
         formset = SeccionesFormset(instance=carta)
@@ -156,14 +156,14 @@ def carta_delete(request, pk):
     if request.method == 'POST':
         carta = get_object_or_404(Carta, pk=pk)
         if request.user != carta.propietario:
-            messages.error(request, 'La carta que intenta eliminar no le pertenece.')
+            messages.error(request, 'La carta que intentas eliminar no te pertenece.')
             return redirect('panel')
         else:
             if 'confirm_delete' in request.POST and not carta.establecimientos.all():
                 carta.delete()
                 messages.success(request, f'La carta \'{carta.titulo}\' ha sido eliminada con éxito.')
             else:
-                messages.error(request, 'Ha ocurrido un problema al intentar eliminar la carta.')
+                messages.error(request, f'Ha ocurrido un problema al intentar eliminar la carta \'{carta.titulo}\' .')
             return redirect('panel')
     raise Http404()
 

@@ -7,6 +7,7 @@ from .models import Usuario
 
 
 class SignupForm(forms.ModelForm):
+    email = forms.EmailField(label='Correo electrónico', required=True, error_messages={'unique': mark_safe('Ya existe una cuenta con este correo electrónico. Si es el tuyo, <a href="/login/">inicia sesión</a>.')})
     first_name = forms.CharField(label='Nombre', required=True)
     last_name = forms.CharField(label='Apellidos', required=True)
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput())
@@ -16,15 +17,6 @@ class SignupForm(forms.ModelForm):
         model = Usuario
         fields = ['email', 'first_name', 'last_name', 'password']
         
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        try:
-            match = Usuario.objects.get(email=email)
-        except Usuario.DoesNotExist:
-            return email
-
-        raise forms.ValidationError(mark_safe('Ya existe una cuenta con este correo electrónico. Si es el tuyo, <a href="/login/">inicia sesión</a>.'))
-
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
