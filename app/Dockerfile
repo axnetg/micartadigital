@@ -2,7 +2,7 @@
 FROM python:3.9
 
 # Autor
-MAINTAINER axnetg
+LABEL maintainer="avrodriguez17@esei.uvigo.es"
 
 # Establecer directorio de trabajo
 WORKDIR /app/www

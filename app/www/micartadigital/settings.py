@@ -161,3 +161,8 @@ LOGOUT_REDIRECT_URL = 'home'
 # Instead of sending out real emails the console backend just writes the emails
 # that would be sent to the standard output.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Starting in Django 3.2, you can now customise the type of the automatically created primary key in your settings.
+# https://docs.djangoproject.com/en/3.2/topics/db/models/#automatic-primary-key-fields
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
