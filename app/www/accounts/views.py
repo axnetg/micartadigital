@@ -62,6 +62,17 @@ class UserSettingsUpdate(LoginRequiredMixin, View):
                 messages.success(request, 'La contraseña se ha modificado correctamente.')
                 return redirect('user-settings')
             else:
+                messages.error(request, 'Ha ocurrido un problema al modificar la contraseña.')
                 context['user_password_form'] = user_password_form
+                
+        elif 'user_delete' in request.POST:
+            user = request.user
+            if 'user_confirm_delete' in request.POST and not user.is_superuser:
+                user.delete()
+                return redirect('home')
+            else:
+                messages.error(request, 'Ha ocurrido un problema al intentar eliminar la cuenta.')
+                
+            return redirect('user-settings')
         
         return render(request, self.template_name, self.get_context_data(**context))

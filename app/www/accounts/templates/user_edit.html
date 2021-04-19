@@ -7,7 +7,7 @@
 
 <div class="ui basic segment">
     <div class="ui header">{{ user.email }}</div>
-    <p>Miembro desde: {{ user.date_joined }}</p>
+    <p>Miembro desde el {{ user.date_joined }}</p>
 </div>
 
 <div class="ui hidden divider"></div>
@@ -41,9 +41,31 @@
         </div>
 
         <div class="ui tab segment" data-tab="tab-user-confirm-delete">
-            <p>Come back soon</p>
+            <div class="ui huge header">Eliminar cuenta</div>
+            <p>
+                Una vez elimines tu cuenta, <strong>no hay vuelta atrás</strong>. Por favor, lee las consecuencias antes de continuar.
+            </p>
+            <ul>
+                <li>No podrás recuperar tu cuenta.</li>
+                <li>Se eliminarán todos los establecimientos que hayas creado.</li>
+                <li>Se eliminarán todas las cartas que hayas creado.</li>
+                <li>Dejarán de funcionar los códigos QR que hayas creado.</li>
+            </ul>
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="user_confirm_delete">
+                        <label>He entendido las consecuencias y quiero eliminar mi cuenta.</label>
+                    </div>
+                </div>
+                <input class="ui disabled inverted red button" name="user_delete" type="submit" value="Eliminar cuenta" />
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block script %}
+<script src="{% static 'js/user-edit.js' %}"></script>
 {% endblock %}

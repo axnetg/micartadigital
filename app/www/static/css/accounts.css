@@ -5,3 +5,7 @@ body {
 body > .grid {
   height: 100%;
 }
+
+.field.error small.helper {
+  color: #9f3a38;
+}

@@ -13,7 +13,7 @@ from .utils import *
 
 def get_file_path(instance, filename):
     ext = filename.split('.')[-1]
-    return '{0}/{1}.{2}'.format(instance.slug, uuid.uuid4(), ext)
+    return '{0}.{1}'.format(uuid.uuid4(), ext)
 
 
 class Establecimiento(models.Model):
@@ -25,7 +25,7 @@ class Establecimiento(models.Model):
     codigo_postal = models.CharField(max_length=5)
     telefono = models.CharField(max_length=15, blank=True)
     imagen = models.ImageField(upload_to=get_file_path, null=True, blank=True)
-    propietario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='establecimientos')
+    propietario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, related_name='establecimientos')
     carta = models.ForeignKey('Carta', on_delete=models.SET_NULL, null=True, blank=True, related_name='establecimientos')
 
     class Meta:
@@ -47,12 +47,16 @@ class Establecimiento(models.Model):
                 current.imagen.delete()
         except: pass
         super().save(*args, **kwargs)
+        
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
 
 
 class Carta(models.Model):
     titulo = models.CharField(max_length=100)
     ultima_modificacion = models.DateTimeField(auto_now=True)
-    propietario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='cartas')
+    propietario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, related_name='cartas')
 
     class Meta:
         ordering = ['titulo']
