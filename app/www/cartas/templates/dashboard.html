@@ -46,7 +46,7 @@
           <div class="ui floating dropdown item">
             <i class="ellipsis vertical icon"></i>
             <div class="left menu">
-              <a href="{% url 'edit-establecimiento' establecimiento.slug %}" class="item">
+              <a href="{% url 'edit-establecimiento' establecimiento.id %}" class="item">
                 <i class="pencil icon"></i>Editar
               </a>
               <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="{% if not establecimiento.carta %}disabled {% endif %}item">

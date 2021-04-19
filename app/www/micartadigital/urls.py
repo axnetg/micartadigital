@@ -22,8 +22,10 @@ from cartas import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('carta/<slug:slug>', views.establecimiento_details, name='establecimiento'),
+    
     path('', include('accounts.urls')),
-    path('', include('cartas.urls')),
+    path('panel/', include('cartas.urls')),
     path('admin/', admin.site.urls),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

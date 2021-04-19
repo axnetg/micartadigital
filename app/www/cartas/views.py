@@ -51,8 +51,8 @@ def establecimiento_create(request):
 
 
 @login_required
-def establecimiento_edit(request, slug):
-    establecimiento = get_object_or_404(Establecimiento, slug=slug)
+def establecimiento_edit(request, pk):
+    establecimiento = get_object_or_404(Establecimiento, pk=pk)
     if request.user != establecimiento.propietario:
         messages.error(request, 'El establecimiento que intentas editar no te pertenece.')
         return redirect('panel')
@@ -112,7 +112,7 @@ def carta_create(request):
             if 'save-and-exit' in request.POST:
                 return redirect('panel')
             else:
-                return redirect('edit-carta', carta.pk)
+                return redirect('edit-carta', carta.id)
             
         messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:
@@ -141,7 +141,7 @@ def carta_edit(request, pk):
             if 'save-and-exit' in request.POST:
                 return redirect('panel')
             else:
-                return redirect('edit-carta', carta.pk)
+                return redirect('edit-carta', carta.id)
             
         messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:

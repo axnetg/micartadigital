@@ -21,7 +21,7 @@
                     <div id="imagen-clear-btn" class="ui button">Eliminar</div>
                 </div>
             </div>
-            {% if form.instance.pk and form.instance.imagen %}
+            {% if form.instance.id and form.instance.imagen %}
             <img class="ui fluid image" src="{{ form.instance.imagen.url }}" />
             {% else %}
             <img class="ui fluid image" src="https://i.stack.imgur.com/y9DpT.jpg" />

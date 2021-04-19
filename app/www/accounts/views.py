@@ -45,7 +45,6 @@ class UserSettingsUpdate(LoginRequiredMixin, View):
         
         if 'user_settings' in request.POST:
             user_settings_form = UserSettingsUpdateForm(request.POST, instance=self.get_object())
-            print(request.user.id)
             if user_settings_form.is_valid():
                 user_settings_form.save()
                 messages.success(request, 'Los datos se han actualizado correctamente.')
