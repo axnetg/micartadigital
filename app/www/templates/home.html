@@ -149,10 +149,10 @@
 				libero amet inventore. Iste laudantium expedita, eveniet ratione repellat at placeat accusantium fugit
 				tempore?
 			</p>
-			<form class="ui big inverted form">
+			<form class="ui big inverted form" action="{% url 'search-establecimiento' %}" method="GET">
 				<div class="field">
 					<div class="ui action input">
-						<input type="text" placeholder="Search...">
+						<input type="text" name="q" placeholder="Buscar establecimientos por nombre, dirección o localidad">
 						<button class="ui big icon button">
 							<i class="search icon"></i>
 						</button>

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Buscar - micartadigital.es{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}" />
+{% endblock %}
+
+{% block content %}
+<form class="ui big form" method="GET">
+    <div class="field">
+        <div class="ui action input">
+            <input type="text" name="q" placeholder="Buscar establecimientos por nombre, dirección o localidad" value="{{ query }}" />
+            <button class="ui big icon button">
+                <i class="search icon"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="ui section divider"></div>
+
+<h5>{{ establecimientos.count }} resultado{{ establecimientos.count|pluralize:"s" }}</h5>
+
+{% if localidades|length > 1 %}
+    <div id="localidad-filter">
+    {% for info in localidades %}
+        <div class="ui basic label" data-localidad="{{ info.localidad }}">{{ info.localidad }} ({{ info.count }})</div>
+    {% endfor %}
+    </div>
+{% endif %}
+
+<div id="search-results-wrapper">
+    {% for establecimiento in establecimientos %}
+    <div class="ui items segment" data-localidad="{{ establecimiento.localidad }}">
+        <div class="ui item">
+            <div class="image">
+                {% if establecimiento.imagen %}
+                <img class="ui image" src="{{ establecimiento.imagen.url }}" />
+                {% else %}
+                <img class="ui default image" src="{% static 'img/default-header-image.jpg' %}" />
+                {% endif %}
+            </div>
+            <div class="content">
+                <div class="header">{{ establecimiento }}</div>
+                <div class="description">
+                    <p>{{ establecimiento.display_direccion }}</p>
+                </div>
+                <div class="extra">
+                    {% if establecimiento.carta %}
+                    <a class="ui right floated primary button" href="{% url 'establecimiento' establecimiento.slug %}">
+                        Consultar carta
+                        <i class="right chevron icon"></i>
+                    </a>
+                    {% else %}
+                    <a class="ui right floated basic violet button" href="{% url 'establecimiento' establecimiento.slug %}">
+                        Contacto
+                        <i class="right chevron icon"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not establecimientos %}
+    <div id="no-results" class="ui center aligned middle aligned grid stackable basic segment">
+        <div class="row">
+            <img class="ui middle aligned image" src="{% static 'img/no_search_results.svg' %}">
+        </div>
+        <div class="row">
+            <h1 class="ui header">No se han encontrado resultados
+                <div class="sub header">¿Crees que falta algún establecimiento? <a href="{% url 'signup' %}">Añádelo tú mismo</a>.</div>
+            </h1>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/establecimiento-search.js' %}"></script>
+{% endblock %}

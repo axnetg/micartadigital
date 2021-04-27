@@ -22,7 +22,9 @@ from cartas import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('qr/<int:id>', views.establecimiento_redirect, name='redirect-establecimiento'),
     path('carta/<slug:slug>', views.establecimiento_details, name='establecimiento'),
+    path('buscar/', views.establecimiento_search, name='search-establecimiento'),
     
     path('', include('accounts.urls')),
     path('panel/', include('cartas.urls')),

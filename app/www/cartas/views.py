@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.postgres.search import TrigramSimilarity
 from django.contrib import messages
+from django.db.models import Count
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -10,6 +12,7 @@ from .models import *
 from .utils import *
 
 import qrcode
+import re
 
 
 def home(request):
@@ -44,6 +47,7 @@ def establecimiento_create(request):
             establecimiento = form.save(commit=False)
             establecimiento.propietario = request.user
             establecimiento.save()
+            messages.success(request, f'El establecimiento \'{establecimiento.nombre}\' se ha registrado con éxito.')
             return redirect('panel')
     else:
         form = EstablecimientoForm(request=request)
@@ -71,6 +75,7 @@ def establecimiento_edit(request, pk):
             if 'imagen' in request.FILES and not 'image' in request.FILES['imagen'].content_type:
                 form.add_error('imagen', 'Envía una imagen válida. El fichero que has enviado no era una imagen o se trataba de una imagen corrupta.')
             else:
+                messages.success(request, f'El establecimiento \'{establecimiento.nombre}\' se ha modificado con éxito.')
                 return redirect('panel')
     else:
         form = EstablecimientoForm(instance=establecimiento, request=request)
@@ -93,6 +98,28 @@ def establecimiento_delete(request, pk):
             return redirect('panel')
     raise Http404()
 
+
+def establecimiento_search(request):
+    query = request.GET.get('q', '')
+    query = re.sub(r'[.,\/#!?$%\^&\*;:{}=\-_`~()]', '', query)
+    search_list = query.split()
+    
+    establecimientos = Establecimiento.objects.filter(codigo_postal__exact=query)        
+    if not establecimientos.exists():
+        establecimientos = Establecimiento.objects.annotate(
+            #similarity=sum([ TrigramSimilarity('nombre', x) + TrigramSimilarity('calle', x) + TrigramSimilarity('localidad', x) for x in search_list ])
+            similarity=TrigramSimilarity('nombre', query) + TrigramSimilarity('calle', query) + TrigramSimilarity('localidad', query)
+        ).filter(similarity__gte=0.25).order_by('-similarity')
+        #.exclude(carta__isnull=True)   #.order_by(F('imagen').desc(nulls_last=True))
+    
+    localidades = establecimientos.values('localidad').annotate(count=Count('localidad')).order_by('-count')
+    context = {
+        'query': query,
+        'establecimientos': establecimientos,
+        'localidades': localidades,
+    }
+    
+    return render(request, 'establecimiento_search.html', context)
 
 @login_required
 def carta_create(request):

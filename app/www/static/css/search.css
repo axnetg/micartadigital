@@ -1,0 +1,19 @@
+#search-results-wrapper {
+  margin-top: 1.5em;
+}
+
+#search-results-wrapper .ui.item .image img {
+  object-fit: cover;
+  height: 100px;
+  border-radius: 4px;
+}
+
+#no-results img {
+  max-height: 250px;
+}
+
+@media only screen and (max-width: 767px) {
+  #no-results img {
+    max-height: 200px;
+  }
+}

@@ -33,22 +33,7 @@
     </div>
     <!-- ./ Contenido principal -->
 
-    <!-- Footer -->
-    <div class="ui inverted vertical segment" id="footer">
-        <div class="ui center aligned container">
-            <img class="ui centered mini image" src="{% static 'icon/spinach.svg' %}" alt="Logo" />
-            <div class="ui center aligned container">
-                <h5>micartadigital.es</h5>
-            </div>
-            <div class="ui horizontal inverted small divided link list">
-                <a class="item" href="{% url 'home' %}">Home</a>
-                <a class="item" href="#">Link #2</a>
-                <a class="item" href="#">Link #3</a>
-                <a class="item" href="#">Link #4</a>
-            </div>
-        </div>
-    </div>
-    <!-- ./ Footer -->
+    {% include 'footer.html' %}
 	{% endblock %}
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"

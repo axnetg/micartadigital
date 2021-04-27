@@ -10,6 +10,5 @@ urlpatterns = [
     path('carta/añadir', views.carta_create, name='new-carta'),
     path('carta/<int:pk>/editar', views.carta_edit, name='edit-carta'),
     path('carta/<int:pk>/borrar', views.carta_delete, name='delete-carta'),
-    path('qr/<int:id>', views.establecimiento_redirect, name='redirect-establecimiento'),
     path('qrcode/<slug:slug>', views.serve_qr_code, name='serve-qr'),
 ]
