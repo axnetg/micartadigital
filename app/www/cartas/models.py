@@ -2,10 +2,10 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
 
 from multiselectfield import MultiSelectField
 
+import json
 import uuid
 
 from .utils import *
@@ -23,7 +23,12 @@ class Establecimiento(models.Model):
     provincia = models.CharField(verbose_name='provincia', max_length=50)
     localidad = models.CharField(verbose_name='localidad', max_length=100)
     codigo_postal = models.CharField(verbose_name='código postal', max_length=5)
-    telefono = models.CharField(verbose_name='teléfono', max_length=15, blank=True)
+    telefono1 = models.CharField(verbose_name='teléfono principal', max_length=15, blank=True)
+    telefono2 = models.CharField(verbose_name='teléfono secundario', max_length=15, blank=True)
+    social_wa = models.CharField(verbose_name='WhatsApp', max_length=15, blank=True)
+    social_ig = models.CharField(verbose_name='Instagram', max_length=30, blank=True)
+    social_fb = models.CharField(verbose_name='Facebook', max_length=50, blank=True)
+    social_tw = models.CharField(verbose_name='Twitter', max_length=30, blank=True)
     imagen = models.ImageField(verbose_name='imagen de portada', upload_to=get_file_path, null=True, blank=True)
     propietario = models.ForeignKey(get_user_model(), verbose_name='propietario', on_delete=models.CASCADE, null=True, blank=True, related_name='establecimientos')
     carta = models.ForeignKey('Carta', verbose_name='carta', on_delete=models.SET_NULL, null=True, blank=True, related_name='establecimientos')
@@ -39,8 +44,16 @@ class Establecimiento(models.Model):
     def get_absolute_url(self):
         return reverse('establecimiento', kwargs={'slug': self.slug})
     
+    def get_maps_url(self):
+        query = f'{self.nombre}, {self.codigo_postal}, {self.localidad}'
+        return f'https://maps.google.com/?q={query}'
+    
     def display_direccion(self):
         return f'{self.calle}, {self.codigo_postal}, {self.localidad}'
+    
+    def display_telefonos(self):
+        tels = [self.telefono1, self.telefono2]
+        return ', '.join([str(i) for i in tels if i])
 
     def save(self, *args, **kwargs):        
         try:
@@ -70,6 +83,10 @@ class Carta(models.Model):
     
     def display_establecimientos_en_uso(self):
         return ', '.join([est.nombre for est in self.establecimientos.all()])
+    
+    def get_establecimientos_as_json(self):
+        related = self.establecimientos.values_list('nombre', flat=True)
+        return json.dumps(list(related))
     
     def count_platos(self):
         platos = 0

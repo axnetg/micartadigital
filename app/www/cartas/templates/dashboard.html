@@ -34,13 +34,11 @@
             <div class="sub header">{{ establecimiento.display_direccion }}</div>
           </div>
         </td>
-        <td>{{ establecimiento.telefono }}</td>
+        <td>{{ establecimiento.display_telefonos }}</td>
         <td>{{ establecimiento.provincia }}</td>
         <td>
-          {% if establecimiento.carta %}
           <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
             {{ establecimiento.slug }}</a>
-          {% endif %}
         </td>
         <td class="right aligned">
           <div class="ui floating dropdown item">
@@ -49,7 +47,7 @@
               <a href="{% url 'edit-establecimiento' establecimiento.id %}" class="item">
                 <i class="pencil icon"></i>Editar
               </a>
-              <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="{% if not establecimiento.carta %}disabled {% endif %}item">
+              <a href="{% url 'serve-qr' establecimiento.slug %}" target="_blank" class="item">
                 <i class="qrcode icon"></i>Descargar QR
               </a>
               <a class="item delete-establecimiento-btn" data-url="{% url 'delete-establecimiento' establecimiento.id %}" data-nombre="{{ establecimiento.nombre }}">
@@ -106,7 +104,7 @@
               <a href="{% url 'edit-carta' carta.id %}" class="item">
                 <i class="pencil icon"></i>Editar
               </a>
-              <a class="{% if carta.establecimientos.all %}disabled {% endif %}item delete-carta-btn" data-url="{% url 'delete-carta' carta.id %}" data-nombre="{{ carta.titulo }}">
+              <a class="item delete-carta-btn" data-url="{% url 'delete-carta' carta.id %}" data-nombre="{{ carta.titulo }}" data-related="{{ carta.get_establecimientos_as_json }}">
                 <i class="trash alternate icon"></i>Eliminar
               </a>
             </div>
@@ -127,14 +125,18 @@
     <i class="close icon"></i>
     <div class="header">Confirmar eliminación</div>
     <div class="content">
-        <p id="is-establecimiento">
-            Estás a punto de eliminar el establecimiento <strong class="delete-confirm-title"></strong>.
-            Esta acción no se puede deshacer.
-        </p>
-        <p id="is-carta">
-            Estás a punto de eliminar la carta <strong class="delete-confirm-title"></strong>.
-            Esta acción no se puede deshacer.
-        </p>
+        <div id="is-establecimiento">
+            <p>Estás a punto de eliminar el establecimiento <strong class="delete-confirm-title"></strong>.
+            Esta acción no se puede deshacer.</p>
+        </div>
+        <div id="is-carta">
+            <p>Estás a punto de eliminar la carta <strong class="delete-confirm-title"></strong>.
+            Esta acción no se puede deshacer.</p>
+            <div id="is-carta-warning">
+                <p>Si continuas, los siguientes establecimientos se quedarán sin carta:</p>
+                <ul></ul>
+            </div>
+        </div>
         <form class="ui form" method="POST">
             {% csrf_token %}
             <div class="field">

@@ -8,9 +8,11 @@
 {% endblock %}
 
 {% block header_image %}
-{% if establecimiento.imagen %}
-<img class="ui fluid image" src="{{ establecimiento.imagen.url }}" />
-{% endif %}
+    {% if establecimiento.imagen %}
+    <img class="ui fluid image" src="{{ establecimiento.imagen.url }}" />
+    {% else %}
+    <img class="ui default fluid image" src="{% static 'img/default-header-image.jpg' %}" />
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -19,10 +21,22 @@
 <div id="establecimiento-detalles" class="ui basic segment">
   <h1 class="ui header">
     {{ establecimiento }}
-    <div class="sub header">{{ establecimiento.display_direccion }}</div>
+    <div class="sub header">
+        <a href="{{establecimiento.get_maps_url}}" target="_blank"><i class="map marker alternate icon"></i>{{ establecimiento.display_direccion }}</a>
+    </div>
   </h1>
+  {% if establecimiento.carta %}
+        {% if establecimiento.telefono1 %}<a class="ui basic violet icon button" href="tel:{{establecimiento.telefono1}}"><i class="phone icon"></i> {{establecimiento.telefono1}}</a>{% endif %}
+        {% if establecimiento.telefono2 %}<a class="ui basic violet icon button" href="tel:{{establecimiento.telefono2}}"><i class="phone icon"></i> {{establecimiento.telefono2}}</a>{% endif %}
+
+        {% if establecimiento.social_wa %}<a class="ui basic wa icon button" href="https://wa.me/{{establecimiento.social_wa}}" target="_blank"><i class="whatsapp icon"></i></a>{% endif %}
+        {% if establecimiento.social_ig %}<a class="ui basic ig icon button" href="https://instagram.com/{{establecimiento.social_ig}}" target="_blank"><i class="instagram icon"></i></a>{% endif %}
+        {% if establecimiento.social_fb %}<a class="ui basic fb icon button" href="https://facebook.com/{{establecimiento.social_fb}}" target="_blank"><i class="facebook icon"></i></a>{% endif %}
+        {% if establecimiento.social_tw %}<a class="ui basic tw icon button" href="https://twitter.com/{{establecimiento.social_tw}}" target="_blank"><i class="twitter icon"></i></a>{% endif %}
+    {% endif %}
 </div>
 
+{% if establecimiento.carta %}
 <div id="nav-secciones" class="ui secondary pointing menu">
     {% for seccion in establecimiento.carta.secciones.all %}
         <a class="item" data-target="#seccion-{{forloop.counter0}}">{{ seccion.titulo }}</a>
@@ -61,7 +75,7 @@
                             {% endwith %}
                         {% endwith %}
                     {% endfor %}
-                    {% else %}No hay alérgenos seleccionados{% endif %}
+                    {% else %}No se han indicado alérgenos.{% endif %}
                     </span>
                 </div>
             </div>
@@ -107,6 +121,41 @@
         </div>
     </div>
 </div>
+
+{% else %}
+<div id="no-menu-contact-details" class="ui center aligned middle aligned grid stackable basic segment">
+    <div class="row">
+        <div class="five wide column">
+            <img class="ui middle aligned image" src="{% static 'img/no_menu.svg' %}" />
+        </div>
+        <div class="seven wide column">
+            <h1 class="ui header">¡Fogones apagados!</h1>
+            <p>Los chefs han ocultado la carta de este establecimiento. ¿Se habrán quedado sin ingredientes?</p>
+            
+            {% if establecimiento.telefono1 %}<a class="ui basic violet icon button" href="tel:{{establecimiento.telefono1}}"><i class="phone icon"></i> {{establecimiento.telefono1}}</a>{% endif %}
+            {% if establecimiento.telefono2 %}<a class="ui basic violet icon button" href="tel:{{establecimiento.telefono2}}"><i class="phone icon"></i> {{establecimiento.telefono2}}</a>{% endif %}
+            {% if establecimiento.social_wa %}<a class="ui basic wa icon button" href="https://wa.me/{{establecimiento.social_wa}}" target="_blank"><i class="whatsapp icon"></i></a>{% endif %}
+            {% if establecimiento.social_ig %}<a class="ui basic ig icon button" href="https://instagram.com/{{establecimiento.social_ig}}" target="_blank"><i class="instagram icon"></i></a>{% endif %}
+            {% if establecimiento.social_fb %}<a class="ui basic fb icon button" href="https://facebook.com/{{establecimiento.social_fb}}" target="_blank"><i class="facebook icon"></i></a>{% endif %}
+            {% if establecimiento.social_tw %}<a class="ui basic tw icon button" href="https://twitter.com/{{establecimiento.social_tw}}" target="_blank"><i class="twitter icon"></i></a>{% endif %}
+            <div class="ui hidden divider"></div>
+
+            <h4 class="ui header">¿Quieres buscar otro establecimiento?</h4>
+            <form class="ui form" action="{% url 'search-establecimiento' %}" method="GET">
+                <div class="field">
+                    <div class="ui action input">
+                        <input type="text" name="q" placeholder="Buscar por nombre, dirección o localidad">
+                        <button class="ui icon button">
+                            <i class="search icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
 
 

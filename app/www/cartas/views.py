@@ -27,9 +27,6 @@ def dashboard(request):
 
 def establecimiento_details(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
-    if not establecimiento.carta:
-        raise Http404('El establecimiento no dispone de una carta asociada.')
-    
     alergenos = zip(TIPOS_ALERGENOS, DESC_ALERGENOS)
     return render(request, 'establecimiento_details.html', {'establecimiento': establecimiento, 'alergenos': alergenos})
 
@@ -186,7 +183,7 @@ def carta_delete(request, pk):
             messages.error(request, 'La carta que intentas eliminar no te pertenece.')
             return redirect('panel')
         else:
-            if 'confirm_delete' in request.POST and not carta.establecimientos.all():
+            if 'confirm_delete' in request.POST:
                 carta.delete()
                 messages.success(request, f'La carta \'{carta.titulo}\' ha sido eliminada con éxito.')
             else:
@@ -197,9 +194,6 @@ def carta_delete(request, pk):
     
 def serve_qr_code(request, slug):
     establecimiento = get_object_or_404(Establecimiento, slug=slug)
-    if not establecimiento.carta:
-        raise Http404('El establecimiento no dispone de una carta asociada.')
-    
     permalink = reverse('redirect-establecimiento', args=[establecimiento.id])
     uri = request.build_absolute_uri(permalink)
     

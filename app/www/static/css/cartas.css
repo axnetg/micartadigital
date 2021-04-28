@@ -1,35 +1,109 @@
 #go-to-top-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 99;
-    display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  display: none;
 }
 
-.ui.segments .ui.grid{
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+.ui.segments .ui.grid {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
 }
-.ui.segments .ui.grid .column{
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+.ui.segments .ui.grid .column {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
 }
 
-.plato-titulo, .plato-precio {
-    font-size: 1.28em;
-    font-weight: 700;
-    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-    color: rgba(0,0,0,.85);
+.plato-titulo,
+.plato-precio {
+  font-size: 1.28em;
+  font-weight: 700;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: rgba(0, 0, 0, 0.85);
 }
 .plato-descripcion {
-    font-size: 1em;
-    line-height: 1.4em;
-    color: rgba(0,0,0,.87);
+  font-size: 1em;
+  line-height: 1.4em;
+  color: rgba(0, 0, 0, 0.87);
 }
 .plato-alergenos {
-    color: rgba(0,0,0,.4);
+  color: rgba(0, 0, 0, 0.4);
+}
+
+#establecimiento-detalles {
+    margin-top: 0;
+}
+#establecimiento-detalles h1 a {
+    color: rgba(0,0,0,.6);
+}
+#establecimiento-detalles h1 a:hover {
+    text-decoration: underline;
+}
+
+#nav-secciones {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 a.alergenos.open {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+#no-menu-contact-details img {
+    max-height: 250px;
+}
+
+.ui.basic.wa.icon.button {
+    -webkit-box-shadow: 0 0 0 1px #25D366 inset!important;
+    box-shadow: 0 0 0 1px #25D366 inset!important;
+    color: #25D366!important;
+}
+.ui.basic.wa.icon.button:hover {
+    background: 0 0!important;
+    -webkit-box-shadow: 0 0 0 1px #25D366 inset!important;
+    box-shadow: 0 0 0 1px #25D366 inset!important;
+    color: #25D366!important;
+}
+
+.ui.basic.ig.icon.button {
+    -webkit-box-shadow: 0 0 0 1px #E1306C inset!important;
+    box-shadow: 0 0 0 1px #E1306C inset!important;
+    color: #E1306C!important;
+}
+.ui.basic.ig.icon.button:hover {
+    background: 0 0!important;
+    -webkit-box-shadow: 0 0 0 1px #E1306C inset!important;
+    box-shadow: 0 0 0 1px #E1306C inset!important;
+    color: #E1306C!important;
+}
+
+.ui.basic.fb.icon.button {
+    -webkit-box-shadow: 0 0 0 1px #4267B2 inset!important;
+    box-shadow: 0 0 0 1px #4267B2 inset!important;
+    color: #4267B2!important;
+}
+.ui.basic.fb.icon.button:hover {
+    background: 0 0!important;
+    -webkit-box-shadow: 0 0 0 1px #4267B2 inset!important;
+    box-shadow: 0 0 0 1px #4267B2 inset!important;
+    color: #4267B2!important;
+}
+
+.ui.basic.tw.icon.button {
+    -webkit-box-shadow: 0 0 0 1px #1DA1F2 inset!important;
+    box-shadow: 0 0 0 1px #1DA1F2 inset!important;
+    color: #1DA1F2!important;
+}
+.ui.basic.tw.icon.button:hover {
+    background: 0 0!important;
+    -webkit-box-shadow: 0 0 0 1px #1DA1F2 inset!important;
+    box-shadow: 0 0 0 1px #1DA1F2 inset!important;
+    color: #1DA1F2!important;
+}
+
+@media only screen and (max-width: 767px) {
+    #no-menu-contact-details img {
+        max-height: 200px;
+    }
 }

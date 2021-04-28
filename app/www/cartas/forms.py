@@ -12,7 +12,10 @@ import requests
 class EstablecimientoForm(forms.ModelForm):
     class Meta:
         model = Establecimiento
-        fields = ['nombre', 'slug', 'calle', 'codigo_postal', 'provincia', 'localidad', 'telefono', 'carta', 'imagen']
+        fields = ['nombre', 'slug', 'calle', 'codigo_postal',
+                  'provincia', 'localidad', 'telefono1', 'telefono2',
+                  'social_wa', 'social_ig', 'social_fb', 'social_tw',
+                  'carta', 'imagen']
     
         
     def __init__(self, *args, **kwargs):
@@ -26,7 +29,12 @@ class EstablecimientoForm(forms.ModelForm):
         self.fields['slug'].widget = LabeledInput(attrs={'label': slug_url})
         self.fields['provincia'].widget.attrs.update({'readonly': 'readonly'})
         self.fields['localidad'].widget = forms.Select(attrs={'class': 'ui search dropdown'}, choices=localidad_choices)
-        self.fields['telefono'].widget = forms.TextInput(attrs={'type': 'tel'})
+        self.fields['telefono1'].widget = forms.TextInput(attrs={'type': 'tel'})
+        self.fields['telefono2'].widget = forms.TextInput(attrs={'type': 'tel'})
+        self.fields['social_wa'].widget = LabeledInput(attrs={'label': 'https://wa.me/'})
+        self.fields['social_ig'].widget = LabeledInput(attrs={'label': 'https://instagram.com/'})
+        self.fields['social_fb'].widget = LabeledInput(attrs={'label': 'https://facebook.com/'})
+        self.fields['social_tw'].widget = LabeledInput(attrs={'label': 'https://twitter.com/'})
         self.fields['carta'].widget = forms.Select(attrs={'class': 'ui search dropdown'})
         self.fields['carta'].queryset = Carta.objects.filter(propietario=self.request.user)
     
@@ -89,8 +97,12 @@ class EstablecimientoForm(forms.ModelForm):
         return localidad
     
     
-    def clean_telefono(self):
-        return self.cleaned_data['telefono'].replace(' ', '')
+    def clean_telefono1(self):
+        return self.cleaned_data['telefono1'].replace(' ', '')
+    
+    
+    def clean_telefono2(self):
+        return self.cleaned_data['telefono2'].replace(' ', '')
 
 
 class CartaForm(forms.ModelForm):

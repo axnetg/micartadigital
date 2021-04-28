@@ -47,6 +47,7 @@
     var $confirmDeletionSubmitButton = $modalForm.find('input[type="submit"]');
     var $establecimientoText = $modal.find('#is-establecimiento');
     var $cartaText = $modal.find('#is-carta');
+    var $cartaTextWarning = $modal.find('#is-carta-warning');
 
     // coloca form.action adecuado, resetea el checkbox, coloca el título en el texto y abre el modal
     var callbackDeleteBtn = ($button) => {
@@ -70,9 +71,23 @@
 
     // prepara el modal para mostrarse con la información de carta
     $('.delete-carta-btn').on('click', function () {
+        var $clickedBtn = $(this);
+        var related = $clickedBtn.data('related');
+        
+        if (related.length > 0) {
+            $cartaTextWarning.show();
+            var $list = $cartaTextWarning.find('ul');
+            $list.empty();
+            related.forEach(el => {
+               $list.append(`<li>${el}</li>`);
+            });
+        } else {
+            $cartaTextWarning.hide();
+        }
+    
         $cartaText.show();
         $establecimientoText.hide();
-        callbackDeleteBtn($(this));
+        callbackDeleteBtn($clickedBtn);
     });
 
     // hacer click sobre el checkbox deshabilita o habilita el botón de eliminar

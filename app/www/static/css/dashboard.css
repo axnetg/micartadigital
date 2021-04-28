@@ -67,3 +67,8 @@ button.hidden {
 .wrapper-seccion-platos {
   margin-bottom: 1em;
 }
+
+#is-establecimiento,
+#is-carta {
+  margin-bottom: 14px;
+}
