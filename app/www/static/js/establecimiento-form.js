@@ -59,6 +59,7 @@
     var $provinciaField = $('input[name=provincia]');
     var $localidadField = $('select[name=localidad]');
     
+    var $codigoPostalDiv = $codigoPostalField.parents('.field');
     var $localidadDiv = $localidadField.parents('.ui.dropdown');
     $localidadDiv.dropdown({ fullTextSearch: true });
 
@@ -71,16 +72,19 @@
         if (this.value.match('^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$')) {
             $localidadDiv.toggleClass('loading');
 
-            $.getJSON('http://www.geonames.org/postalCodeLookupJSON?&country=ES&maxRows=100&callback=?',
+            $.getJSON('https://www.geonames.org/postalCodeLookupJSON?&country=ES&maxRows=100&callback=?',
                 { postalcode: this.value }, (response) => {
                     if (response && response.postalcodes.length) {
                         $provinciaField.val(response.postalcodes[0].adminName2);
+                        $codigoPostalDiv.removeClass('error');
 
                         response.postalcodes.forEach(place => {
                             let localidad = place.placeName;
                             let $option = $("<option>").text(localidad).val(localidad);
                             $localidadField.append($option);
                         });
+                    } else {
+                        $codigoPostalDiv.addClass('error')
                     }
                     $localidadDiv.toggleClass('loading');
                 }
@@ -131,6 +135,6 @@
 
     // ----------------- carta field -----------------
     var $cartaDiv = $('select[name=carta]').parents('.ui.dropdown');
-    $cartaDiv.dropdown({ fullTextSearch: true, clearable: true });
+    $cartaDiv.dropdown({ fullTextSearch: true, clearable: true, forceSelection: false });
 
 })(jQuery);

@@ -117,6 +117,8 @@
 
         $('.ui.dropdown.selection').dropdown({useLabels: false});
         $('.tabular.menu .item').tab('change tab', dataTabString);
+
+        $seccionesMenu.scrollLeft($seccionesMenu.width());
     });
 
     /* Actualizar título del tab tras modificar el nombre de una sección */
@@ -141,6 +143,8 @@
 
     /* Eliminar el tab cuando se elimina una sección */
     $form.on('click', '.wrapper-seccion .seccion-delete-btn', function () {
+        if ($seccionesMenu.find('.item').length <= 1) return;
+
         var $clickedButton = $(this);
         var $deleteButton = $clickedButton.siblings('.hidden.seccion-delete-btn');
 
@@ -155,6 +159,9 @@
     /* Eliminar el plato cuando se elimina su form */
     $form.on('click', '.wrapper-seccion-platos .plato-delete-btn', function () {
         var $clickedButton = $(this); 
+        var $platoSegment = $clickedButton.parents('.plato');
+        if ($platoSegment.siblings('.plato:visible').length == 0) return;
+
         var $deleteButton = $clickedButton.siblings('.hidden.seccion-delete-btn');
         $deleteButton.click();
     });
