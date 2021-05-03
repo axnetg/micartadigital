@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.defaults import page_not_found
 
 from .forms import EstablecimientoForm, CartaForm
 from .formsets import SeccionesFormset
@@ -18,6 +19,10 @@ import re
 def home(request):
     establecimientos = Establecimiento.objects.all()
     return render(request, 'home.html', {'establecimientos': establecimientos})
+
+
+def error_404(request, exception):
+    return page_not_found(request, exception, template_name='404.html')
 
 
 @login_required
@@ -99,15 +104,12 @@ def establecimiento_delete(request, pk):
 def establecimiento_search(request):
     query = request.GET.get('q', '')
     query = re.sub(r'[.,\/#!?$%\^&\*;:{}=\-_`~()]', '', query)
-    search_list = query.split()
     
     establecimientos = Establecimiento.objects.filter(codigo_postal__exact=query)        
     if not establecimientos.exists():
         establecimientos = Establecimiento.objects.annotate(
-            #similarity=sum([ TrigramSimilarity('nombre', x) + TrigramSimilarity('calle', x) + TrigramSimilarity('localidad', x) for x in search_list ])
             similarity=TrigramSimilarity('nombre', query) + TrigramSimilarity('calle', query) + TrigramSimilarity('localidad', query)
         ).filter(similarity__gte=0.25).order_by('-similarity')
-        #.exclude(carta__isnull=True)   #.order_by(F('imagen').desc(nulls_last=True))
     
     localidades = establecimientos.values('localidad').annotate(count=Count('localidad')).order_by('-count')
     context = {

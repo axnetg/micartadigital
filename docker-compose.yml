@@ -1,20 +1,30 @@
 version: "3.8"
 
 services:
+  nginx:
+    build: ./nginx
+    ports: 
+      - "1700:80"
+    volumes:
+        - ./app/www/static:/staticfiles
+        - ./app/www/media:/mediafiles
+    depends_on:
+      - web
   web:
     build: ./app
-    command: ../wait-for-it.sh db:5432 -t 0 --strict -- python manage.py runserver 0.0.0.0:8000
+    command: ../wait-for-it.sh db:5432 -t 0 --strict -- sh -c "python manage.py makemigrations &&
+                                                                python manage.py migrate &&
+                                                                python manage.py collectstatic --noinput &&
+                                                                gunicorn micartadigital.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./app:/app
-    ports:
-      - "8000:8000"
     env_file:
       - django.dev.env
       - postgres.dev.env
     depends_on:
       - db
   db:
-    image: "postgres:13"
+    image: "postgres:13-alpine"
     volumes:
       - ./postgres:/var/lib/postgresql/data
     env_file:

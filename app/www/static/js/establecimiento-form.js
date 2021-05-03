@@ -26,27 +26,35 @@
     });
 
     // cuando el input de imagen cambia de valor se comprueba si es una imagen real y se coloca en el segmento imagen
+    var resetImagePreview = () => {
+        $imageField.val('');
+        $imageClearField.prop('checked', false);
+        $image.attr('src', originalImgSrc);
+    };
+
     $imageField.on('change', (event) => {
         let file = event.target.files[0];
         if (typeof file !== "undefined") {
+            if (file.size/1024/1024 > 5) {
+                resetImagePreview();
+                alert('Por favor, envía una imagen que no supere los 5 MB.');
+                return;
+            }
+
             let image = new Image();
             image.onload = () => {
                 $imageClearField.prop('checked', false);
                 $image.attr('src', URL.createObjectURL(file));
             };
             image.onerror = () => {
-                $imageField.val('');
-                $imageClearField.prop('checked', false);
-                $image.attr('src', originalImgSrc);
+                resetImagePreview();
                 alert('Envía una imagen válida. El fichero que has enviado no era una imagen o se trataba de una imagen corrupta.');
             }
             image.src = URL.createObjectURL(file);
+            return;
         }
-        else {
-            $imageField.val('');
-            $imageClearField.prop('checked', false);
-            $image.attr('src', originalImgSrc);
-        }
+
+        resetImagePreview();
     });
 
     // ocultar de la vista el campo del input real de la imagen

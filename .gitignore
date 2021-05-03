@@ -1,9 +1,11 @@
 postgres/**
-!postgres/.gitkeep
 
 # Env files
 django.env
 postgres.env
+
+# Collectstatic admin files
+**/static/admin
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
