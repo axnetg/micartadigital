@@ -22,7 +22,7 @@
         <th>Establecimiento</th>
         <th>Teléfono</th>
         <th>Provincia</th>
-        <th>Carta</th>
+        <th>Enlace</th>
         <th></th>
       </tr>
     </thead>
@@ -39,6 +39,7 @@
         <td>
           <a href="{% url 'establecimiento' establecimiento.slug %}" target="_blank" class="ui label">
             {{ establecimiento.slug }}</a>
+          {% if not establecimiento.carta %}<span data-tooltip="Este establecimiento no dispone de una carta asociada" data-inverted=""><i class="yellow exclamation circle icon"></i></span>{% endif %}
         </td>
         <td class="right aligned">
           <div class="ui floating dropdown item">

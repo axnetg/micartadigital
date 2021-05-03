@@ -34,10 +34,10 @@
 #establecimiento-detalles {
     margin-top: 0;
 }
-#establecimiento-detalles h1 a {
+#establecimiento-detalles .header a {
     color: rgba(0,0,0,.6);
 }
-#establecimiento-detalles h1 a:hover {
+#establecimiento-detalles .header a:hover {
     text-decoration: underline;
 }
 

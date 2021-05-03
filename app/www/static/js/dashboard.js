@@ -33,7 +33,7 @@
         autoWidth: false,
         columnDefs: [
             { type: "html", targets: [0, 1] },
-            { width: "25%", targets: 0 },
+            { width: "25%", targets: [0, 2] },
             { orderable: false, targets: [1, -1] },
             { searchable: false, targets: -1 }
         ]

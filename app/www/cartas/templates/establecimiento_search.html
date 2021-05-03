@@ -38,9 +38,9 @@
         <div class="ui item">
             <div class="image">
                 {% if establecimiento.imagen %}
-                <img class="ui image" src="{{ establecimiento.imagen.url }}" />
+                <img class="ui image" src="{{ establecimiento.imagen.url }}" alt="Imagen de portada" />
                 {% else %}
-                <img class="ui default image" src="{% static 'img/default-header-image.jpg' %}" />
+                <img class="ui default image" src="{% static 'img/default-header-image.jpg' %}" alt="Imagen de portada" />
                 {% endif %}
             </div>
             <div class="content">
@@ -70,12 +70,12 @@
 {% if not establecimientos %}
     <div id="no-results" class="ui center aligned middle aligned grid stackable basic segment">
         <div class="row">
-            <img class="ui middle aligned image" src="{% static 'img/no_search_results.svg' %}">
+            <img class="ui middle aligned image" src="{% static 'img/no_search_results.svg' %}" alt="Imagen de portada" />
         </div>
         <div class="row">
-            <h1 class="ui header">No se han encontrado resultados
+            <div class="ui huge header">No se han encontrado resultados
                 <div class="sub header">¿Crees que falta algún establecimiento? <a href="{% url 'signup' %}">Añádelo tú mismo</a>.</div>
-            </h1>
+            </div>
         </div>
     </div>
 {% endif %}

@@ -6,6 +6,7 @@ from django.urls import reverse
 from multiselectfield import MultiSelectField
 
 import json
+import urllib
 import uuid
 
 from .utils import *
@@ -45,8 +46,8 @@ class Establecimiento(models.Model):
         return reverse('establecimiento', kwargs={'slug': self.slug})
     
     def get_maps_url(self):
-        query = f'{self.nombre}, {self.codigo_postal}, {self.localidad}'
-        return f'https://maps.google.com/?q={query}'
+        query = {'q': f'{self.nombre}, {self.codigo_postal}, {self.localidad}'}
+        return f'https://maps.google.com/?{urllib.parse.urlencode(query)}'
     
     def display_direccion(self):
         return f'{self.calle}, {self.codigo_postal}, {self.localidad}'

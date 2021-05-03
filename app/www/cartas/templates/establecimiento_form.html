@@ -22,9 +22,9 @@
                 </div>
             </div>
             {% if form.instance.id and form.instance.imagen %}
-            <img class="ui fluid image" src="{{ form.instance.imagen.url }}" />
+            <img class="ui fluid image" src="{{ form.instance.imagen.url }}" alt="Imagen de portada" />
             {% else %}
-            <img class="ui fluid image" src="https://i.stack.imgur.com/y9DpT.jpg" />
+            <img class="ui fluid image" src="https://i.stack.imgur.com/y9DpT.jpg" alt="Imagen por defecto" />
             {% endif %}
         </div>
         {% for error in form.imagen.errors %}

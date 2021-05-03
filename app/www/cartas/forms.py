@@ -136,7 +136,7 @@ class PlatoForm(forms.ModelForm):
             'titulo': forms.TextInput(attrs={'placeholder': 'Nombre del plato'}),
             'descripcion': forms.TextInput(attrs={'placeholder': 'Descripción del plato (opcional)'}),
             'precio': LabeledInput(attrs={'placeholder': 'Precio del plato', 'label': '€', 'right': True}),
-            'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown', 'placeholder': 'Click para seleccionar'}),
+            'alergenos': forms.SelectMultiple(attrs={'class': 'ui search multiple selection dropdown'}),
             'orden': forms.HiddenInput(),
         }
         error_messages = {
