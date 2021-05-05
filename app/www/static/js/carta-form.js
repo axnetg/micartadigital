@@ -29,7 +29,7 @@
                     var $wrapper = $newPlato.closest('.wrapper-seccion-platos');
                     $wrapper.append($newPlato);
 
-                    $('.ui.dropdown.selection').dropdown({useLabels: false});
+                    $newPlato.find('.ui.dropdown.selection').dropdown({useLabels: false});
                 });
             }
         }
@@ -115,7 +115,7 @@
         var wrapperPlatoElement = $newSeccion.find('.wrapper-seccion-platos')[0];
         Sortable.create(wrapperPlatoElement, platoSortOptions);
 
-        $('.ui.dropdown.selection').dropdown({useLabels: false});
+        $newSeccion.find('.ui.dropdown.selection').dropdown({useLabels: false});
         $('.tabular.menu .item').tab('change tab', dataTabString);
 
         $seccionesMenu.scrollLeft($seccionesMenu.width());
@@ -202,5 +202,18 @@
         * o save-and-continue, ya que al prevenir el envío del form se pierde esa información */
         $(this).find('#submit-redirect').attr('name', e.originalEvent.submitter.name);
         this.submit();
+    });
+
+    /* Escribir sobre cualquier campo marcado como error le quitará la sombra roja */
+    $('.field.error').find('input, select').on('input change', function () {
+        var $input = $(this)
+        $input.parents('.error').removeClass('error');
+
+        $seccion = $input.closest('div.seccion');
+        if ($seccion.find('.error').length == 0) {
+            var dataTabString = $seccion.attr('data-tab');
+            var $tab = $(`#secciones-switcher .item[data-tab=${dataTabString}]`);
+            $tab.removeClass('error');
+        }        
     });
 })(jQuery);

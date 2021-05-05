@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<div class="{% if size %}{{ size }} wide {% endif %}field{% if field.errors %} error{% endif %}">
+<div class="{% if size %}{{ size }} wide {% endif %}{% if field.field.required %}required {% endif %}field{% if field.errors %} error{% endif %}">
     {% if label %}{{ field.label_tag }}{% endif %}
     {% render_field field %}
     {% for error in field.errors %}

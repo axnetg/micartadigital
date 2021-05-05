@@ -1,7 +1,13 @@
 (function($) {
     /* Establecer texto de no resultados del dropdown de localidad y carta */
     $.fn.dropdown.settings.message.noResults = 'No se han encontrado resultados.';
+    
+    /* escribir sobre cualquier campo marcado como error le quitará la sombra roja */
+    $('.field.error').find('input, select').on('input change', function () {
+        $(this).parents('.error').removeClass('error');
+    });
 
+    
     // ----------------- imagen field -----------------
     var $imageSegmentField = $('#header-pic');
     var $imageChangeButton = $imageSegmentField.find('#imagen-change-btn');
@@ -60,6 +66,27 @@
     // ocultar de la vista el campo del input real de la imagen
     $imageField.parents('.field').attr('hidden', 'hidden');   //.hide();
 
+    // habilitar drag and drop de ficheros
+    $imageSegmentField.on('dragover', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $imageSegmentField.on('dragenter', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $imageSegmentField.on('drop', function (e) {
+        if (e.originalEvent.dataTransfer) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.originalEvent.dataTransfer.files.length == 1) {
+                $imageField[0].files = e.originalEvent.dataTransfer.files;
+                $imageField.trigger('change');
+            }
+        }
+    });
 
 
     // ----------------- dirección field -----------------
@@ -101,7 +128,6 @@
     });
 
 
-
     // ----------------- slug field -----------------
     var $nombreField = $('input[name=nombre]');
     var $slugField = $('input[name=slug]');
@@ -124,6 +150,7 @@
         var text = $(this).val().trim();
         text = slugify(text);
         $slugField.val(text);
+        $slugField.trigger('change');
     });
 
     // escribir en el campo slug lo marcará como locked, excepto si se ha borrado por completo
@@ -138,7 +165,6 @@
         text = slugify(text);
         $input.val(text);
     });
-
 
 
     // ----------------- carta field -----------------

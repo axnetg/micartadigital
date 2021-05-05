@@ -1,0 +1,32 @@
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.nombre size='sixteen' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.slug size='sixteen' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.calle size='sixteen' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.codigo_postal size='three' label=True %}
+    {% include 'includes/fields/form_field.html' with field=establecimiento.provincia size='five' label=True %}
+    {% include 'includes/fields/form_field.html' with field=establecimiento.localidad size='eight' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.telefono1 size='eight' label=True %}
+    {% include 'includes/fields/form_field.html' with field=establecimiento.telefono2 size='eight' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.social_wa size='eight' label=True %}
+    {% include 'includes/fields/form_field.html' with field=establecimiento.social_ig size='eight' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.social_fb size='eight' label=True %}
+    {% include 'includes/fields/form_field.html' with field=establecimiento.social_tw size='eight' label=True %}
+</div>
+<div class="fields">
+    {% include 'includes/fields/form_field.html' with field=establecimiento.carta size='sixteen' label=True %}
+</div>
+<div class="field">
+    {{ establecimiento.imagen }}
+</div>

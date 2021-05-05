@@ -31,6 +31,11 @@
 
 .field.error small.helper {
   color: #9f3a38;
+  display: block;
+}
+
+small.helper {
+  display: none;
 }
 
 #secciones-switcher {
@@ -68,7 +73,17 @@ button.hidden {
   margin-bottom: 1em;
 }
 
+.plato .selection.dropdown .active.item {
+  background-color: lightgreen;
+}
+
 #is-establecimiento,
 #is-carta {
   margin-bottom: 14px;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.form .fields .field {
+    margin-bottom: 1em;
+  }
 }
