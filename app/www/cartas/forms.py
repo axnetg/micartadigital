@@ -47,9 +47,7 @@ class EstablecimientoForm(forms.ModelForm):
             for place in data['postalcodes']:
                 value = place['placeName']
                 places.append( (value, value) )
-                
         return places
-    
     
     def get_provincia_by_postal_code(self, codigo_postal):
         if codigo_postal and self.valid_postal_code(codigo_postal):
@@ -57,25 +55,19 @@ class EstablecimientoForm(forms.ModelForm):
             data = requests.get('https://www.geonames.org/postalCodeLookupJSON', params=params).json()
             if data['postalcodes']:
                 return data['postalcodes'][0]['adminName2']
-            
         return None
-    
     
     def valid_postal_code(self, codigo_postal):
         return re.fullmatch('^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$', codigo_postal)
     
-    
     def clean_slug(self):
         return self.cleaned_data['slug'].lower()
-    
     
     def clean_codigo_postal(self):
         codigo_postal = self.cleaned_data['codigo_postal']
         if not self.valid_postal_code(codigo_postal):
             raise ValidationError('El código postal introducido es inválido')
-        
         return codigo_postal
-    
     
     def clean_provincia(self):
         provincia = self.cleaned_data['provincia']
@@ -83,9 +75,7 @@ class EstablecimientoForm(forms.ModelForm):
         
         if not provincia == self.get_provincia_by_postal_code(codigo_postal):
             raise ValidationError('La provincia introducida no se corresponde con el código postal.')
-        
         return provincia
-    
     
     def clean_localidad(self):
         localidad = self.cleaned_data['localidad']
@@ -93,13 +83,10 @@ class EstablecimientoForm(forms.ModelForm):
         
         if not any( localidad in x for x in self.get_places_by_postal_code(codigo_postal) ):
             raise ValidationError('La localidad introducida no se corresponde con el código postal.')
-        
         return localidad
-    
     
     def clean_telefono1(self):
         return self.cleaned_data['telefono1'].replace(' ', '')
-    
     
     def clean_telefono2(self):
         return self.cleaned_data['telefono2'].replace(' ', '')

@@ -60,8 +60,7 @@ def establecimiento_create(request):
 def establecimiento_edit(request, pk):
     establecimiento = get_object_or_404(Establecimiento, pk=pk)
     if request.user != establecimiento.propietario:
-        messages.error(request, 'El establecimiento que intentas editar no te pertenece.')
-        return redirect('panel')
+        raise Http404()
     
     if request.method == 'POST':
         if 'imagen-clear' in request.POST:
@@ -89,8 +88,7 @@ def establecimiento_delete(request, pk):
     if request.method == 'POST':
         establecimiento = get_object_or_404(Establecimiento, pk=pk)
         if request.user != establecimiento.propietario:
-            messages.error(request, 'El establecimiento que intentas eliminar no te pertenece.')
-            return redirect('panel')
+            raise Http404()
         else:
             if 'confirm_delete' in request.POST:
                 establecimiento.delete()
@@ -152,8 +150,7 @@ def carta_create(request):
 def carta_edit(request, pk):
     carta = get_object_or_404(Carta, pk=pk)
     if request.user != carta.propietario:
-        messages.error(request, 'La carta que intentas editar no te pertenece.')
-        return redirect('panel')
+        raise Http404()
     
     if request.method == 'POST':
         form_carta = CartaForm(request.POST, instance=carta)
@@ -182,8 +179,7 @@ def carta_delete(request, pk):
     if request.method == 'POST':
         carta = get_object_or_404(Carta, pk=pk)
         if request.user != carta.propietario:
-            messages.error(request, 'La carta que intentas eliminar no te pertenece.')
-            return redirect('panel')
+            raise Http404()
         else:
             if 'confirm_delete' in request.POST:
                 carta.delete()

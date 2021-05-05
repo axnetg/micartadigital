@@ -42,20 +42,6 @@ class Establecimiento(models.Model):
     def __str__(self):
         return self.nombre
 
-    def get_absolute_url(self):
-        return reverse('establecimiento', kwargs={'slug': self.slug})
-    
-    def get_maps_url(self):
-        query = {'q': f'{self.nombre}, {self.codigo_postal}, {self.localidad}'}
-        return f'https://maps.google.com/?{urllib.parse.urlencode(query)}'
-    
-    def display_direccion(self):
-        return f'{self.calle}, {self.codigo_postal}, {self.localidad}'
-    
-    def display_telefonos(self):
-        tels = [self.telefono1, self.telefono2]
-        return ', '.join([str(i) for i in tels if i])
-
     def save(self, *args, **kwargs):        
         try:
             current = Establecimiento.objects.get(id=self.id)
@@ -67,6 +53,20 @@ class Establecimiento(models.Model):
     def delete(self, *args, **kwargs):
         self.imagen.delete()
         super().delete(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('establecimiento', kwargs={'slug': self.slug})
+    
+    def display_direccion(self):
+        return f'{self.calle}, {self.codigo_postal}, {self.localidad}'
+    
+    def display_telefonos(self):
+        tels = [self.telefono1, self.telefono2]
+        return ', '.join([str(i) for i in tels if i])
+    
+    def get_maps_url(self):
+        query = {'q': f'{self.nombre}, {self.codigo_postal}, {self.localidad}'}
+        return f'https://maps.google.com/?{urllib.parse.urlencode(query)}'
 
 
 class Carta(models.Model):
@@ -82,18 +82,18 @@ class Carta(models.Model):
     def __str__(self):
         return self.titulo
     
+    def count_platos(self):
+        platos = 0
+        for seccion in self.secciones.all():
+            platos += seccion.platos.count()
+        return platos
+    
     def display_establecimientos_en_uso(self):
         return ', '.join([est.nombre for est in self.establecimientos.all()])
     
     def get_establecimientos_as_json(self):
         related = self.establecimientos.values_list('nombre', flat=True)
         return json.dumps(list(related))
-    
-    def count_platos(self):
-        platos = 0
-        for seccion in self.secciones.all():
-            platos += seccion.platos.count()
-        return platos
     
     
 class Seccion(models.Model):
@@ -123,8 +123,8 @@ class Plato(models.Model):
         verbose_name = 'plato'
         verbose_name_plural = 'platos'
     
-    def display_alergenos(self):
-        return ", ".join(self.alergenos)
-    
     def __str__(self):
         return f'{self.titulo} [{self.precio}€]'
+    
+    def display_alergenos(self):
+        return ", ".join(self.alergenos)
