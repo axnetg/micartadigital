@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.semanticui.min.css" />
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
 {% endblock %}
 
@@ -24,7 +23,7 @@
                 <div class="menu">
                     <div class="header">{{ user.email }}</div>
                     {% if user.is_superuser %}
-                    <a class="item" href="/admin/" target="_blank"><i class="database icon"></i>Administración de Django</a>
+                    <a class="item" href="{% url 'admin:index' %}" target="_blank"><i class="database icon"></i>Administración de Django</a>
                     <div class="divider"></div>
                     {% endif %}
                     <a class="item" href="{% url 'panel' %}"><i class="clipboard outline icon"></i>Mis cartas</a>

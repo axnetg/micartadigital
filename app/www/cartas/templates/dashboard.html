@@ -4,6 +4,12 @@
 
 {% block title %}Panel - micartadigital.es{% endblock %}
 
+{% block style %}
+{{ block.super }}
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.semanticui.min.css" rel="stylesheet"
+    integrity="sha256-bHq0gaFvFm67HgiSmL/jOsH4GseFBCQZXlceP94U/4I=" crossorigin="anonymous">
+{% endblock %}
+
 {% block content %}
 <div class="ui hidden divider"></div>
 
@@ -154,8 +160,11 @@
 {% endblock %}
 
 {% block script %}
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.semanticui.min.js"></script>
-<script src="https://cdn.datatables.net/plug-ins/1.10.22/filtering/type-based/accent-neutralise.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"
+    integrity="sha256-d0qcJpwLkJL+K8wbZdFutWDK0aNMgLJ4sSLIV9o4AlE=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.semanticui.min.js"
+    integrity="sha256-eZ1bpdySiN+eUwVppzyyLCwyU+Z8vXYZ5rjtXsZnEHQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/filtering/type-based/accent-neutralise.js"
+    integrity="sha256-KBahL/ctNO+M3anFARBZ9bJh9s5y8HKaM0DtEIlTTrM=" crossorigin="anonymous"></script>
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
