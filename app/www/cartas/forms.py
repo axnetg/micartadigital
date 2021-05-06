@@ -39,6 +39,57 @@ class EstablecimientoForm(forms.ModelForm):
         self.fields['carta'].queryset = Carta.objects.filter(propietario=self.request.user)
     
     
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        return nombre[0].upper() + nombre[1:]
+    
+    def clean_slug(self):
+        return self.cleaned_data.get('slug').lower()
+    
+    def clean_calle(self):
+        calle = self.cleaned_data.get('calle')
+        return calle[0].upper() + calle[1:]
+    
+    def clean_codigo_postal(self):
+        codigo_postal = self.cleaned_data.get('codigo_postal')
+        if not self.valid_postal_code(codigo_postal):
+            raise ValidationError('El código postal introducido es inválido')
+        return codigo_postal
+    
+    def clean_provincia(self):
+        provincia = self.cleaned_data.get('provincia')
+        codigo_postal = self.cleaned_data.get('codigo_postal')
+        
+        if not provincia == self.get_provincia_by_postal_code(codigo_postal):
+            raise ValidationError('La provincia introducida no se corresponde con el código postal.')
+        return provincia
+    
+    def clean_localidad(self):
+        localidad = self.cleaned_data.get('localidad')
+        codigo_postal = self.cleaned_data.get('codigo_postal')
+        
+        if not any( localidad in x for x in self.get_places_by_postal_code(codigo_postal) ):
+            raise ValidationError('La localidad introducida no se corresponde con el código postal.')
+        return localidad
+    
+    def clean_telefono1(self):
+        telefono = self.cleaned_data.get('telefono1')
+        telefono = re.sub(r'[\s\(\)\/-]', '', telefono)
+        
+        if telefono:
+            if not self.valid_phone_number(telefono):
+                raise ValidationError('Formato de teléfono inválido.')
+        return telefono
+    
+    def clean_telefono2(self):
+        telefono = self.cleaned_data.get('telefono2')
+        telefono = re.sub(r'[\s\(\)\/-]', '', telefono)
+        
+        if telefono:
+            if not self.valid_phone_number(telefono):
+                raise ValidationError('Formato de teléfono inválido.')
+        return telefono
+    
     def get_places_by_postal_code(self, codigo_postal):
         places = []
         if codigo_postal and self.valid_postal_code(codigo_postal):
@@ -57,39 +108,20 @@ class EstablecimientoForm(forms.ModelForm):
                 return data['postalcodes'][0]['adminName2']
         return None
     
+    def clean(self):
+        cleaned_data = super().clean()
+        telefono1 = cleaned_data.get('telefono1')
+        telefono2 = cleaned_data.get('telefono2')
+        
+        if telefono2 and not telefono1:
+            cleaned_data['telefono1'] = telefono2
+            cleaned_data['telefono2'] = ''
+    
+    def valid_phone_number(self, phone):
+        return re.fullmatch('^(\+[0-9]{1,3})?[0-9]{4,14}$', phone)
+    
     def valid_postal_code(self, codigo_postal):
         return re.fullmatch('^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$', codigo_postal)
-    
-    def clean_slug(self):
-        return self.cleaned_data['slug'].lower()
-    
-    def clean_codigo_postal(self):
-        codigo_postal = self.cleaned_data['codigo_postal']
-        if not self.valid_postal_code(codigo_postal):
-            raise ValidationError('El código postal introducido es inválido')
-        return codigo_postal
-    
-    def clean_provincia(self):
-        provincia = self.cleaned_data['provincia']
-        codigo_postal = self.cleaned_data.get('codigo_postal', '')
-        
-        if not provincia == self.get_provincia_by_postal_code(codigo_postal):
-            raise ValidationError('La provincia introducida no se corresponde con el código postal.')
-        return provincia
-    
-    def clean_localidad(self):
-        localidad = self.cleaned_data['localidad']
-        codigo_postal = self.cleaned_data.get('codigo_postal', '')
-        
-        if not any( localidad in x for x in self.get_places_by_postal_code(codigo_postal) ):
-            raise ValidationError('La localidad introducida no se corresponde con el código postal.')
-        return localidad
-    
-    def clean_telefono1(self):
-        return self.cleaned_data['telefono1'].replace(' ', '')
-    
-    def clean_telefono2(self):
-        return self.cleaned_data['telefono2'].replace(' ', '')
 
 
 class CartaForm(forms.ModelForm):
