@@ -124,8 +124,7 @@
     /* Actualizar título del tab tras modificar el nombre de una sección */
     $form.on('input', 'div.seccion .wrapper-seccion input[name$=titulo]', function () {
         var $input = $(this);
-        var seccionTitulo = $input.val().trim();
-        seccionTitulo = seccionTitulo || "sin título";
+        var seccionTitulo = $input.val().trim() || "sin título";
 
         var dataTabString = $input.closest('div.seccion').attr('data-tab');
         var $tab = $(`#secciones-switcher .item[data-tab=${dataTabString}]`);
@@ -196,6 +195,11 @@
             var $seccionOrderInput = $seccion.find('.wrapper-seccion input[name$="orden"]');
             $seccionOrderInput.val(index + 1);
         });
+
+        /* Hacer trim sobre todos los input para no enviar espacios de más */
+        $('input').val(function(_, value) {
+            return $.trim(value);
+         });
 
         /* Enviar el form una vez cubiertos los inputs de orden 
         * El form necesita un parámetro extra para determinar si pulsamos save-and-exit

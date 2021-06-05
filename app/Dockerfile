@@ -20,3 +20,4 @@ EXPOSE 8000
 
 # Copiar proyecto
 COPY . /app
+RUN chmod 755 ../wait-for-it.sh

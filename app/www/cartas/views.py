@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views.defaults import page_not_found
 
 from .forms import EstablecimientoForm, CartaForm
-from .formsets import SeccionesFormset
+from .formsets import SeccionFormFormSet
 from .models import *
 from .utils import *
 
@@ -122,7 +122,7 @@ def establecimiento_search(request):
 def carta_create(request):
     if request.method == 'POST':
         form_carta = CartaForm(request.POST)
-        formset = SeccionesFormset(request.POST)
+        formset = SeccionFormFormSet(request.POST)
         
         if form_carta.is_valid() and formset.is_valid():
             carta = form_carta.save(commit=False)
@@ -141,7 +141,7 @@ def carta_create(request):
         messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:
         form_carta = CartaForm()
-        formset = SeccionesFormset()
+        formset = SeccionFormFormSet()
         
     return render(request, 'carta_form.html', {'carta': form_carta, 'form': formset})
 
@@ -154,7 +154,7 @@ def carta_edit(request, pk):
     
     if request.method == 'POST':
         form_carta = CartaForm(request.POST, instance=carta)
-        formset = SeccionesFormset(request.POST, instance=carta)
+        formset = SeccionFormFormSet(request.POST, instance=carta)
         
         if form_carta.is_valid() and formset.is_valid():
             form_carta.save()
@@ -169,7 +169,7 @@ def carta_edit(request, pk):
         messages.error(request, 'Los cambios no se han guardado. Revisa el formulario.')
     else:
         form_carta = CartaForm(instance=carta)
-        formset = SeccionesFormset(instance=carta)
+        formset = SeccionFormFormSet(instance=carta)
         
     return render(request, 'carta_form.html', {'carta': form_carta, 'form': formset})
 

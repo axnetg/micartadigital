@@ -4,16 +4,16 @@ from .models import *
 from .forms import SeccionForm, PlatoForm
 
 
-class BaseSeccionesFormset(BaseInlineFormSet):
+class BaseSeccionesFormSet(BaseInlineFormSet):
     def add_fields(self, form, index):
         super().add_fields(form, index)
     
         #save the formset in the 'nested' property
-        form.nested = PlatosFormset(
+        form.nested = PlatoFormFormSet(
             instance=form.instance,
             data=form.data if form.is_bound else None,
             files=form.files if form.is_bound else None,
-            prefix=f'{form.prefix}-{PlatosFormset.get_default_prefix()}'
+            prefix=f'{form.prefix}-{PlatoFormFormSet.get_default_prefix()}'
         )
     
     def is_valid(self):
@@ -45,6 +45,6 @@ class BaseSeccionesFormset(BaseInlineFormSet):
                 error.message = f'No se puede guardar una carta vacía.'
     
     
-SeccionesFormset = inlineformset_factory(Carta, Seccion, form=SeccionForm, formset=BaseSeccionesFormset, extra=0, min_num=1, max_num=20, validate_min=True)
+SeccionFormFormSet = inlineformset_factory(Carta, Seccion, form=SeccionForm, formset=BaseSeccionesFormSet, extra=0, min_num=1, max_num=20, validate_min=True)
 
-PlatosFormset = inlineformset_factory(Seccion, Plato, form=PlatoForm, extra=0, min_num=1, max_num=50, validate_min=True)
+PlatoFormFormSet = inlineformset_factory(Seccion, Plato, form=PlatoForm, extra=0, min_num=1, max_num=50, validate_min=True)

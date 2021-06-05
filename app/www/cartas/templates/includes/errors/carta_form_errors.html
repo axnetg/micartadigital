@@ -18,16 +18,16 @@
                 {% if not plato.DELETE.value %}
                     {% if plato.errors %}
                         {% if plato.titulo.value %}
-                            <li>Hay datos incorrectos en el plato <strong>{{ plato.titulo.value }}</strong> en la sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong>.</li>
+                            <li>Hay datos incorrectos en el plato <strong>{{ plato.titulo.value }}</strong> en la sección <strong>{{ seccion.titulo.value|default:"sin título" }}</strong>.</li>
                         {% else %}
-                            <li>Existe un plato sin nombre en la sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong>.</li>
+                            <li>Existe un plato sin nombre en la sección <strong>{{ seccion.titulo.value|default:"sin título" }}</strong>.</li>
                         {% endif %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
 
             {% if seccion.nested.non_form_errors %}
-                <li>La sección <strong>{{ seccion.titulo.value|default:"sin_título" }}</strong> no tiene platos.</li>
+                <li>La sección <strong>{{ seccion.titulo.value|default:"sin título" }}</strong> no tiene platos.</li>
             {% endif %}
             
         {% endif %}
