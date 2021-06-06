@@ -14,7 +14,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: python:3.9-slim
 
     services:
       postgres:
@@ -28,6 +27,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - name: Check out repository code
@@ -40,7 +41,7 @@ jobs:
 
       - name: Install requirements
         run: |
-          python3 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r app/requirements.txt
 
       - name: Run Django tests
@@ -52,4 +53,4 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.PgPwd }}
           POSTGRES_USER: ${{ secrets.PgUser }}
         working-directory: app/www
-        run: python3 manage.py test
+        run: python manage.py test
