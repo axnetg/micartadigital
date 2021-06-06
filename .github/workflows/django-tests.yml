@@ -14,7 +14,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: python:3.9
+    container: python:3.9-slim
 
     services:
       postgres:
@@ -40,7 +40,7 @@ jobs:
 
       - name: Install requirements
         run: |
-          python -m pip install --upgrade pip
+          python3 -m pip install --upgrade pip
           pip install -r app/requirements.txt
 
       - name: Run Django tests
@@ -52,4 +52,4 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.PgPwd }}
           POSTGRES_USER: ${{ secrets.PgUser }}
         working-directory: app/www
-        run: python manage.py test
+        run: python3 manage.py test
