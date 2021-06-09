@@ -32,16 +32,19 @@ class HomeTests(TestCase):
         register_page = reverse('signup')
         self.assertContains(self.response, f'href="{register_page}')
         
+    def test_home_view_contains_search_form(self):
+        search_url = reverse('search-establecimiento')
+        self.assertContains(self.response, f'action="{search_url}"')
+        
 
-class DashboardTests(TestCase):
+class DashboardBaseTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         get_user_model().objects.create_user(username='test', email='test@cartas.es', password='123')
         
     def setUp(self):
         self.client.login(email='test@cartas.es', password='123')
-        dashboard_url = reverse('panel')
-        self.response = self.client.get(dashboard_url)
+        self.response = self.client.get(reverse('panel'))
         
     def test_dashboard_view_status_code(self):
         self.assertEquals(self.response.status_code, 200)
@@ -60,6 +63,91 @@ class DashboardTests(TestCase):
     def test_dashboard_view_contains_link_to_search(self):
         search_url = reverse('search-establecimiento')
         self.assertContains(self.response, f'href="{search_url}"')
+        
+    def test_dashboard_view_contains_link_to_user_settings(self):
+        settings_url = reverse('user-settings')
+        self.assertContains(self.response, f'href="{settings_url}"')
+        
+    def test_dashboard_view_contains_link_to_logout(self):
+        logout_url = reverse('logout')
+        self.assertContains(self.response, f'href="{logout_url}"')
+        
+    def test_dashboard_view_contains_link_to_new_establecimiento(self):
+        new_establecimiento_url = reverse('new-establecimiento')
+        self.assertContains(self.response, f'href="{new_establecimiento_url}"')
+        
+    def test_dashboard_view_contains_link_to_new_carta(self):
+        new_carta_url = reverse('new-carta')
+        self.assertContains(self.response, f'href="{new_carta_url}"')
+        
+    def test_dashboard_view_no_establecimientos(self):
+        user = self.response.context.get('user')
+        self.assertContains(self.response, 'Todavía no has creado establecimientos')
+        self.assertFalse(user.establecimientos.exists())
+        
+    def test_dashboard_view_no_cartas(self):
+        user = self.response.context.get('user')
+        self.assertContains(self.response, 'Todavía no has creado cartas')
+        self.assertFalse(user.cartas.exists())
+        
+        
+class DashboardTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = get_user_model().objects.create_user(username='test', email='test@cartas.es', password='123')
+        Establecimiento.objects.create(nombre='Test', slug='test', calle='Calle', codigo_postal='32004', provincia='Ourense', localidad='Ourense', propietario=user)
+        Carta.objects.create(titulo='Carta Test', propietario=user)
+        
+    def setUp(self):
+        self.client.login(email='test@cartas.es', password='123')
+        self.est = Establecimiento.objects.get(slug='test')
+        self.carta = Carta.objects.get(titulo='Carta Test')
+        self.response = self.client.get(reverse('panel'))
+        
+    def test_dashboard_view_list_establecimientos(self):
+        user = self.response.context.get('user')
+        self.assertTrue(user.establecimientos.exists())
+        self.assertQuerysetEqual(user.establecimientos.all(), [self.est])
+        
+    def test_dashboard_view_contains_info_establecimientos(self):
+        self.assertContains(self.response, self.est.nombre)
+        self.assertContains(self.response, self.est.display_direccion())
+        self.assertContains(self.response, self.est.display_telefonos())
+        self.assertContains(self.response, self.est.provincia)
+        self.assertContains(self.response, self.est.slug)
+        
+    def test_dashboard_view_contains_link_to_details_establecimiento(self):
+        details_url = reverse('establecimiento', kwargs={'slug': self.est.slug})
+        self.assertContains(self.response, f'href="{details_url}"')
+        
+    def test_dashboard_view_contains_link_to_edit_establecimiento(self):
+        edit_url = reverse('edit-establecimiento', kwargs={'pk': self.est.id})
+        self.assertContains(self.response, f'href="{edit_url}"')
+        
+    def test_dashboard_view_contains_link_to_serve_qr(self):
+        serve_qr_url = reverse('serve-qr', kwargs={'slug': self.est.slug})
+        self.assertContains(self.response, f'href="{serve_qr_url}"')
+        
+    def test_dashboard_view_contains_link_to_delete_establecimiento(self):
+        delete_url = reverse('delete-establecimiento', kwargs={'pk': self.est.id})
+        self.assertContains(self.response, f'data-url="{delete_url}"')
+        
+    def test_dashboard_view_list_cartas(self):
+        user = self.response.context.get('user')
+        self.assertTrue(user.cartas.exists())
+        self.assertQuerysetEqual(user.cartas.all(), [self.carta])
+        
+    def test_dashboard_view_contains_info_cartas(self):
+        self.assertContains(self.response, self.carta.titulo)
+        self.assertContains(self.response, int(self.carta.ultima_modificacion.timestamp()))
+        
+    def test_dashboard_view_contains_link_to_edit_carta(self):
+        edit_url = reverse('edit-carta', kwargs={'pk': self.carta.id})
+        self.assertContains(self.response, f'href="{edit_url}"')
+        
+    def test_dashboard_view_contains_link_to_delete_carta(self):
+        delete_url = reverse('delete-carta', kwargs={'pk': self.carta.id})
+        self.assertContains(self.response, f'data-url="{delete_url}"')
         
         
 class LoginRequiredTests(TestCase):
