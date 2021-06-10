@@ -5,6 +5,7 @@ from django.urls import resolve, reverse
 from urllib.parse import quote
 
 from .forms import *
+from .formsets import *
 from .models import *
 from .views import *
 
@@ -348,7 +349,7 @@ class EstablecimientoFormTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTrue(form.errors)
         self.assertFalse(Establecimiento.objects.filter(slug='test-invalid').exists())
-        
+
     def test_new_establecimiento_empty_post_data(self):
         url = reverse('new-establecimiento')
         response = self.client.post(url, {})
@@ -419,7 +420,7 @@ class EstablecimientoFormTests(TestCase):
         response = self.client.get(url)
         self.assertEquals(response.status_code, 404)
         
-    def test_delete_establecimiento_url_resolves_create_view(self):
+    def test_delete_establecimiento_url_resolves_delete_view(self):
         view = resolve(f'/panel/establecimiento/{self.est.id}/borrar')
         self.assertEquals(view.func, establecimiento_delete)
         
@@ -456,3 +457,186 @@ class EstablecimientoForbiddenTests(TestCase):
         response = self.client.post(url, {'confirm_delete': True})
         self.assertEquals(response.status_code, 404)
         self.assertTrue(Establecimiento.objects.filter(slug='test').exists())
+        
+        
+class CartaTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        carta = Carta.objects.create(titulo='Test')
+        for i in range(10):
+            seccion = Seccion.objects.create(titulo=f'Sección {i}', orden=i, carta=carta)
+            for j in range(5):
+                Plato.objects.create(titulo=f'Plato {i}-{j}', precio=j+1, orden=j, seccion=seccion)
+        
+        Establecimiento.objects.create(nombre='Test', slug='test', calle='Calle', codigo_postal='32004', provincia='Ourense', localidad='Ourense', carta=carta)
+        
+    def setUp(self):
+        self.est = Establecimiento.objects.get(slug='test')
+        self.response = self.client.get(reverse('establecimiento', kwargs={'slug': self.est.slug}))
+        
+    def test_establecimiento_contains_info_carta(self):
+        secciones = self.response.context.get('establecimiento').carta.secciones.all()
+        self.assertEqual(len(secciones), 10)
+        for seccion in secciones:
+            self.assertEqual(len(seccion.platos.all()), 5)
+            
+    def test_establecimiento_contains_info_titulo(self):
+        for i in range(10):
+            self.assertContains(self.response, f'Sección {i}')
+            for j in range(5):
+                self.assertContains(self.response, f'Plato {i}-{j}')
+                
+    def test_establecimiento_contains_info_plato(self):
+        secciones = self.est.carta.secciones.all()
+        for plato in [plato for seccion in secciones for plato in seccion.platos.all()]:
+            self.assertContains(self.response, str(plato.precio).replace('.', ','))
+            self.assertContains(self.response, plato.descripcion)
+            
+
+class CartaFormTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = get_user_model().objects.create_user(username='test', email='test@cartas.es', password='123')
+        carta = Carta.objects.create(titulo='Test', propietario=user)
+        for i in range(10):
+            seccion = Seccion.objects.create(titulo=f'Sección {i}', orden=i, carta=carta)
+            for j in range(5):
+                Plato.objects.create(titulo=f'Plato {i}-{j}', precio=j+1, orden=j, seccion=seccion)
+                
+        Establecimiento.objects.create(nombre='Test', slug='test', calle='Calle', codigo_postal='32004', provincia='Ourense', localidad='Ourense', propietario=user, carta=carta)
+        
+    def setUp(self):
+        self.carta = Establecimiento.objects.get(slug='test').carta
+        self.client.login(email='test@cartas.es', password='123')
+        
+    def test_new_carta_view_status_code(self):
+        url = reverse('new-carta')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        
+    def test_new_carta_url_resolves_create_view(self):
+        view = resolve('/panel/carta/añadir')
+        self.assertEquals(view.func, carta_create)
+        
+    def test_new_carta_view_uses_correct_template(self):
+        url = reverse('new-carta')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'carta_form.html')
+        
+    def test_new_carta_contains_form(self):
+        url = reverse('new-carta')
+        response = self.client.get(url)
+        form_carta = response.context.get('carta')
+        formset = response.context.get('form')
+        self.assertIsInstance(form_carta, CartaForm)
+        self.assertIsInstance(formset, SeccionFormFormSet)
+        
+    def test_new_carta_form_csrf(self):
+        url = reverse('new-carta')
+        response = self.client.get(url)
+        self.assertContains(response, 'csrfmiddlewaretoken')
+        
+    def test_new_carta_valid_post_data(self):
+        url = reverse('new-carta')
+        data = {
+            'titulo': 'Test Carta Valid',
+            'secciones-TOTAL_FORMS': 1,
+            'secciones-INITIAL_FORMS': 0,
+            'secciones-0-titulo': 'Secc Valid',
+            'secciones-0-orden': 1,
+            'secciones-0-platos-TOTAL_FORMS': 1,
+            'secciones-0-platos-INITIAL_FORMS': 0,
+            'secciones-0-platos-0-titulo': 'Plato Valid',
+            'secciones-0-platos-0-precio': 1.00,
+            'secciones-0-platos-0-orden': 1,
+            'save-and-exit': True
+        }
+        response = self.client.post(url, data)
+        self.assertRedirects(response, reverse('panel'))
+        self.assertTrue(Carta.objects.filter(titulo='Test Carta Valid').exists())
+        self.assertTrue(Seccion.objects.filter(titulo='Secc Valid').exists())
+        self.assertTrue(Plato.objects.filter(titulo='Plato Valid').exists())
+        
+    def test_new_carta_invalid_secciones_formset_post_data(self):
+        url = reverse('new-carta')
+        data = {
+            'titulo': 'Test Carta Invalid',
+            'secciones-TOTAL_FORMS': 0,
+            'secciones-INITIAL_FORMS': 0
+        }
+        response = self.client.post(url, data)
+        formset = response.context.get('form')
+        self.assertEquals(response.status_code, 200)
+        self.assertFalse(formset.is_valid())
+        
+    def test_new_carta_invalid_platos_nested_formset_post_data(self):
+        url = reverse('new-carta')
+        data = {
+            'titulo': 'Test Carta Valid',
+            'secciones-TOTAL_FORMS': 1,
+            'secciones-INITIAL_FORMS': 0,
+            'secciones-0-titulo': 'Secc Valid',
+            'secciones-0-orden': 1,
+            'secciones-0-platos-TOTAL_FORMS': 0,
+            'secciones-0-platos-INITIAL_FORMS': 0
+        }
+        response = self.client.post(url, data)
+        formset = response.context.get('form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(formset.errors)
+        
+    def test_new_establecimiento_empty_post_data(self):
+        url = reverse('new-carta')
+        response = self.client.post(url, {})
+        carta_form = response.context.get('carta')
+        formset = response.context.get('form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(carta_form.errors)
+        self.assertFalse(formset.is_valid())
+        
+    def test_edit_carta_view_status_code(self):
+        url = reverse('edit-carta', kwargs={'pk': self.carta.id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+    
+    def test_edit_carta_url_resolves_edit_view(self):
+        view = resolve(f'/panel/carta/{self.carta.id}/editar')
+        self.assertEquals(view.func, carta_edit)
+    
+    def test_edit_carta_view_uses_correct_template(self):
+        url = reverse('edit-carta', kwargs={'pk': self.carta.id})
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'carta_form.html')
+        
+    def test_edit_carta_contains_form(self):
+        url = reverse('edit-carta', kwargs={'pk': self.carta.id})
+        response = self.client.get(url)
+        form_carta = response.context.get('carta')
+        formset = response.context.get('form')
+        self.assertIsInstance(form_carta, CartaForm)
+        self.assertIsInstance(formset, SeccionFormFormSet)
+        
+    def test_edit_carta_form_csrf(self):
+        url = reverse('edit-carta', kwargs={'pk': self.carta.id})
+        response = self.client.get(url)
+        self.assertContains(response, 'csrfmiddlewaretoken')
+    
+    def test_delete_carta_view_status_code(self):
+        url = reverse('delete-carta', kwargs={'pk': self.carta.id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 404)
+    
+    def test_delete_carta_url_resolves_delete_view(self):
+        view = resolve(f'/panel/carta/{self.carta.id}/borrar')
+        self.assertEquals(view.func, carta_delete)
+    
+    def test_delete_carta_empty_post_data(self):
+        url = reverse('delete-carta', kwargs={'pk': self.carta.id})
+        response = self.client.post(url, {})
+        self.assertRedirects(response, reverse('panel'))
+        
+    def test_delete_carta_valid_post_data(self):
+        url = reverse('delete-carta', kwargs={'pk': self.carta.id})
+        response = self.client.post(url, {'confirm_delete': True})
+        self.assertRedirects(response, reverse('panel'))
+        self.assertFalse(Carta.objects.filter(titulo='Test').exists())
