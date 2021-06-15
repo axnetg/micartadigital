@@ -53,4 +53,4 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.PgPwd }}
           POSTGRES_USER: ${{ secrets.PgUser }}
         working-directory: app/www
-        run: python manage.py test
+        run: python manage.py test -v 2

@@ -459,6 +459,76 @@ class EstablecimientoForbiddenTests(TestCase):
         self.assertTrue(Establecimiento.objects.filter(slug='test').exists())
         
         
+class EstablecimientoSearchTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Establecimiento.objects.create(nombre='Líbano Snack', slug='libano', calle='Calle Doctor Temes, 18', codigo_postal='32004', provincia='Ourense', localidad='Ourense')
+        Establecimiento.objects.create(nombre='Graduado', slug='graduado', calle='Rúa Doutor Temes Fernández', codigo_postal='32004', provincia='Ourense', localidad='Ourense')
+        Establecimiento.objects.create(nombre='Rebusca 46', slug='rebusca', calle='C/ Dr. Temes, nº 16B', codigo_postal='32004', provincia='Ourense', localidad='Ourense')
+        Establecimiento.objects.create(nombre='Perla 3', slug='perla', calle='Rúa Carlos Velo, 1', codigo_postal='32003', provincia='Ourense', localidad='Ourense')
+        Establecimiento.objects.create(nombre='Cafetería Reca', slug='reca', calle='Av. de Balaídos, 72', codigo_postal='36210', provincia='Pontevedra', localidad='Vigo')
+        
+    def setUp(self):
+        self.url = reverse('search-establecimiento')
+        
+    def test_search_view_status_code(self):
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 200)
+        
+    def test_search_url_resolves_search_view(self):
+        view = resolve('/buscar/')
+        self.assertEquals(view.func, establecimiento_search)
+        
+    def test_search_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, 'establecimiento_search.html')
+        
+    def test_search_view_contains_link_to_home(self):
+        response = self.client.get(self.url)
+        home_url = reverse('home')
+        self.assertContains(response, f'href="{home_url}"')
+        
+    def test_search_establecimiento_by_nombre_parcial(self):
+        response = self.client.get(self.url, {'q': 'perla'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 1)
+        
+    def test_search_establecimiento_by_nombre_similar(self):
+        response = self.client.get(self.url, {'q': 'cafetaria reka'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 1)
+        
+    def test_search_establecimiento_by_nombre_exacto(self):
+        response = self.client.get(self.url, {'q': 'graduado'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 1)
+        
+    def test_search_establecimiento_by_calle_similar(self):
+        response = self.client.get(self.url, {'q': 'avenida balaidos'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 1)
+        
+    def test_search_establecimiento_by_calle_multiple(self):
+        response = self.client.get(self.url, {'q': 'doctor temes'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 3)
+        
+    def test_search_establecimiento_by_localidad_similar(self):
+        response = self.client.get(self.url, {'q': 'orense'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 4)
+        
+    def test_search_establecimiento_by_calle_exacto(self):
+        response = self.client.get(self.url, {'q': 'vigo'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 1)
+        
+    def test_search_establecimiento_by_codigo_postal(self):
+        response = self.client.get(self.url, {'q': '32004'})
+        resultados = response.context.get('establecimientos')
+        self.assertEqual(len(resultados), 3)
+        
+        
 class CartaTests(TestCase):
     @classmethod
     def setUpTestData(cls):

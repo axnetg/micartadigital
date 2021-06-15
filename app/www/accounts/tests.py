@@ -58,6 +58,10 @@ class SuccessfulSignUpTests(TestCase):
     def test_dashboard_redirection(self):
         self.assertRedirects(self.response, self.dashboard_url)
         
+    def test_signup_while_authenticated(self):
+        response = self.client.get(reverse('signup'))
+        self.assertRedirects(response, self.dashboard_url)
+        
     def test_user_creation(self):
         self.assertTrue(get_user_model().objects.filter(first_name='Test').exists())
         
@@ -80,6 +84,93 @@ class InvalidSignUpTests(TestCase):
         self.assertTrue(form.errors)
         
     def test_dont_create_user(self):
+        self.assertFalse(get_user_model().objects.exists())
+        
+        
+class UserSettingsTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        get_user_model().objects.create_user(username='test', email='test@cartas.es', password='123')
+        
+    def setUp(self):
+        self.client.login(email='test@cartas.es', password='123')
+        self.url = reverse('user-settings')
+        self.response = self.client.get(self.url)
+        
+    def test_user_settings_view_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
+        
+    def test_user_settings_resolves_settings_view(self):
+        view = resolve('/panel/cuenta/')
+        self.assertEquals(view.func.view_class, UserSettingsUpdate)
+    
+    def test_user_settings_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, 'user_edit.html')
+        
+    def test_csrf(self):
+        self.assertContains(self.response, 'csrfmiddlewaretoken')
+        
+    def test_contains_form(self):
+        user_settings_form = self.response.context.get('user_settings_form')
+        user_password_form = self.response.context.get('user_password_form')
+        self.assertIsInstance(user_settings_form, UserSettingsUpdateForm)
+        self.assertIsInstance(user_password_form, UserPasswordUpdateForm)
+        
+    def test_edit_user_info_valid_post_data(self):
+        data = {
+            'email': 'test@cartas.es',
+            'first_name': 'Name',
+            'last_name': 'Surname',
+            'nif': '',
+            'user_settings': True
+        }
+        response = self.client.post(self.url, data)
+        self.assertRedirects(response, self.url)
+        self.assertTrue(get_user_model().objects.filter(first_name='Name').exists())
+        
+    def test_edit_user_info_empty_post_data(self):
+        response = self.client.post(self.url, {'user_settings': True})
+        form = response.context.get('user_settings_form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
+        
+    def test_edit_user_password_valid_post_data(self):
+        data = {
+            'password': 'Cy$e8y@j',
+            'confirm_password': 'Cy$e8y@j',
+            'user_password': True
+        }
+        response = self.client.post(self.url, data)
+        self.assertRedirects(response, self.url)
+        
+    def test_edit_user_password_too_weak_post_data(self):
+        data = {
+            'password': '12345678',
+            'confirm_password': '12345678',
+            'user_password': True
+        }
+        response = self.client.post(self.url, data)
+        form = response.context.get('user_password_form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
+        
+    def test_edit_user_password_empty_post_data(self):
+        response = self.client.post(self.url, {'user_password': True})
+        form = response.context.get('user_password_form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
+        
+    def test_delete_user_account_not_confirmed_post_data(self):
+        response = self.client.post(self.url, {'user_delete': True})
+        self.assertTrue(get_user_model().objects.exists())
+        
+    def test_delete_user_account_valid_post_data(self):
+        data = {
+            'user_confirm_delete': True,
+            'user_delete': True
+        }
+        response = self.client.post(self.url, data)
+        self.assertRedirects(response, reverse('home'))
         self.assertFalse(get_user_model().objects.exists())
         
 
