@@ -17,8 +17,7 @@ import re
 
 
 def home(request):
-    establecimientos = Establecimiento.objects.all()
-    return render(request, 'home.html', {'establecimientos': establecimientos})
+    return render(request, 'home.html')
 
 
 def error_404(request, exception):
