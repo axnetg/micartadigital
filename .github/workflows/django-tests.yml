@@ -13,11 +13,13 @@ on:
 
 jobs:
   test:
+    name: Django tests
+
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:13-alpine
+        image: postgres:14-alpine
         env:
           POSTGRES_DB: ${{ secrets.PgDb }}
           POSTGRES_PASSWORD: ${{ secrets.PgPwd }}
@@ -34,10 +36,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install requirements
         run: |
