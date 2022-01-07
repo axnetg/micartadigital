@@ -19,7 +19,7 @@ Para implementar la capa de aplicación existen numerosas herramientas que acele
 
 En este proyecto se utiliza el framework web Django, el cual sigue los principios de desarrollo rápido y hace que el programador solo tenga que preocuparse del desarrollo incremental de los requisitos del proyecto. Django es un framework web de alto nivel escrito en Python que permite el desarrollo rápido de sitios web seguros, escalables y mantenibles.
 
-## Arquitectura 
+## Arquitectura 📋
 Docker es una herramienta diseñada para crear entornos aislados de ejecución de aplicaciones reproducibles mediante el uso de contenedores. Un contenedor ofrece una capa de virtualización de un sistema operativo sobre el cual se empaqueta el código fuente de una aplicación y todas sus dependencias, lo que asegura su ejecución de forma rápida y fiable en cualquier otro entorno informático.
 
 El escenario de uso habitual de Docker en el desarrollo y distribución de aplicaciones consiste en separar cada servicio en contenedores distintos para garantizar la seguridad, asegurar la independencia del hardware virtualizado y proporcionar mecanismos adicionales de gestión de recursos.
@@ -29,7 +29,7 @@ Es por esto que los servicios utilizados en el presente sistema software se divi
 - **Contenedor Gunicorn**: configura el entorno de Python donde se despliega el punto de entrada a la aplicación web siguiendo la especificación WSGI. 
 - **Contenedor Postgres**: aloja el sistema gestor de base de datos, donde se almacena la información necesaria para el funcionamiento de la aplicación web.
 
-## Instrucciones de despliegue 📦
+## Instrucciones de despliegue 🚀
 La ejecución de la aplicación requiere desplegar una infraestructura virtual con la ayuda de [Docker](https://docs.docker.com/engine/install/) y [Docker-Compose](https://docs.docker.com/compose/install/). Se describen a continuación los comandos necesarios para su puesta en marcha.
 
 ```bash
@@ -38,4 +38,4 @@ sudo systemctl start docker
 sudo docker-compose up -d --build
 ```
 
-Estos comandos se encargan de descargar una copia local del repositorio, iniciar el daemon de Docker, recuperar las imágenes base de Nginx, Python y Postgres y construir en base a ellas los contenedores. Este proceso puede tardar unos minutos. Si se han seguido correctamente todos los pasos, el sitio web debe estar accesible en http://localhost:1700.
+Estos comandos se encargan de descargar una copia local del repositorio, iniciar el daemon de Docker, recuperar las imágenes base de Nginx, Python y Postgres y construir en base a ellas los contenedores. Este proceso puede tardar unos minutos. Tras terminar, el sitio web debe estar accesible en http://localhost:1700.
