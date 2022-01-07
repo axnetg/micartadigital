@@ -13,6 +13,8 @@ on:
 
 jobs:
   test:
+    name: Django tests
+
     runs-on: ubuntu-latest
 
     services:
