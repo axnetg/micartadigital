@@ -12,10 +12,7 @@ services:
       - web
   web:
     build: ./app
-    command: ../wait-for-it.sh db:5432 -t 0 --strict -- sh -c "python manage.py makemigrations &&
-                                                                python manage.py migrate &&
-                                                                python manage.py collectstatic --noinput &&
-                                                                gunicorn micartadigital.wsgi:application --bind 0.0.0.0:8000"
+    command: "../wait-for-it.sh db:5432 -t 0 --strict -- ../start.sh"
     volumes:
       - ./app:/app
     env_file:
