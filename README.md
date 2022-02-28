@@ -1,5 +1,6 @@
 ![Python 3.10 badge](https://img.shields.io/badge/python-3.10-brightgreen)
 ![Django 3.2 badge](https://img.shields.io/badge/django-3.2-brightgreen)
+[![codecov](https://codecov.io/gh/axnetg/micartadigital/branch/dev/graph/badge.svg?token=lwu6t2UWZe)](https://codecov.io/gh/axnetg/micartadigital)
 
 # Aplicación web de gestión de cartas virtuales para hostelería
 Motivado por la tendencia de muchos bares y restaurantes de ofrecer versiones digitales de sus cartas subidas en redes sociales o páginas web, se desarrolla la presente plataforma de gestión y visualización de cartas conforme a las recomendaciones sanitarias derivadas de la pandemia de la COVID-19.
