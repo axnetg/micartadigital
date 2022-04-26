@@ -7,11 +7,11 @@ django-multiselectfield==0.1.12
 django-widget-tweaks==1.4.12
 gunicorn==20.1.0
 idna==3.3
-Pillow==9.0.1
+Pillow==9.1.0
 psycopg2-binary==2.9.3
-pytz==2021.3
+pytz==2022.1
 qrcode==7.3.1
 requests==2.27.1
 six==1.16.0
 sqlparse==0.4.2
-urllib3==1.26.8
+urllib3==1.26.9
