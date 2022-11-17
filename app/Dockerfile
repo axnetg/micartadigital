@@ -1,5 +1,5 @@
 # Imagen base
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Autor
 LABEL maintainer="avrodriguez17@esei.uvigo.es"

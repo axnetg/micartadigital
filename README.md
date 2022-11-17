@@ -1,4 +1,4 @@
-![Python 3.10 badge](https://img.shields.io/badge/python-3.10-brightgreen)
+![Python 3.11 badge](https://img.shields.io/badge/python-3.11-brightgreen)
 ![Django 3.2 badge](https://img.shields.io/badge/django-3.2-brightgreen)
 [![codecov](https://codecov.io/gh/axnetg/micartadigital/branch/dev/graph/badge.svg?token=lwu6t2UWZe)](https://codecov.io/gh/axnetg/micartadigital)
 
