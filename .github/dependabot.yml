@@ -26,14 +26,3 @@ updates:
       docker-deps:
         patterns:
           - "*"
-
-  - package-ecosystem: "composer"
-    directory: "/"
-    schedule:
-      # Check for updates once a month
-      interval: "monthly"
-    groups:
-      # Group all dependency updates together in one PR
-      docker-deps:
-        patterns:
-          - "*"
