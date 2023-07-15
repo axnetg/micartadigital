@@ -16,7 +16,7 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "Docker"
+  - package-ecosystem: "docker"
     directory: "/"
     schedule:
       # Check for updates once a month
