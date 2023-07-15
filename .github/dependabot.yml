@@ -1,0 +1,39 @@
+version: 2
+updates:
+
+  - package-ecosystem: "pip"
+    directory: "/app"
+    schedule:
+      # Check for updates once a month
+      interval: "monthly"
+    ignore:
+      # For Django, ignore all major updates
+      - dependency-name: "Django"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group all dependency updates together in one PR
+      pip-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "Docker"
+    directory: "/"
+    schedule:
+      # Check for updates once a month
+      interval: "monthly"
+    groups:
+      # Group all dependency updates together in one PR
+      docker-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      # Check for updates once a month
+      interval: "monthly"
+    groups:
+      # Group all dependency updates together in one PR
+      docker-deps:
+        patterns:
+          - "*"
