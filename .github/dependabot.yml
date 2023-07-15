@@ -17,12 +17,23 @@ updates:
           - "*"
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/app"
     schedule:
       # Check for updates once a month
       interval: "monthly"
     groups:
       # Group all dependency updates together in one PR
-      docker-deps:
+      app-python-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/nginx"
+    schedule:
+      # Check for updates once a month
+      interval: "monthly"
+    groups:
+      # Group all dependency updates together in one PR
+      app-nginx-deps:
         patterns:
           - "*"
