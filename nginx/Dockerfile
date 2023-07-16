@@ -1,5 +1,5 @@
 # Imagen base
-FROM nginx:1.23-alpine
+FROM nginx:1.25-alpine
 
 # Autor
 LABEL maintainer="avrodriguez17@esei.uvigo.es"
