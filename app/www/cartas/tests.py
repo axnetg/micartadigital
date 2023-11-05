@@ -16,11 +16,11 @@ class HomeTests(TestCase):
         self.response = self.client.get(home_url)
         
     def test_home_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
         
     def test_home_url_resolves_home_view(self):
         view = resolve('/')
-        self.assertEquals(view.func, home)
+        self.assertEqual(view.func, home)
         
     def test_home_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, 'home.html')
@@ -48,11 +48,11 @@ class DashboardBaseTests(TestCase):
         self.response = self.client.get(reverse('panel'))
         
     def test_dashboard_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
         
     def test_dashboard_url_resolves_dashboard_view(self):
         view = resolve('/panel/')
-        self.assertEquals(view.func, dashboard)
+        self.assertEqual(view.func, dashboard)
     
     def test_dashboard_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, 'dashboard.html')
@@ -202,12 +202,12 @@ class EstablecimientoTests(TestCase):
     def test_establecimiento_view_success_status_code(self):
         url = reverse('establecimiento', kwargs={'slug': self.est.slug})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
     def test_establecimiento_view_not_found_status_code(self):
         url = reverse('establecimiento', kwargs={'slug': 'not-found'})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
         
     def test_qrcode_view_redirect_status_code(self):
         url = reverse('redirect-establecimiento', kwargs={'id': self.est.id})
@@ -217,15 +217,15 @@ class EstablecimientoTests(TestCase):
     def test_qrcode_view_not_found_status_code(self):
         url = reverse('redirect-establecimiento', kwargs={'id': 99})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)        
+        self.assertEqual(response.status_code, 404)        
                         
     def test_establecimiento_url_resolves_establecimiento_view(self):
         view = resolve('/carta/test')
-        self.assertEquals(view.func, establecimiento_details)
+        self.assertEqual(view.func, establecimiento_details)
         
     def test_qrcode_url_resolves_redirect_view(self):
         view = resolve('/qr/1')
-        self.assertEquals(view.func, establecimiento_redirect)
+        self.assertEqual(view.func, establecimiento_redirect)
         
     def test_establecimiento_view_uses_correct_template(self):
         url = reverse('establecimiento', kwargs={'slug': self.est.slug})
@@ -266,11 +266,11 @@ class EstablecimientoTests(TestCase):
         self.assertContains(response, f'action="{search_url}"')
         
     def test_get_absolute_url(self):
-        self.assertEquals(self.est.get_absolute_url(), '/carta/test')
+        self.assertEqual(self.est.get_absolute_url(), '/carta/test')
         
     def test_get_display_direccion(self):
         direccion = 'Calle, 32004, Ourense'
-        self.assertEquals(self.est.display_direccion(), direccion)
+        self.assertEqual(self.est.display_direccion(), direccion)
 
 
 class EstablecimientoFormTests(TestCase):
@@ -286,11 +286,11 @@ class EstablecimientoFormTests(TestCase):
     def test_new_establecimiento_view_status_code(self):
         url = reverse('new-establecimiento')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
     def test_new_establecimiento_url_resolves_create_view(self):
         view = resolve('/panel/establecimiento/añadir')
-        self.assertEquals(view.func, establecimiento_create)
+        self.assertEqual(view.func, establecimiento_create)
         
     def test_new_establecimiento_view_uses_correct_template(self):
         url = reverse('new-establecimiento')
@@ -330,7 +330,7 @@ class EstablecimientoFormTests(TestCase):
         }
         response = self.client.post(url, data)
         form = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         self.assertFalse(Establecimiento.objects.filter(slug='test-invalid').exists())
         
@@ -346,7 +346,7 @@ class EstablecimientoFormTests(TestCase):
         }
         response = self.client.post(url, data)
         form = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         self.assertFalse(Establecimiento.objects.filter(slug='test-invalid').exists())
 
@@ -354,17 +354,17 @@ class EstablecimientoFormTests(TestCase):
         url = reverse('new-establecimiento')
         response = self.client.post(url, {})
         form = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         
     def test_edit_establecimiento_view_status_code(self):
         url = reverse('edit-establecimiento', kwargs={'pk': self.est.id})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
     def test_edit_establecimiento_url_resolves_edit_view(self):
         view = resolve(f'/panel/establecimiento/{self.est.id}/editar')
-        self.assertEquals(view.func, establecimiento_edit)
+        self.assertEqual(view.func, establecimiento_edit)
         
     def test_edit_establecimiento_view_uses_correct_template(self):
         url = reverse('edit-establecimiento', kwargs={'pk': self.est.id})
@@ -404,7 +404,7 @@ class EstablecimientoFormTests(TestCase):
         }
         response = self.client.post(url, data)
         form = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         self.assertFalse(Establecimiento.objects.filter(slug='test-invalid').exists())
         
@@ -412,17 +412,17 @@ class EstablecimientoFormTests(TestCase):
         url = reverse('edit-establecimiento', kwargs={'pk': self.est.id})
         response = self.client.post(url, {})
         form = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         
     def test_delete_establecimiento_view_status_code(self):
         url = reverse('delete-establecimiento', kwargs={'pk': self.est.id})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
         
     def test_delete_establecimiento_url_resolves_delete_view(self):
         view = resolve(f'/panel/establecimiento/{self.est.id}/borrar')
-        self.assertEquals(view.func, establecimiento_delete)
+        self.assertEqual(view.func, establecimiento_delete)
         
     def test_delete_establecimiento_empty_post_data(self):
         url = reverse('delete-establecimiento', kwargs={'pk': self.est.id})
@@ -450,12 +450,12 @@ class EstablecimientoForbiddenTests(TestCase):
     def test_edit_establecimiento_not_propietario_status_code(self):
         url = reverse('edit-establecimiento', kwargs={'pk': self.est.id})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
         
     def test_delete_establecimiento_not_propietario_status_code(self):
         url = reverse('delete-establecimiento', kwargs={'pk': self.est.id})
         response = self.client.post(url, {'confirm_delete': True})
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
         self.assertTrue(Establecimiento.objects.filter(slug='test').exists())
         
         
@@ -473,11 +473,11 @@ class EstablecimientoSearchTests(TestCase):
         
     def test_search_view_status_code(self):
         response = self.client.get(self.url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
     def test_search_url_resolves_search_view(self):
         view = resolve('/buscar/')
-        self.assertEquals(view.func, establecimiento_search)
+        self.assertEqual(view.func, establecimiento_search)
         
     def test_search_view_uses_correct_template(self):
         response = self.client.get(self.url)
@@ -582,11 +582,11 @@ class CartaFormTests(TestCase):
     def test_new_carta_view_status_code(self):
         url = reverse('new-carta')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         
     def test_new_carta_url_resolves_create_view(self):
         view = resolve('/panel/carta/añadir')
-        self.assertEquals(view.func, carta_create)
+        self.assertEqual(view.func, carta_create)
         
     def test_new_carta_view_uses_correct_template(self):
         url = reverse('new-carta')
@@ -636,7 +636,7 @@ class CartaFormTests(TestCase):
         }
         response = self.client.post(url, data)
         formset = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertFalse(formset.is_valid())
         
     def test_new_carta_invalid_platos_nested_formset_post_data(self):
@@ -652,7 +652,7 @@ class CartaFormTests(TestCase):
         }
         response = self.client.post(url, data)
         formset = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(formset.errors)
         
     def test_new_establecimiento_empty_post_data(self):
@@ -660,18 +660,18 @@ class CartaFormTests(TestCase):
         response = self.client.post(url, {})
         carta_form = response.context.get('carta')
         formset = response.context.get('form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(carta_form.errors)
         self.assertFalse(formset.is_valid())
         
     def test_edit_carta_view_status_code(self):
         url = reverse('edit-carta', kwargs={'pk': self.carta.id})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
     
     def test_edit_carta_url_resolves_edit_view(self):
         view = resolve(f'/panel/carta/{self.carta.id}/editar')
-        self.assertEquals(view.func, carta_edit)
+        self.assertEqual(view.func, carta_edit)
     
     def test_edit_carta_view_uses_correct_template(self):
         url = reverse('edit-carta', kwargs={'pk': self.carta.id})
@@ -694,11 +694,11 @@ class CartaFormTests(TestCase):
     def test_delete_carta_view_status_code(self):
         url = reverse('delete-carta', kwargs={'pk': self.carta.id})
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
     
     def test_delete_carta_url_resolves_delete_view(self):
         view = resolve(f'/panel/carta/{self.carta.id}/borrar')
-        self.assertEquals(view.func, carta_delete)
+        self.assertEqual(view.func, carta_delete)
     
     def test_delete_carta_empty_post_data(self):
         url = reverse('delete-carta', kwargs={'pk': self.carta.id})

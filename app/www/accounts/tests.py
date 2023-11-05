@@ -15,11 +15,11 @@ class SignUpTests(TestCase):
         self.response = self.client.get(url)
         
     def test_signup_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
         
     def test_signup_url_resolves_signup_view(self):
         view = resolve('/registro/')
-        self.assertEquals(view.func, signup)
+        self.assertEqual(view.func, signup)
         
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
@@ -77,7 +77,7 @@ class InvalidSignUpTests(TestCase):
         self.response = self.client.post(url, {})
         
     def test_signup_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
         
     def test_form_errors(self):
         form = self.response.context.get('form')
@@ -98,11 +98,11 @@ class UserSettingsTests(TestCase):
         self.response = self.client.get(self.url)
         
     def test_user_settings_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
         
     def test_user_settings_resolves_settings_view(self):
         view = resolve('/panel/cuenta/')
-        self.assertEquals(view.func.view_class, UserSettingsUpdate)
+        self.assertEqual(view.func.view_class, UserSettingsUpdate)
     
     def test_user_settings_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, 'user_edit.html')
@@ -131,7 +131,7 @@ class UserSettingsTests(TestCase):
     def test_edit_user_info_empty_post_data(self):
         response = self.client.post(self.url, {'user_settings': True})
         form = response.context.get('user_settings_form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         
     def test_edit_user_password_valid_post_data(self):
@@ -151,13 +151,13 @@ class UserSettingsTests(TestCase):
         }
         response = self.client.post(self.url, data)
         form = response.context.get('user_password_form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         
     def test_edit_user_password_empty_post_data(self):
         response = self.client.post(self.url, {'user_password': True})
         form = response.context.get('user_password_form')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(form.errors)
         
     def test_delete_user_account_not_confirmed_post_data(self):
@@ -180,11 +180,11 @@ class PasswordResetTests(TestCase):
         self.response = self.client.get(url)
         
     def test_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
     
     def test_view_function(self):
         view = resolve('/cuentas/recuperar/')
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetView)
+        self.assertEqual(view.func.view_class, auth_views.PasswordResetView)
         
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
@@ -261,11 +261,11 @@ class PasswordResetDoneTests(TestCase):
         self.response = self.client.get(url)
 
     def test_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
 
     def test_view_function(self):
         view = resolve('/cuentas/recuperar/solicitado/')
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetDoneView)
+        self.assertEqual(view.func.view_class, auth_views.PasswordResetDoneView)
         
 
 class PasswordResetCompleteTests(TestCase):
@@ -274,8 +274,8 @@ class PasswordResetCompleteTests(TestCase):
         self.response = self.client.get(url)
 
     def test_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
 
     def test_view_function(self):
         view = resolve('/cuentas/recuperar/completado')
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetCompleteView)
+        self.assertEqual(view.func.view_class, auth_views.PasswordResetCompleteView)
