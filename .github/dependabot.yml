@@ -37,3 +37,14 @@ updates:
       app-nginx-deps:
         patterns:
           - "*"
+  
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates once a month
+      interval: "monthly"
+    groups:
+      # Group all dependency updates together in one PR
+      gh-ci-deps:
+        patterns:
+          - "*"
