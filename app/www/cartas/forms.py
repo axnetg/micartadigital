@@ -118,10 +118,10 @@ class EstablecimientoForm(forms.ModelForm):
             cleaned_data['telefono2'] = ''
     
     def valid_phone_number(self, phone):
-        return re.fullmatch('^(\+[0-9]{1,3})?[0-9]{4,14}$', phone)
+        return re.fullmatch(r'^(\+[0-9]{1,3})?[0-9]{4,14}$', phone)
     
     def valid_postal_code(self, codigo_postal):
-        return re.fullmatch('^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$', codigo_postal)
+        return re.fullmatch(r'^(0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3}$', codigo_postal)
 
 
 class CartaForm(forms.ModelForm):
