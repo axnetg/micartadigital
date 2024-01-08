@@ -10,7 +10,8 @@ updates:
       # For Django, ignore all major updates
       - dependency-name: "Django"
         update-types: ["version-update:semver-major"]
-    reviewers: "axnetg"
+    reviewers:
+      - "axnetg"
     groups:
       # Group all dependency updates together in one PR
       pip-deps:
@@ -22,7 +23,8 @@ updates:
     schedule:
       # Check for updates once a month
       interval: "monthly"
-    reviewers: "axnetg"
+    reviewers:
+      - "axnetg"
     groups:
       # Group all dependency updates together in one PR
       app-python-deps:
@@ -34,7 +36,8 @@ updates:
     schedule:
       # Check for updates once a month
       interval: "monthly"
-    reviewers: "axnetg"
+    reviewers:
+      - "axnetg"
     groups:
       # Group all dependency updates together in one PR
       app-nginx-deps:
@@ -46,7 +49,8 @@ updates:
     schedule:
       # Check for updates once a month
       interval: "monthly"
-    reviewers: "axnetg"
+    reviewers:
+      - "axnetg"
     groups:
       # Group all dependency updates together in one PR
       gh-ci-deps:
