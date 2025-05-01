@@ -1,5 +1,5 @@
 asgiref==3.8.1
-certifi==2024.12.14
+certifi==2025.4.26
 chardet==5.2.0
 charset-normalizer==3.4.1
 Django==3.2.25
@@ -7,11 +7,11 @@ django-multiselectfield==0.1.12
 django-widget-tweaks==1.5.0
 gunicorn==23.0.0
 idna==3.10
-Pillow==11.1.0
+Pillow==11.2.1
 psycopg2-binary==2.9.10
-pytz==2024.2
-qrcode==8.0
+pytz==2025.2
+qrcode==8.1
 requests==2.32.3
 six==1.17.0
 sqlparse==0.5.3
-urllib3==2.3.0
+urllib3==2.4.0
